@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230703075151 extends AbstractMigration
+final class Version20230710125502 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,16 +20,12 @@ final class Version20230703075151 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE comment ADD trick_id INT NOT NULL');
-        $this->addSql('ALTER TABLE comment ADD CONSTRAINT FK_9474526CB281BE2E FOREIGN KEY (trick_id) REFERENCES trick (id)');
-        $this->addSql('CREATE INDEX IDX_9474526CB281BE2E ON comment (trick_id)');
+        $this->addSql('ALTER TABLE trick CHANGE name name VARCHAR(255) NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE comment DROP FOREIGN KEY FK_9474526CB281BE2E');
-        $this->addSql('DROP INDEX IDX_9474526CB281BE2E ON comment');
-        $this->addSql('ALTER TABLE comment DROP trick_id');
+        $this->addSql('ALTER TABLE trick CHANGE name name VARCHAR(180) NOT NULL');
     }
 }

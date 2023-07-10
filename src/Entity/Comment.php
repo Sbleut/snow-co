@@ -28,6 +28,8 @@ class Comment
     #[ORM\JoinColumn(nullable: false)]
     private ?User $author = null;
 
+    # UUID NEEDED
+
     public function getId(): ?int
     {
         return $this->id;
@@ -80,4 +82,5 @@ class Comment
 
         return $this;
     }
+
 }
