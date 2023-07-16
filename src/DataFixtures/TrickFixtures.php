@@ -90,7 +90,7 @@ class TrickFixtures extends Fixture
 
         foreach ($userList as $userArray) {
             $user = new User();
-            $user->setUserName($userArray[0]);
+            $user->setUsername($userArray[0]);
             $user->setEmail($userArray[1]);
             $user->setPassword($this->passwordHasherFactory->getPasswordHasher(User::class)->hash($userArray[2]));
             $userObjectList[] = $user;

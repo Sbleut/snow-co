@@ -13,6 +13,7 @@ class HomeController extends AbstractController
     {
         return $this->render('home/home.html.twig', [
             'title' => 'HomePage',
+            'tricks' => 'trickliste'
         ]);
     } 
 
