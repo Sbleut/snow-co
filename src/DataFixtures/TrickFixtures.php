@@ -92,7 +92,6 @@ class TrickFixtures extends Fixture
             $user = new User();
             $user->setUsername($userArray[0]);
             $user->setEmail($userArray[1]);
-            $user->setPassword($this->passwordHasherFactory->getPasswordHasher(User::class)->hash($userArray[2]));
             $userObjectList[] = $user;
 
             $manager->persist($user);
