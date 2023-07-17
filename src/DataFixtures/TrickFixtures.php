@@ -14,12 +14,12 @@ use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Uid\Uuid;
-use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
 class TrickFixtures extends Fixture
 {
-    public function __construct(private PasswordHasherFactoryInterface $passwordHasherFactory, public Slug $slug)
+    public function __construct(UserPasswordHasherInterface $userPasswordHasher, public Slug $slug)
     {
     }
 
@@ -82,16 +82,23 @@ class TrickFixtures extends Fixture
         ];
 
         $userList = [
-            0 => ['Jimmmy', 'jimmy@hotmail.fr', 'toto'],
-            1 => ['Joey', 'joey@hotmail.fr', 'titi'],
-            2 => ['Sam', 'dam@gmail.com', 'sam'],
+            0 => ['Jimmmy', 'jimmy@hotmail.fr', 'tototo'],
+            1 => ['Joey', 'joey@hotmail.fr', 'tititi'],
+            2 => ['Sam', 'dam@gmail.com', 'samsam'],
         ];
         $userObjectList = [];
 
         foreach ($userList as $userArray) {
             $user = new User();
-            $user->setUsername($userArray[0]);
-            $user->setEmail($userArray[1]);
+            $user->setUsername($userArray[0])
+                ->setEmail($userArray[1])
+                ->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $userArray[2]
+                )
+            )
+                ->setIsVerified(true);
             $userObjectList[] = $user;
 
             $manager->persist($user);
