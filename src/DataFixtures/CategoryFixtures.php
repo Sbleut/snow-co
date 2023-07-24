@@ -26,8 +26,7 @@ class CategoryFixtures extends Fixture
         foreach ($categoryList as $key => $categoryName) {
             $category = new Category();
             $category->setName($categoryName);
-            $uuid = Uuid::v6();
-            $category->setUuid($uuid);
+            $category->setUuid(Uuid::v6());
 
             $manager->persist($category);
             

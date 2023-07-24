@@ -11,6 +11,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class EmailVerifier
 {
     public function __construct(
+        /**
+         * VerifyEmailHelperInterface is used for :
+         *  - generateSignature using @param $verifyEmailRouteName, @param $userId, @param $userMail, @param 'id' = $userId
+         *  - validateEmailConfirmation using @param $requestUri, @param $userId, @param $userMail
+         *
+         * @var VerifyEmailHelperInterface
+         */
         private VerifyEmailHelperInterface $verifyEmailHelper,
         private MailerInterface $mailer,
         private EntityManagerInterface $entityManager
@@ -26,12 +33,12 @@ class EmailVerifier
             ['id' => $user->getId()]
         );
 
-        $context = $email->getContext();
-        $context['signedUrl'] = $signatureComponents->getSignedUrl();
-        $context['expiresAtMessageKey'] = $signatureComponents->getExpirationMessageKey();
-        $context['expiresAtMessageData'] = $signatureComponents->getExpirationMessageData();
+        // $context = $email->getContext();
+        // $context['signedUrl'] = $signatureComponents->getSignedUrl();
+        // $context['expiresAtMessageKey'] = $signatureComponents->getExpirationMessageKey();
+        // $context['expiresAtMessageData'] = $signatureComponents->getExpirationMessageData();
 
-        $email->context($context);
+        // $email->context($context);
 
         $this->mailer->send($email);
     }

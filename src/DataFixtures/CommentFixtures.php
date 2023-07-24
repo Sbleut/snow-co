@@ -5,7 +5,9 @@ namespace App\DataFixtures;
 use App\Entity\Comment;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Uid\Uuid;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Symfony\Component\Uid\UuidV6;
 
 class CommentFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -27,14 +29,15 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
 
         for ($i = 1; $i <= 10; $i++) {
             $comment = new Comment();
-            $trick = $this->getReference('trick_'.mt_rand(0, 20));
-            $comment->setContent($commentList[mt_rand(0,10)]);
+            $trick = $this->getReference('trick_'.mt_rand(0, 19));
+            $comment->setContent($commentList[mt_rand(0,9)]);
             $comment->setTrick($trick);
             $days = (new \DateTime())->diff($trick->getCreatedAt())->days;
             $interval = new \DateInterval('P' . $days . 'D');
             $createdAt = (new \DateTimeImmutable())->sub($interval);
             $comment->setCreatedAt($createdAt);
             $comment->setAuthor($this->getReference('user_' . mt_rand(0, 2)));
+            $comment->setUuid(Uuid::v6());
             $manager->persist($comment);
         }
 

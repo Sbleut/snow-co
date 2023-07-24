@@ -27,7 +27,7 @@ class RegistrationController extends AbstractController
     // VerifyEmailHelperInterface $verifyEmailHelper to add
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, ): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager,): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -46,25 +46,25 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             // generate a signed url and email it to the user
-            /**
-             * $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-             *  (new TemplatedEmail())
-             *      ->from(new Address('thomas.sublet@gmail.com', 'Snow Tricks Website'))
-             *      ->to($user->getEmail())
-             *      ->subject('Please Confirm your Email')
-             *      ->htmlTemplate('registration/confirmation_email.html.twig')
-             *);
-             */
+            $this->emailVerifier->sendEmailConfirmation(
+                'app_verify_email',
+                $user,
+                (new TemplatedEmail())
+                    ->from(new Address('thomas.sublet@gmail.com', 'Snow Tricks Website'))
+                    ->to($user->getEmail())
+                    ->subject('Please Confirm your Email')
+                    ->htmlTemplate('registration/confirmation_email.html.twig')
+            );
             // do anything else you need here, like send an email
 
-            // $signatureComponents = $verifyEmailHelper->generateSignature(
-            //     'app_verify_email',
-            //     $user->getId(),
-            //     $user->getEmail(),
-            //     ['id' => $user->getId()]
-            // );
+            $signatureComponents = $verifyEmailHelper->generateSignature(
+                'app_verify_email',
+                $user->getId(),
+                $user->getEmail(),
+                ['id' => $user->getId()]
+            );
             // TODO: in a real app, send this as an email!
-            // $this->addFlash('success', 'Confirm your email at: '.$signatureComponents->getSignedUrl());
+            $this->addFlash('success', 'Confirm your email at: '.$signatureComponents->getSignedUrl());
 
             return $this->redirectToRoute('app_home_homepage');
         }

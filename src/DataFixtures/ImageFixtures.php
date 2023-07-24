@@ -25,36 +25,36 @@ class ImageFixtures extends Fixture implements DependentFixtureInterface
          */
         // $product = new Product();
         // $manager->persist($product);
-        $directory = "public/uploads/image";
-        $contents = scandir($directory);
-        foreach ($contents as $item) {
-            if ($item === '.' || $item === '..') {
-                continue;
-            }
-            $path = $directory . DIRECTORY_SEPARATOR . $item;
-            $files = scandir($path);
-            foreach ($files as $file) {
-                if (is_dir($path)) {
-                    $image = new Image();
-                    $image->setFileName($file);
-                    $i = 0;
-                    $trick = $this->getReference('trick_' . $i);
-                    while ($trick !== null) {
-                        if ($trick->getSlug() === $item) {
-                            var_dump('FOund for this '. $trick->getName());
-                            $image->setTrick($trick);
-                            break; // On arrête la boucle car on a trouvé le trick correspondant
-                        }
-                        $i++;
-                        if($i>=20){
-                            break;
-                        }
-                        $trick = $this->getReference('trick_' . $i);
-                    }
-                }
-            }
-            $manager->flush();
-        }
+        // $directory = "public/uploads/image";
+        // $contents = scandir($directory);
+        // foreach ($contents as $item) {
+        //     if ($item === '.' || $item === '..') {
+        //         continue;
+        //     }
+        //     $path = $directory . DIRECTORY_SEPARATOR . $item;
+        //     $files = scandir($path);
+        //     foreach ($files as $file) {
+        //         if (is_dir($path)) {
+        //             $image = new Image();
+        //             $image->setFileName($file);
+        //             $i = 0;
+        //             $trick = $this->getReference('trick_' . $i);
+        //             while ($trick !== null) {
+        //                 if ($trick->getSlug() === $item) {
+        //                     var_dump('FOund for this '. $trick->getName());
+        //                     $image->setTrick($trick);
+        //                     break; // On arrête la boucle car on a trouvé le trick correspondant
+        //                 }
+        //                 $i++;
+        //                 if($i>=20){
+        //                     break;
+        //                 }
+        //                 $trick = $this->getReference('trick_' . $i);
+        //             }
+        //         }
+        //     }
+        //     $manager->flush();
+        //}
     }
 
     public function getDependencies()
