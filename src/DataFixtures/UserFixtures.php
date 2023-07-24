@@ -24,8 +24,9 @@ class UserFixtures extends Fixture
             1 => ['Joey', 'joey@hotmail.fr', 'tititi'],
             2 => ['Sam', 'dam@gmail.com', 'samsam'],
         ];
+        
 
-        foreach ($userList as $userArray) {
+        foreach ($userList as $key => $userArray) {
             $user = new User();
             $user->setUsername($userArray[0])
                 ->setEmail($userArray[1])
@@ -36,13 +37,16 @@ class UserFixtures extends Fixture
             );
             $user->setPassword($passwordhashed);
 
-            $userObjectList[] = $user;
+            $this->addReference('user_'.$key, $user);
 
             $manager->persist($user);
+
         }
 
         $manager->flush();
 
-        $this->addReference(self::USER_REFERENCE, $user);
+        
+
+       
     }
 }

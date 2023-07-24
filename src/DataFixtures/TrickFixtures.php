@@ -8,12 +8,11 @@ use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Uid\Uuid;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 
-class TrickFixtures extends Fixture
+class TrickFixtures extends Fixture implements DependentFixtureInterface
 {
-    public const TRICK_REFERENCE = 'trick';
-
     public function __construct(private SluggerInterface $slugger)
     {
     }
@@ -44,17 +43,17 @@ class TrickFixtures extends Fixture
             'Frontside 360',
         ];
 
-
+        $index=0;
         // No Imbrication between objects Each object has its fixturz
         // Tricks Creation 
-        foreach ($trickList as $trickName) {
+        foreach ($trickList as $key => $trickName) {
             $trick = new Trick();
             $trick->setName($trickName);
             $trick->setDescription('lorem ipsum');
 
-            $trick->setUser($this->getReference(UserFixtures::USER_REFERENCE));
+            $trick->setUser($this->getReference('user_' . mt_rand(0, 2)));
 
-            $trick->setUser($this->getReference(CategoryFixtures::CATEGORY_REFERENCE));
+            $trick->setCategory($this->getReference('category_' . mt_rand(0,6)));
             //Random date
             // Set the start and end dates for the range
             $start = strtotime('2023-01-01 00:00:00');
@@ -71,10 +70,13 @@ class TrickFixtures extends Fixture
             $trick->setSlug($this->slugger->slug($trickName));
 
             $manager->persist($trick);
+
+            $this->addReference('trick_'.$index, $trick);
+            $index++;
+            
         }
         $manager->flush();
-
-        $this->addReference(self::TRICK_REFERENCE, $trick);
+        
     }
 
     public function getDependencies()

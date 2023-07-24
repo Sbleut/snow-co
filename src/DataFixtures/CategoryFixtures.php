@@ -23,17 +23,19 @@ class CategoryFixtures extends Fixture
             'Old School',
         ];
 
-        foreach ($categoryList as $categoryName) {
+        foreach ($categoryList as $key => $categoryName) {
             $category = new Category();
             $category->setName($categoryName);
             $uuid = Uuid::v6();
             $category->setUuid($uuid);
 
-            $manager->persist($category);           
+            $manager->persist($category);
+            
+            $this->addReference('category_' . $key, $category);
         }
 
         $manager->flush();
 
-        $this->addReference(self::CATEGORY_REFERENCE, $category);
+        
     }
 }

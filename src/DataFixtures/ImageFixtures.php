@@ -2,14 +2,16 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Image;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class ImageFixtures extends Fixture
+class ImageFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        
+
         //Image 
         /**
          * dossier /public/uploads/image pour les vrais images à DL 
@@ -23,7 +25,7 @@ class ImageFixtures extends Fixture
          */
         // $product = new Product();
         // $manager->persist($product);
-        $directory = "/uploads/image";
+        $directory = "public/uploads/image";
         $contents = scandir($directory);
         foreach ($contents as $item) {
             if ($item === '.' || $item === '..') {
@@ -31,16 +33,26 @@ class ImageFixtures extends Fixture
             }
             $path = $directory . DIRECTORY_SEPARATOR . $item;
             $files = scandir($path);
-            foreach ($files as $file){
+            foreach ($files as $file) {
                 if (is_dir($path)) {
-                    $subdirectoryData = array(
-                        'directory' => $item,
-                        'files' => $file
-                    );
-                    $results[] = $subdirectoryData;
+                    $image = new Image();
+                    $image->setFileName($file);
+                    $i = 0;
+                    $trick = $this->getReference('trick_' . $i);
+                    while ($trick !== null) {
+                        if ($trick->getSlug() === $item) {
+                            var_dump('FOund for this '. $trick->getName());
+                            $image->setTrick($trick);
+                            break; // On arrête la boucle car on a trouvé le trick correspondant
+                        }
+                        $i++;
+                        if($i>=20){
+                            break;
+                        }
+                        $trick = $this->getReference('trick_' . $i);
+                    }
                 }
             }
-            
             $manager->flush();
         }
     }

@@ -2,15 +2,16 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Video;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Uid\Uuid;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class VideoFixtures extends Fixture
+class VideoFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
         $videoList = [
             'Nose Press/Tail Press' => 'https://www.youtube.com/watch?v=P72Q5XGMyDo',
             'Butter' => 'https://www.youtube.com/watch?v=SSgmBfHjYbM',
@@ -32,8 +33,26 @@ class VideoFixtures extends Fixture
             '1980' => 'https://www.youtube.com/watch?v=AKfeui9yrw4',
             'Frontside 360' => 'https://www.youtube.com/watch?v=9T5AWWDxYM4',
         ];
+        foreach ($videoList as $name => $videoUrl) {
+            $video = new Video();
+            $i = 0;
+            $trick = $this->getReference('trick_' . $i);
+            while ($trick !== null) {
+                if ($trick->getName() === $name) {
+                    $video->setTrick($trick);
+                    break;
+                } 
+                $i++;
+                if ($i >= 20) {
+                    break;
+                }
+                $trick = $this->getReference('trick_' . $i);
+            }
+            $video->setIframe($videoUrl);
+            $video->setUuid(Uuid::v6());
 
-
+            $manager->persist($video);
+        }
         $manager->flush();
     }
 
