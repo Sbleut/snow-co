@@ -36,10 +36,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Trick::class)]
     private Collection $tricks;
 
-    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Comment::class)]
-    private Collection $comments;
+    // #[ORM\OneToMany(mappedBy: 'author', targetEntity: Comment::class)]
+    // private Collection $comments;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique:true )]
     private ?string $username = null;
 
     #[ORM\Column(type: 'boolean')]

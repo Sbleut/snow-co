@@ -3,26 +3,20 @@
 namespace App\DataFixtures;
 
 use App\Entity\Trick;
-use App\Entity\User;
-use App\Entity\Comment;
-use App\Entity\Image;
-use App\Entity\Video;
-use App\Entity\ProfilPic;
-use App\Service\Slug;
-use App\Entity\Category;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Uid\Uuid;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
 class TrickFixtures extends Fixture
 {
-    public function __construct(UserPasswordHasherInterface $userPasswordHasher, public Slug $slug)
+    public const TRICK_REFERENCE = 'trick';
+
+    public function __construct(private SluggerInterface $slugger)
     {
     }
-
 
     public function load(ObjectManager $manager)
     {
@@ -49,108 +43,45 @@ class TrickFixtures extends Fixture
             '1980',
             'Frontside 360',
         ];
-        $videoList = [
-            'Nose Press/Tail Press' => 'https://www.youtube.com/watch?v=P72Q5XGMyDo',
-            'Butter' => 'https://www.youtube.com/watch?v=SSgmBfHjYbM',
-            'Ollie/Nollie' => 'https://www.youtube.com/watch?v=aAzP3wNT220',
-            'Jib' => 'https://www.youtube.com/watch?v=Scpvby37V_E',
-            'Frontside/Backside 180-360' => 'https://www.youtube.com/watch?v=hUddT6FGCws',
-            'Indy Grab' => 'https://www.youtube.com/watch?v=6yA3XqjTh_w',
-            'Tail Grab' => 'https://www.youtube.com/watch?v=YAElDqyD-3I',
-            'Nose Grab' => 'https://www.youtube.com/watch?v=y2MHu0mbzQw',
-            'Backflip' => 'https://www.youtube.com/watch?v=SlhGVnFPTDE',
-            'Frontside Cork 540' => 'https://www.youtube.com/watch?v=FMHiSF0rHF8',
-            'Rocket Air' => 'https://www.youtube.com/watch?v=ECuPRQPmHpA',
-            'Tuck Knee' => 'https://www.youtube.com/watch?v=X_WhGuIY9Ak',
-            'Wildcat' => 'https://www.youtube.com/watch?v=7KUpodSrZqI',
-            'Frontside Lipslide' => 'https://www.youtube.com/watch?v=LSVn5aI56aU',
-            'Tamedog Front Flip' => 'https://www.youtube.com/watch?v=eGJ8keB1-JM',
-            'Chicken Salad' => 'https://www.youtube.com/watch?v=TTgeY_XCvkQ',
-            'Bloody Dracula' => 'https://www.youtube.com/watch?v=UU9iKINvlyU',
-            '1980' => 'https://www.youtube.com/watch?v=AKfeui9yrw4',
-            'Frontside 360' => 'https://www.youtube.com/watch?v=9T5AWWDxYM4',
-        ];
 
-        $categoryList = [
-            'Les grabs',
-            'Les rotations',
-            'Les flips',
-            'Les slides',
-            'Les rotations désaxées',
-            'Les one foot tricks',
-            'Old School',
-        ];
 
-        $userList = [
-            0 => ['Jimmmy', 'jimmy@hotmail.fr', 'tototo'],
-            1 => ['Joey', 'joey@hotmail.fr', 'tititi'],
-            2 => ['Sam', 'dam@gmail.com', 'samsam'],
-        ];
-        $userObjectList = [];
+        // No Imbrication between objects Each object has its fixturz
+        // Tricks Creation 
+        foreach ($trickList as $trickName) {
+            $trick = new Trick();
+            $trick->setName($trickName);
+            $trick->setDescription('lorem ipsum');
 
-        foreach ($userList as $userArray) {
-            $user = new User();
-            $user->setUsername($userArray[0])
-                ->setEmail($userArray[1])
-                ->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $userArray[2]
-                )
-            )
-                ->setIsVerified(true);
-            $userObjectList[] = $user;
+            $trick->setUser($this->getReference(UserFixtures::USER_REFERENCE));
 
-            $manager->persist($user);
+            $trick->setUser($this->getReference(CategoryFixtures::CATEGORY_REFERENCE));
+            //Random date
+            // Set the start and end dates for the range
+            $start = strtotime('2023-01-01 00:00:00');
+            $end = strtotime('2023-12-31 00:00:00');
+
+            // Generate a random timestamp within the range
+            $randomTimestamp = mt_rand($start, $end);
+
+            // Create a DateTime object from the random timestamp
+            $randomDate = new DateTimeImmutable();
+            $trick->setCreatedAt($randomDate->setTimestamp($randomTimestamp));
+
+            // Fix Slug generation 
+            $trick->setSlug($this->slugger->slug($trickName));
+
+            $manager->persist($trick);
         }
-
-        foreach ($categoryList as $categoryName) {
-            $category = new Category();
-            $category->setName($categoryName);
-            $uuid = Uuid::v6($category->getName());
-            $category->setUuid($uuid);
-
-            $manager->persist($category);
-
-            // Tricks Creation 
-            foreach ($trickList as $trickName) {
-                
-
-                $trick = new Trick();
-                $trick->setName($trickName);
-                $trick->setDescription('lorem ipsum');
-
-                //Random date
-                // Set the start and end dates for the range
-                $start = strtotime('2023-01-01 00:00:00' );
-                $end = strtotime('2023-12-31 00:00:00');
-
-                // Generate a random timestamp within the range
-                $randomTimestamp = mt_rand($start, $end);
-
-                // Create a DateTime object from the random timestamp
-                $randomDate = new DateTimeImmutable();
-                $trick->setCreatedAt($randomDate->setTimestamp($randomTimestamp));
-                
-                // Fix Slug generation 
-                $trick->setSlug(strval($this->slug->generateSlug($trickName)));
-
-                for ($i = 1; $i <= mt_rand(2, 3); $i++) {
-                    $comment = new Comment();
-                    $comment->setContent('lorem ipsum');
-                    $days = (new \DateTime())->diff($trick->getCreatedAt())->days;
-                    // Fix Date to be after article creation
-                    $comment->setCreatedAt(new \DateTimeImmutable());
-                    $comment->setAuthor($userObjectList[mt_rand(0, 2)]);
-                    $comment->setTrick($trick);
-
-                    $manager->persist($comment);
-                }
-
-                $manager->persist($trick);
-            }
-        }
-
         $manager->flush();
+
+        $this->addReference(self::TRICK_REFERENCE, $trick);
+    }
+
+    public function getDependencies()
+    {
+        return [
+            UserFixtures::class,
+            CategoryFixtures::class,
+        ];
     }
 }

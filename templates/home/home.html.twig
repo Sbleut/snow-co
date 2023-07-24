@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Create a New trick | {{parent()}} {% endblock %}
+{% block title %} HomePage | {{parent()}} {% endblock %}
 
 {% block body %}
 	<h1>{{title}}</h1>
 
 	{#Trying Twig#}
-	<div>
+	<div class="container">
 		Our Sweet blog
 		<ul>
 			{% for trick in tricks  %}
