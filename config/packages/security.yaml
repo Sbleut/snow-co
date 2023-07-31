@@ -16,6 +16,8 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            access_token:
+                token_handler: App\Security\AccessTokenHandler
             lazy: true
             provider: app_user_provider
             custom_authenticator: App\Security\UserAuthenticator

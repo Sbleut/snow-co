@@ -14,7 +14,7 @@ class SendMailService
         $this->mailer = $mailer;
     }
 
-    public function send(
+    public function sendEmail(
         string $from,
         string $to,
         string $subject,
@@ -26,7 +26,7 @@ class SendMailService
             ->from($from)
             ->to($to)
             ->subject($subject)
-            ->htmlTemplate("emails/$template.html.twig")
+            ->htmlTemplate("$template.html.twig")
             ->context($context);
 
         $this->mailer->send($email);
