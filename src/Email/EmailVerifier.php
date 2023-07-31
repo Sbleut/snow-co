@@ -13,9 +13,9 @@ class EmailVerifier
     public function __construct(
         /**
          * VerifyEmailHelperInterface is used for :
-         *  - generateSignature using @param $verifyEmailRouteName, @param $userId, @param $userMail, @param 'id' = $userId
-         *  - validateEmailConfirmation using @param $requestUri, @param $userId, @param $userMail
-         *
+         *  - generateToken using @param $verifyEmailRouteName, @param $userMail
+         *  - validateEmailConfirmation using @param $requestUri, @param $uuid, @param $token
+         *  - Token Générer comme un mot de passe stocker sur le token.
          * @var VerifyEmailHelperInterface
          */
         private VerifyEmailHelperInterface $verifyEmailHelper,

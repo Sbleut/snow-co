@@ -19,7 +19,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    # ADD NAME
+    # ADD TOKEN de Verification de mail
+    # ADD UUID
 
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;

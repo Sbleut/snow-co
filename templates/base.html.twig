@@ -28,27 +28,25 @@
 				<div class="collapse navbar-collapse d-flex justify-content-end" id="navbarColor03">
 					<ul class="navbar-nav  d-flex justify-content-end">
 						<li class="nav-item">
-							<a class="nav-link active" href="/">{% trans %}Home{% endtrans %}
+							<a class="nav-link active" href="/">{% trans %}Nav.Home{% endtrans %}
 								<span class="visually-hidden">(current)</span>
 							</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">{% trans %}Tricks{% endtrans %}</a>
+							<a class="nav-link" href="#">{% trans %}Nav.Tricks{% endtrans %}</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">{% trans %}Trick.create{% endtrans %}</a>
+							<a class="nav-link" href="#">{% trans %}Nav.Trick.create{% endtrans %}</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">{% trans %}About{% endtrans %}</a>
+							<a class="nav-link" href="{{ path('app_register') }}">
+							{{Nav.Register |trans()}}</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="{{ path('app_register') }}">{% trans %}Register{% endtrans %}</a>
+							<a class="nav-link" href="{{ path('app_login') }}"> {{Nav.Login |trans()}}</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="{{ path('app_login') }}">{% trans %}Login{% endtrans %}</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="{{ path('app_logout') }}">{% trans %}Logout{% endtrans %}</a>
+							<a class="nav-link" href="{{ path('app_logout') }}">{% trans %}Nav.Logout{% endtrans %}</a>
 						</li>
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>

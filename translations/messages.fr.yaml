@@ -1,13 +1,14 @@
-Home: Accueil
+Nav:
+  Home: Accueil
 
-Tricks: Figures
-Trick:
-  create: Nouvelle Figure
+  Tricks: Figures
+  Trick:
+    create: Nouvelle Figure
 
-About: A propos
+  About: A propos
 
-Register: S'inscrire
+  Register: S'inscrire
 
-Login: Se connecter
+  Login: Se connecter
 
-Logout: Se déconnecter
+  Logout: Se déconnecter
