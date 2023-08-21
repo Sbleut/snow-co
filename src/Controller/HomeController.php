@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ImageRepository;
 use App\Repository\TrickRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     #[Route('/')]
-    public function homepage(TrickRepository $trickRepository) : Response
+    public function homepage(TrickRepository $trickRepository, ImageRepository $imageRepository) : Response
     {
         $tricklist = $trickRepository->findAll();
         return $this->render('home/home.html.twig', [

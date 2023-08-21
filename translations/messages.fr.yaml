@@ -12,3 +12,12 @@ Nav:
   Login: Se connecter
 
   Logout: Se déconnecter
+Forgot:
+  Password: Mot de passe oublié ?
+  Reset: Demande de réinitialisation
+  Email:
+    Title: Réinitialisation de votre mot de passe
+    Message: Cliquez sur le lien ci-dessous pour réinitialiser votre mot de passe.
+Reset:
+  Password:  Réinitialisation du mot de passe
+  Submit: Nouveau mot de passe

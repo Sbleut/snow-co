@@ -7,7 +7,6 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\Uid\Uuid;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 

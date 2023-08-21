@@ -15,7 +15,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Component\Security\Http\AccessToken\AccessTokenHandlerInterface;
+use Symfony\Component\Uid\Uuid;
+
 
 
 class RegistrationController extends AbstractController
@@ -42,6 +43,8 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+            $user->setTokenValidator(uniqid());
+            $user->setUuid(Uuid::v6());
 
             $entityManager->persist($user);
             $entityManager->flush();
@@ -53,9 +56,9 @@ class RegistrationController extends AbstractController
                 'Please Confirm your Email', 
                 'registration/confirmation_email', 
                 [
-                    'id' => $user->getId(),
+                    'uuid' => $user->getUuid(),
                     'username' => $user->getUsername(),
-                    'token' => 
+                    'token' => $user->getTokenValidator(),
                 ]
             );
 
@@ -70,26 +73,26 @@ class RegistrationController extends AbstractController
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository, EmailVerifier $emailVerifier): Response
     {
-        $id = $request->query->get('id');
+        $uuid = Uuid::fromString($request->get('uuid'));
+        $token = $request->get('token');
+        $user = $userRepository->findOneByUuid($uuid->toBinary());
 
-        if (null === $id) {
-            return $this->redirectToRoute('app_register');
+        if(isset($user) && !$user->isVerified())
+        {
+            try {
+                $emailVerifier->handleEmailConfirmation($request, $user, $token);
+            } catch (VerifyEmailExceptionInterface $exception) {
+                $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
+    
+                return $this->redirectToRoute('app_register');
+            }
         }
 
-        $user = $userRepository->find($id);
+        
 
-        if (null === $user) {
-            return $this->redirectToRoute('app_register');
-        }
-
+        // IF from Uuid g
         // validate email confirmation link, sets User::isVerified=true and persists
-        try {
-            $emailVerifier->handleEmailConfirmation($request, $user);
-        } catch (VerifyEmailExceptionInterface $exception) {
-            $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
-
-            return $this->redirectToRoute('app_register');
-        }
+        
 
         $this->addFlash('success', 'Your email address has been verified.');
 

@@ -2,6 +2,7 @@
 
 namespace App\Email;
 
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,10 +27,14 @@ class EmailVerifier
     /**
      * @throws VerifyEmailExceptionInterface
      */
-    public function handleEmailConfirmation(Request $request, UserRepository $usersRepository): void
+    public function handleEmailConfirmation(Request $request, User $user, $token): void
     {
-        $user->setIsVerified(true);
-
+        if($token == $user->getTokenValidator())
+        {
+            $user->setIsVerified(true);
+        }
+        
+        
         $this->entityManager->persist($user);
         $this->entityManager->flush();
     }

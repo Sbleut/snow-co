@@ -6,6 +6,7 @@ use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Uid\Uuid;
 
 class UserFixtures extends Fixture
 {
@@ -30,6 +31,7 @@ class UserFixtures extends Fixture
             $user = new User();
             $user->setUsername($userArray[0])
                 ->setEmail($userArray[1])
+                ->setUuid(Uuid::v6())
                 ->setIsVerified(true);
             $passwordhashed = $this->hasher->hashPassword(
                 $user,
