@@ -60,6 +60,7 @@ class SecurityController extends AbstractController
                             'token' => $user->getTokenValidator(),
                         ]
                     );
+                    // SEt TOken in BDD for the user
                     $this->addFlash('forgot_password_email', 'An email has been send to you to reset your password');
                     return $this->redirectToRoute('app_login');
                 } catch (ForgotPasswordEmailExceptionInterface $exception){
@@ -82,6 +83,11 @@ class SecurityController extends AbstractController
     {
         $form = $this->createForm(ResetPasswordFormType::class);
         $form->handleRequest($request);
+
+        // FORM Email instead of username
+        // Verify User exist in BDD AND Validated (Validation constraint in form)
+        // Verify token from form and in bdd  
+        // Handling suppression of token AND Message to REtry operation        
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $userRepository->findOneByUsername($form->get('username')->getData());
             $user->setPassword(

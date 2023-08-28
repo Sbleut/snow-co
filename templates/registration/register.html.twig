@@ -8,18 +8,18 @@
 		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
 	{% endfor %}
 
+	<div class="container">
 	<h1>Register</h1>
 
-	{{ form_errors(registrationForm) }}
+	
 
 	{{ form_start(registrationForm) }}
-	{{ form_row(registrationForm.username, {'label': 'Nom d\'utilisateur', 'attr':{'placeholder': 'Nom d\'utilisateur ...'}})}}
+	{{ form_errors(registrationForm) }}
+	{{ form_row(registrationForm.username,)}}
 	{{ form_row(registrationForm.email) }}
-	{{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-	{{ form_row(registrationForm.agreeTerms) }}
+	{{ form_row(registrationForm.password) }}
 
 	<button type="submit" class="btn btn-primary">{{'Register'|trans()}}</button>
 	{{ form_end(registrationForm) }}
+	</div>
 {% endblock %}

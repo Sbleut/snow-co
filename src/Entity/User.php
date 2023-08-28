@@ -9,10 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -20,10 +22,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    # ADD TOKEN de Verification de mail
-    # ADD UUID
 
-    #[ORM\Column(length: 180, unique: true)]
+    #[ORM\Column(name: 'email', type: 'string', length: 180, unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Email]
+    #[Assert\Unique]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -32,7 +35,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      */
-    #[ORM\Column]
+    #[ORM\Column(name: 'password', type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 6)]
     private ?string $password = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Trick::class)]
@@ -41,7 +46,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     // #[ORM\OneToMany(mappedBy: 'author', targetEntity: Comment::class)]
     // private Collection $comments;
 
-    #[ORM\Column(length: 255, unique:true )]
+    #[ORM\Column(name: 'username', type: 'string', length: 255, unique:true )]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3)]
+    #[Assert\Unique]
     private ?string $username = null;
 
     #[ORM\Column(type: 'boolean')]
@@ -52,6 +60,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $tokenValidator = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $tokenReset = null;
 
     public function __construct()
     {
@@ -202,6 +213,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTokenValidator(?string $tokenValidator): static
     {
         $this->tokenValidator = $tokenValidator;
+
+        return $this;
+    }
+
+    public function getTokenReset(): ?string
+    {
+        return $this->tokenReset;
+    }
+
+    public function setTokenReset(?string $tokenReset): static
+    {
+        $this->tokenReset = $tokenReset;
 
         return $this;
     }

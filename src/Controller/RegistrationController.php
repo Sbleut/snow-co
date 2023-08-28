@@ -35,6 +35,8 @@ class RegistrationController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
+        // Verify password 
+
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             $user->setPassword(
@@ -62,6 +64,8 @@ class RegistrationController extends AbstractController
                 ]
             );
 
+            // ADD flash message to go check email for activation 
+
             return $this->redirectToRoute('app_home_homepage');
         }
 
@@ -83,8 +87,7 @@ class RegistrationController extends AbstractController
                 $emailVerifier->handleEmailConfirmation($request, $user, $token);
             } catch (VerifyEmailExceptionInterface $exception) {
                 $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
-    
-                return $this->redirectToRoute('app_register');
+                return $this->redirectToRoute('app_home_homepage');
             }
         }
 
@@ -93,8 +96,8 @@ class RegistrationController extends AbstractController
         // IF from Uuid g
         // validate email confirmation link, sets User::isVerified=true and persists
         
-
-        $this->addFlash('success', 'Your email address has been verified.');
+        
+        $this->addFlash('success', 'Email.verify');
 
         return $this->redirectToRoute('app_register');
     }

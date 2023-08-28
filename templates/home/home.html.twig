@@ -11,20 +11,23 @@
 
 {% block body %}
 
-	<div class="background_home">
+	<div class="background_home vh-100 ">
 		<h1>{{title}}</h1>
+		<h2>{{'Home.catch' | trans()}}</h2>
 	</div>
 	<div class="container d-flex flex-wrap justify-content-between">
-	<h2>Godzilla</h2>
+
 		{% for trick in tricks  %}
-			<div class="card" style="max-width: 20rem;">
-				<div class="card-body">					
-					<svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%" height="200" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveaspectratio="xMidYMid slice" viewbox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
-						<rect width="100%" height="100%" fill="#868e96"></rect>
-						<text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
-					</svg>
-					<img src="uploads/image/backflip/images.jpg" />
-					<h4 class="card-title">{{trick.name}}</h4>
+			<div class="card m-2" style="width: 18rem;">
+				{% for trickThumb in trickImage  %}
+					{% if trickThumb.trick.name ==  trick.name %}
+						<img class="cool_pics card-img-top" src="uploads/image/{{trick.slug | lower}}/{{trickThumb.fileName}}"/>
+					{% endif %}
+				{% endfor %}
+				<div class="card-body">
+					<h4 class="card-title"><a href="">{{trick.name}}</a></h4>
+					<button class="btn btn-secondary"><i class="bi bi-pencil-square"></i></button>
+					<button class="btn btn-secondary"></button>
 				</div>
 			</div>
 		{% endfor %}

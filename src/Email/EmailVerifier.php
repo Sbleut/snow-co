@@ -32,8 +32,8 @@ class EmailVerifier
         if($token == $user->getTokenValidator())
         {
             $user->setIsVerified(true);
-        }
-        
+            $user->setTokenValidator(null);
+        }        
         
         $this->entityManager->persist($user);
         $this->entityManager->flush();

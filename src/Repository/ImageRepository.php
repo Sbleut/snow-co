@@ -54,6 +54,22 @@ class ImageRepository extends ServiceEntityRepository
 //        ;
 //    }
 
+      /**
+       * Undocumented function
+       *
+       * @param [type] $value
+       * @return array
+       */
+    public function findAllWithMain(): array
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.mainImage = :val')
+            ->setParameter('val', 1)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    public function findOneBySomeField($value): ?Image
 //    {
 //        return $this->createQueryBuilder('i')

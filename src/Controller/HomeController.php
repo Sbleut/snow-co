@@ -13,10 +13,18 @@ class HomeController extends AbstractController
     #[Route('/')]
     public function homepage(TrickRepository $trickRepository, ImageRepository $imageRepository) : Response
     {
-        $tricklist = $trickRepository->findAll();
+        $tricktotal= $trickRepository->getTotalTricks();
+        $limit = 15;
+        $pageNb = 1;
+        $offset = ceil($tricktotal/ $limit);
+        $tricklist = $trickRepository->getAllTricks($offset, $limit);
+        $trickThumbNails = $imageRepository->findAllWithMain();
         return $this->render('home/home.html.twig', [
             'title' => 'SnowTrick',
-            'tricks' => $tricklist
+            'tricks' => $tricklist,
+            'trickImage'=> $trickThumbNails,
+            'pageNb'=>$pageNb,
+            'tricktotal'=>$tricktotal,
         ]);
     } 
 
