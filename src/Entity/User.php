@@ -26,7 +26,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(name: 'email', type: 'string', length: 180, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Email]
-    #[Assert\Unique]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -37,7 +36,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column(name: 'password', type: 'string', length: 255)]
     #[Assert\NotBlank]
-    #[Assert\Length(min: 6)]
+    #[Assert\Length(min: 8)]
+    // BEWARE ALWAYS PUT COMPLEXITY FROM BEGINNING
+    //#[Assert\] Complexité avec REgex pour Carectère spéciaux et + chiffre + Majuscule
     private ?string $password = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Trick::class)]
@@ -49,7 +50,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(name: 'username', type: 'string', length: 255, unique:true )]
     #[Assert\NotBlank]
     #[Assert\Length(min: 3)]
-    #[Assert\Unique]
     private ?string $username = null;
 
     #[ORM\Column(type: 'boolean')]

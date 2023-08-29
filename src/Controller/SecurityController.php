@@ -15,15 +15,16 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Uid\Uuid;
 
 class SecurityController extends AbstractController
 {
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_home_homepage');
+        }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -40,14 +41,17 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/forgot/password', name: 'app_forgot_password')]
-    public function forgotPassword(Request $request, AuthenticationUtils $authenticationUtils, SendMailService $email, UserRepository $userRepository, TranslatorInterface $translator): Response
+    public function forgotPassword(Request $request, AuthenticationUtils $authenticationUtils, SendMailService $email, UserRepository $userRepository, EntityManagerInterface $entityManager, TranslatorInterface $translator): Response
     {
         $form = $this->createForm(ForgotPasswordType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $userRepository->findOneByUsername($form->get('username')->getData());
+
+            $user = $userRepository->findOneByUserEmail($form->get('email')->getData());
             if(isset($user) && $user->isVerified())
             {
+                $user->setTokenReset(uniqid());
+                $entityManager->flush();
                 try {
                     $email->sendEmail(
                         'snowtricks@gmail.com', 
@@ -57,16 +61,16 @@ class SecurityController extends AbstractController
                         [
                             'uuid' => $user->getUuid(),
                             'username' => $user->getUsername(),
-                            'token' => $user->getTokenValidator(),
+                            'token' => $user->getTokenReset(),
                         ]
                     );
-                    // SEt TOken in BDD for the user
+                    // FIX FLASH 
                     $this->addFlash('forgot_password_email', 'An email has been send to you to reset your password');
-                    return $this->redirectToRoute('app_login');
+                    return $this->redirectToRoute('app_home_homepage');
                 } catch (ForgotPasswordEmailExceptionInterface $exception){
                     $this->addFlash('forgot_password_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
 
-                    return $this->redirectToRoute('app_register');
+                    return $this->redirectToRoute('app_home_homepage');
                 }                
             }           
 
@@ -79,26 +83,39 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/reset/password', name: 'app_reset_password')]
-    public function ResetPassword(Request $request, UserPasswordHasherInterface $userPasswordHasher, AuthenticationUtils $authenticationUtils, SendMailService $email, UserRepository $userRepository, EntityManagerInterface $entityManager, TranslatorInterface $translator): Response
+    public function ResetPassword(Request $request, UserPasswordHasherInterface $userPasswordHasher, AuthenticationUtils $authenticationUtils, UserRepository $userRepository, EntityManagerInterface $entityManager, TranslatorInterface $translator): Response
     {
-        $form = $this->createForm(ResetPasswordFormType::class);
-        $form->handleRequest($request);
 
-        // FORM Email instead of username
-        // Verify User exist in BDD AND Validated (Validation constraint in form)
+        // VErify TOKEN + UUID = USER 
+        
+        $uuid = Uuid::fromString($request->get('uuid'));
+        $token = $request->get('token');
         // Verify token from form and in bdd  
-        // Handling suppression of token AND Message to REtry operation        
+        $user = $userRepository->findOneByUuid($uuid->toBinary());
+
+        if($user===null)
+        {
+            // ADD FLASH MESSAGE
+            return $this->redirectToRoute('app_home_homepage');
+        }
+
+        $form = $this->createForm(ResetPasswordFormType::class, null, [
+            'uuid' => $uuid,
+            'token' => $token,// Pass the UUID to the form type as an option
+        ]);
+        $form->handleRequest($request);
+        
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $userRepository->findOneByUsername($form->get('username')->getData());
+            // DELETE TOKENT IN BDD
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
-                    $form->get('plainPassword')->getData()
+                    $form->get('password')->getData()
                 )
             );
-            $entityManager->persist($user);
             $entityManager->flush();
 
+            // ADD FLASH MESSAGE
             return $this->redirectToRoute('app_home_homepage');
         }
         $error = $authenticationUtils->getLastAuthenticationError();

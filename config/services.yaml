@@ -19,6 +19,16 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+    App\Validator\Constraints\EmailExistsValidator:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'email_exists_validator' }
+    App\Validator\Constraints\MatchingUserEmailValidator:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'matching_user_email_validator' }
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

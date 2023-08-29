@@ -4,15 +4,22 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use App\Validator\Constraints\EmailExists;
+
 
 class ForgotPasswordType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('username')
+            ->add('email', EmailType::class, [
+                'constraints' => [
+                    new EmailExists(['groups' => 'PasswordReset']),
+                ]
+            ])
         ;
     }
 
@@ -20,6 +27,7 @@ class ForgotPasswordType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'validation_groups' => ['PasswordReset'],
         ]);
     }
 }

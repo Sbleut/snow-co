@@ -46,10 +46,12 @@
 							<a class="nav-link" href="{{ path('app_register') }}">
 								{{'Nav.Register'|trans()}}</a>
 						</li>
+						{% if app.user == null %}
 						<li class="nav-item">
 							<a class="nav-link" href="{{ path('app_login') }}">
 								{{'Nav.Login'|trans()}}</a>
 						</li>
+						{% endif %}
 						{% if app.user != null %}
 							<li class="nav-item">
 								<a class="nav-link" href="{{ path('app_logout') }}">{{'Nav.Logout'|trans()}}</a>

@@ -36,13 +36,15 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         // Verify password 
+        // dd($form->getData());
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
             // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
-                    $form->get('plainPassword')->getData()
+                    $form->get('password')->getData()
                 )
             );
             $user->setTokenValidator(uniqid());
