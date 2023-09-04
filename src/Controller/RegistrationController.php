@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Component\Uid\Uuid;
 
 
@@ -29,7 +30,7 @@ class RegistrationController extends AbstractController
     // VerifyEmailHelperInterface $verifyEmailHelper to add
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, SendMailService $email): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, SendMailService $email, TranslatorInterface $translator): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -66,7 +67,7 @@ class RegistrationController extends AbstractController
                 ]
             );
 
-            // ADD flash message to go check email for activation 
+            $this->addFlash('registration_done', $translator->trans('Registration.Done'));
 
             return $this->redirectToRoute('app_home_homepage');
         }
@@ -91,16 +92,13 @@ class RegistrationController extends AbstractController
                 $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
                 return $this->redirectToRoute('app_home_homepage');
             }
-        }
-
-        
+        }        
 
         // IF from Uuid g
-        // validate email confirmation link, sets User::isVerified=true and persists
+        // validate email confirmation link, sets User::isVerified=true and persists        
         
-        
-        $this->addFlash('success', 'Email.verify');
+        $this->addFlash('flash', $translator->trans('Email.verify'));
 
-        return $this->redirectToRoute('app_register');
+        return $this->redirectToRoute('app_login');
     }
 }

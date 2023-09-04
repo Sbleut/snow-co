@@ -64,8 +64,9 @@ class SecurityController extends AbstractController
                             'token' => $user->getTokenReset(),
                         ]
                     );
-                    // FIX FLASH 
-                    $this->addFlash('forgot_password_email', 'An email has been send to you to reset your password');
+
+                    $this->addFlash('flash', $translator->trans('Forgot.Email.Send'));
+                    
                     return $this->redirectToRoute('app_home_homepage');
                 } catch (ForgotPasswordEmailExceptionInterface $exception){
                     $this->addFlash('forgot_password_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
@@ -84,18 +85,15 @@ class SecurityController extends AbstractController
 
     #[Route(path: '/reset/password', name: 'app_reset_password')]
     public function ResetPassword(Request $request, UserPasswordHasherInterface $userPasswordHasher, AuthenticationUtils $authenticationUtils, UserRepository $userRepository, EntityManagerInterface $entityManager, TranslatorInterface $translator): Response
-    {
-
-        // VErify TOKEN + UUID = USER 
-        
+    {       
         $uuid = Uuid::fromString($request->get('uuid'));
         $token = $request->get('token');
         // Verify token from form and in bdd  
-        $user = $userRepository->findOneByUuid($uuid->toBinary());
+        $user = $userRepository->findOneByUuidToken($uuid->toBinary(), $token);
 
         if($user===null)
         {
-            // ADD FLASH MESSAGE
+            $this->addFlash('Reset_error', $translator->trans('Reset.Error'));
             return $this->redirectToRoute('app_home_homepage');
         }
 
@@ -104,6 +102,7 @@ class SecurityController extends AbstractController
             'token' => $token,// Pass the UUID to the form type as an option
         ]);
         $form->handleRequest($request);
+        
         
         if ($form->isSubmitted() && $form->isValid()) {
             // DELETE TOKENT IN BDD

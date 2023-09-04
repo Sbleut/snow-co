@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\PasswordStrength;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -37,7 +38,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(name: 'password', type: 'string', length: 255)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 8)]
-    // BEWARE ALWAYS PUT COMPLEXITY FROM BEGINNING
+    #[Assert\PasswordStrength([
+        'minScore' => PasswordStrength::STRENGTH_MEDIUM,
+        'message' => 'Password.Tooweak',
+    ])]
+    // BEWARE ALWAYS PUT COMPLEXITY FROM BEGINNING : ex: 5s0inNQ0bLrF4Ijq
     //#[Assert\] Complexité avec REgex pour Carectère spéciaux et + chiffre + Majuscule
     private ?string $password = null;
 

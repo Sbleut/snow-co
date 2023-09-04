@@ -42,11 +42,12 @@
 								<a class="nav-link" href="#">{{'Nav.Trick.create'|trans()}}</a>
 							</li>
 						{% endif %}
+						{% if app.user == null %}
 						<li class="nav-item">
 							<a class="nav-link" href="{{ path('app_register') }}">
 								{{'Nav.Register'|trans()}}</a>
 						</li>
-						{% if app.user == null %}
+						
 						<li class="nav-item">
 							<a class="nav-link" href="{{ path('app_login') }}">
 								{{'Nav.Login'|trans()}}</a>
@@ -54,25 +55,21 @@
 						{% endif %}
 						{% if app.user != null %}
 							<li class="nav-item">
+								<p class="nav-link">{{app.user.username}}</p>
+							</li>
+							<li class="nav-item">
 								<a class="nav-link" href="{{ path('app_logout') }}">{{'Nav.Logout'|trans()}}</a>
 							</li>
 						{% endif %}
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-							<div class="dropdown-menu">
-								<a class="dropdown-item" href="#">Action</a>
-								<a class="dropdown-item" href="#">Another action</a>
-								<a class="dropdown-item" href="#">Something else here</a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="#">Separated link</a>
-							</div>
-						</li>
+						
 					</ul>
 				</div>
 			</div>
 		</nav>
-		{% for flash in app.flashes('success') %}
-			<div class="alert alert-success">{{ flash | trans()}}</div>
+		{% for flash in app.flashes %}
+			{% for message in flash %}
+			<div class="alert alert-success">{{ message |trans() }}</div>
+			{% endfor %}
 		{% endfor %}
 		{% block body %}{% endblock %}
 	</body>
