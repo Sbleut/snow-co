@@ -10,21 +10,29 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route('/')]
-    public function homepage(TrickRepository $trickRepository, ImageRepository $imageRepository) : Response
+    #[Route('/{pageNb}')]
+    public function homepage(TrickRepository $trickRepository, ImageRepository $imageRepository, int $pageNb = 0 ) : Response
     {
         $tricktotal= $trickRepository->getTotalTricks();
         $limit = 15;
-        $pageNb = 1;
-        $offset = ceil($tricktotal/ $limit);
-        $tricklist = $trickRepository->getAllTricks($offset, $limit);
+        $limitReached =false;
+        if($tricktotal > $limit * $pageNb){
+            $pageNb++;
+        }
+        if($tricktotal < $limit * $pageNb){
+            $limitReached = true;
+        }
+        $tricklist = $trickRepository->getAllTricks($pageNb, $limit);
         $trickThumbNails = $imageRepository->findAllWithMain();
+
         return $this->render('home/home.html.twig', [
             'title' => 'SnowTrick',
             'tricks' => $tricklist,
             'trickImage'=> $trickThumbNails,
             'pageNb'=>$pageNb,
             'tricktotal'=>$tricktotal,
+            'limit'=>$limit,
+            'limitReached'=>$limitReached
         ]);
     } 
 

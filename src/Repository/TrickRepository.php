@@ -71,12 +71,11 @@ class TrickRepository extends ServiceEntityRepository
      * @param [type] $articlesPerPages
      * @return void
      */
-    public function getAllTricks(int $offset, int $limit)
+    public function getAllTricks(int $page, int $limit)
     {
         return $this->createQueryBuilder('t')
                     ->orderBy('t.createdAt', 'DESC')
-                    ->setFirstResult(($offset * $limit) -$limit)
-                    ->setMaxResults($limit)
+                    ->setMaxResults(($page * $limit))
                     ->getQuery()
                     ->getResult()
         ;

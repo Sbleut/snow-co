@@ -34,9 +34,6 @@
 								<span class="visually-hidden">(current)</span>
 							</a>
 						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">{{'Nav.Tricks'|trans()}}</a>
-						</li>
 						{% if app.user != null %}
 							<li class="nav-item">
 								<a class="nav-link" href="#">{{'Nav.Trick.create'|trans()}}</a>
@@ -66,11 +63,22 @@
 				</div>
 			</div>
 		</nav>
-		{% for flash in app.flashes %}
+		{% for flash in app.flashes('success') %}
 			{% for message in flash %}
 			<div class="alert alert-success">{{ message |trans() }}</div>
 			{% endfor %}
 		{% endfor %}
+		{% for flash in app.flashes('error') %}
+			{% for message in flash %}
+			<div class="alert alert-danger">{{ message |trans() }}</div>
+			{% endfor %}
+		{% endfor %}
 		{% block body %}{% endblock %}
+
+		<footer>
+			<div>
+				<p>Copyright</p>
+			</div>
+		</footer>
 	</body>
 </html>

@@ -67,7 +67,7 @@ class RegistrationController extends AbstractController
                 ]
             );
 
-            $this->addFlash('registration_done', $translator->trans('Registration.Done'));
+            $this->addFlash('success', $translator->trans('Registration.Done'));
 
             return $this->redirectToRoute('app_home_homepage');
         }
@@ -89,7 +89,7 @@ class RegistrationController extends AbstractController
             try {
                 $emailVerifier->handleEmailConfirmation($request, $user, $token);
             } catch (VerifyEmailExceptionInterface $exception) {
-                $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
+                $this->addFlash('error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
                 return $this->redirectToRoute('app_home_homepage');
             }
         }        
@@ -97,7 +97,7 @@ class RegistrationController extends AbstractController
         // IF from Uuid g
         // validate email confirmation link, sets User::isVerified=true and persists        
         
-        $this->addFlash('flash', $translator->trans('Email.verify'));
+        $this->addFlash('success', $translator->trans('Email.verify'));
 
         return $this->redirectToRoute('app_login');
     }

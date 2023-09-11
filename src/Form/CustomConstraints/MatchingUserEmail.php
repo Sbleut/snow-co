@@ -9,5 +9,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class MatchingUserEmail extends Constraint
 {
-    public $message = 'The email does not match the user\'s email associated with the UUID.';
+    // TRADUCTION 
+    public $message = 'Email.Notmatching';
 }

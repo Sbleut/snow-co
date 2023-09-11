@@ -65,7 +65,7 @@ class SecurityController extends AbstractController
                         ]
                     );
 
-                    $this->addFlash('flash', $translator->trans('Forgot.Email.Send'));
+                    $this->addFlash('success', $translator->trans('Forgot.Email.Send'));
                     
                     return $this->redirectToRoute('app_home_homepage');
                 } catch (ForgotPasswordEmailExceptionInterface $exception){
@@ -103,9 +103,8 @@ class SecurityController extends AbstractController
         ]);
         $form->handleRequest($request);
         
-        
         if ($form->isSubmitted() && $form->isValid()) {
-            // DELETE TOKENT IN BDD
+            $user->setTokenReset(null);
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -114,7 +113,7 @@ class SecurityController extends AbstractController
             );
             $entityManager->flush();
 
-            // ADD FLASH MESSAGE
+             $this->addFlash('success', $translator->trans('Reset.Success'));
             return $this->redirectToRoute('app_home_homepage');
         }
         $error = $authenticationUtils->getLastAuthenticationError();
