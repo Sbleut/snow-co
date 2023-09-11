@@ -5,6 +5,9 @@ namespace App\Repository;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -14,7 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UserRepository extends ServiceEntityRepository
+class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -39,28 +42,70 @@ class UserRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return User[] Returns an array of User objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('u.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * Used to upgrade (rehash) the user's password automatically over time.
+     */
+    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
+    {
+        if (!$user instanceof User) {
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+        }
 
-//    public function findOneBySomeField($value): ?User
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $user->setPassword($newHashedPassword);
+
+        $this->save($user, true);
+    }
+
+    //    /**
+    //     * @return User[] Returns an array of User objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('u')
+    //            ->andWhere('u.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('u.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    public function findOneByUuid($uuid): ?User
+    {
+        return $this->createQueryBuilder('u')
+                    ->andWhere('u.uuid = :val')
+                    ->setParameter('val', $uuid)
+                    ->getQuery()
+                    ->getOneOrNullResult();
+    }
+
+    public function findOneByUsername($username): ?User
+    {
+        return $this->createQueryBuilder('u')
+                    ->andWhere('u.username = :val')
+                    ->setParameter('val', $username)
+                    ->getQuery()
+                    ->getOneOrNullResult();
+    }
+
+    public function findOneByUserEmail($username): ?User
+    {
+        return $this->createQueryBuilder('u')
+                    ->andWhere('u.email = :val')
+                    ->setParameter('val', $username)
+                    ->getQuery()
+                    ->getOneOrNullResult();
+    }
+
+    public function findOneByUuidToken($uuid, $token): ?User
+    {
+        return $this->createQueryBuilder('u')
+                    ->andWhere('u.uuid = :val1')
+                    ->andWhere('u.tokenReset = :val2')
+                    ->setParameter('val1', $uuid)
+                    ->setParameter('val2', $token)
+                    ->getQuery()
+                    ->getOneOrNullResult();
+    }
 }

@@ -1,0 +1,35 @@
+Nav:
+  Home: Accueil
+
+  Tricks: Figures
+  Trick:
+    create: Nouvelle Figure
+
+  About: A propos
+  
+  Register: S'inscrire
+
+  Login: Se connecter
+
+  Logout: Se déconnecter
+Home:
+  catch: L'enccyclopédie des tricks
+Email:
+  verfiy: Your email address has been verified.
+Forgot:
+  Password: Mot de passe oublié ?
+  Reset: Demande de réinitialisation
+  Email:
+    Send: Un Email vous a été envoyé pour réinitialiser votre mot de passe
+    Hello: Bonjour
+    Title: Réinitialisation de votre mot de passe
+    Message: Cliquez sur le lien ci-dessous pour réinitialiser votre mot de passe.
+
+Reset:
+  Error: Pas de correspondance 
+  Password:  Réinitialisation du mot de passe
+  Submit: Nouveau mot de passe
+  Success : Votre mot de passe a été modifié avec succès
+
+Registration:
+  Success: Votre inscription a bien été enregistré. Veuillez valider votre email en cliquant sur le lien envoyer à votre adresse.

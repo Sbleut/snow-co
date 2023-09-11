@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset("assets/styles/home.css")}}">
+{% endblock %}
+
+{% block title %}
+	HomePage |
+	{{parent()}}
+{% endblock %}
+
+{% block body %}
+
+	<div class="background_home vh-100 ">
+		<h1>{{title}}</h1>
+		<h2>{{'Home.catch' | trans()}}</h2>
+	</div>
+	<div class="container d-flex flex-wrap justify-content-between">
+
+		{% for trick in tricks  %}
+			<div id="tricks{{trick.slug}}" class="card m-2" style="width: 18rem;">
+				{% for trickThumb in trickImage  %}
+					{% if trickThumb.trick.name ==  trick.name %}
+						<img class="cool_pics card-img-top" src="uploads/image/{{trick.slug | lower}}/{{trickThumb.fileName}}"/>
+					{% endif %}
+				{% endfor %}
+
+				<div class="card-body d-flex justify-content-evenly p-1">
+					<h4 class="card-title fs-5 text-muted">
+						<a href="{{path('app_trick_detail', [trick.slug])}}" class="stretched-link">{{trick.name}}</a>
+					</h4>
+					{% if app.user %}
+						<button class="btn btn-secondary btn-sm m-2">
+							<i class="bi bi-pencil-square"></i>
+						</button>
+						{#<div {{ stimulus_controller('modal-form') }}>
+							<button class="btn btn-primary btn-sm">
+								<i class="bi bi-trash-fill"></i>
+							</button>
+						</div> #}
+					{% endif %} 
+				</div>
+			</div>
+		{% endfor %}
+
+		<section class="container-fluid pt-3" id="loading">
+			<div class="row" id="loading-tricks" data-limit="{{ limit }}"></div>
+			{% if limitReached != true %}
+			<div class="d-flex justify-content-center m-5" id="load_more">
+				<div class="spinner-border me-3 " role="status" id="spinner">
+					<span class="visually-hidden loading">Loading...</span>
+				</div>
+				<a href="{{path('app_home_homepage', {pageNb:pageNb} )}}#{{tricks[(pageNb*limit)-1].slug}}"><button class="btn btn-secondary fw-bold" id="load">Load more</button></a>
+			</div>
+			{% endif %}
+			<div>
+				<a href="#tricks" id="arrow_up" class="d-flex flex-row-reverse">
+					<i class="bi bi-arrow-up-circle-fill"></i>
+				</a>
+			</div>
+
+		</section>
+
+	</div>
+{% endblock %}
