@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Component\Uid\Uuid;
 
 
@@ -69,7 +68,7 @@ class RegistrationController extends AbstractController
 
             $this->addFlash('success', $translator->trans('Registration.Done'));
 
-            return $this->redirectToRoute('app_home_homepage');
+            return $this->redirectToRoute('homepage');
         }
 
         return $this->render('registration/register.html.twig', [
@@ -90,7 +89,7 @@ class RegistrationController extends AbstractController
                 $emailVerifier->handleEmailConfirmation($request, $user, $token);
             } catch (VerifyEmailExceptionInterface $exception) {
                 $this->addFlash('error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
-                return $this->redirectToRoute('app_home_homepage');
+                return $this->redirectToRoute('homepage');
             }
         }        
 

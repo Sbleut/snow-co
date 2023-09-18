@@ -1,0 +1,17 @@
+.trick-detail-card{
+    margin-top: 10rem;
+}
+
+.main-pic{
+    height: 600px;
+    object-fit: cover;
+}
+.small-pics{
+    height: 150px !important;
+    width:200px;
+    object-fit: cover !important;
+}
+
+.comment-list{
+    border-top: solid;
+}

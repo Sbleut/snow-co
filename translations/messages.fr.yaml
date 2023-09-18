@@ -1,6 +1,5 @@
 Nav:
   Home: Accueil
-
   Tricks: Figures
   Trick:
     create: Nouvelle Figure
@@ -33,3 +32,8 @@ Reset:
 
 Registration:
   Success: Votre inscription a bien été enregistré. Veuillez valider votre email en cliquant sur le lien envoyer à votre adresse.
+
+Trick:
+  Comment:
+    Content: Votre Commentaire
+    Submit: Laissez votre Commentaire

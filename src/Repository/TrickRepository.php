@@ -64,30 +64,14 @@ class TrickRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-    /**
-     * Undocumented function
-     *
-     * @param [type] $offset
-     * @param [type] $articlesPerPages
-     * @return void
-     */
-    public function getAllTricks(int $page, int $limit)
-    {
-        return $this->createQueryBuilder('t')
-                    ->orderBy('t.createdAt', 'DESC')
-                    ->setMaxResults(($page * $limit))
-                    ->getQuery()
-                    ->getResult()
-        ;
-    }
 
-    public function getTotalTricks()
+    public function getTrickBySlug(string $slug)
     {
         return $this->createQueryBuilder('t')
-                    ->select('COUNT(t)')
+                    ->andWhere('t.slug = :val')
+                    ->setParameter('val', $slug) 
                     ->getQuery()
-                    ->getSingleScalarResult()
-        ;
+                    ->getOneOrNullResult();
     }
 
     /**

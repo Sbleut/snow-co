@@ -18,7 +18,7 @@
 	<div class="container d-flex flex-wrap justify-content-between">
 
 		{% for trick in tricks  %}
-			<div id="tricks{{trick.slug}}" class="card m-2" style="width: 18rem;">
+			<div id="{{trick.slug}}" class="card m-2" style="width: 18rem;">
 				{% for trickThumb in trickImage  %}
 					{% if trickThumb.trick.name ==  trick.name %}
 						<img class="cool_pics card-img-top" src="uploads/image/{{trick.slug | lower}}/{{trickThumb.fileName}}"/>
@@ -27,7 +27,7 @@
 
 				<div class="card-body d-flex justify-content-evenly p-1">
 					<h4 class="card-title fs-5 text-muted">
-						<a href="{{path('app_trick_detail', [trick.slug])}}" class="stretched-link">{{trick.name}}</a>
+						<a href="{{path('app_trick_detail', {slug:trick.slug})}}" class="stretched-link">{{trick.name}}</a>
 					</h4>
 					{% if app.user %}
 						<button class="btn btn-secondary btn-sm m-2">
@@ -45,12 +45,12 @@
 
 		<section class="container-fluid pt-3" id="loading">
 			<div class="row" id="loading-tricks" data-limit="{{ limit }}"></div>
-			{% if limitReached != true %}
+			{% if limitReached == false %}
 			<div class="d-flex justify-content-center m-5" id="load_more">
 				<div class="spinner-border me-3 " role="status" id="spinner">
 					<span class="visually-hidden loading">Loading...</span>
 				</div>
-				<a href="{{path('app_home_homepage', {pageNb:pageNb} )}}#{{tricks[(pageNb*limit)-1].slug}}"><button class="btn btn-secondary fw-bold" id="load">Load more</button></a>
+				<a href="{{path('homepage', {pageNb:pageNb} )}}#{{tricks[((pageNb-1)*limit)].slug}}"><button class="btn btn-secondary fw-bold" id="load">Load more</button></a>
 			</div>
 			{% endif %}
 			<div>
