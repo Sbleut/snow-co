@@ -10,7 +10,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route('/{pageNb}')]
+    #[Route(
+        '/{pageNb}',
+        name: 'homepage',
+        requirements: ['pageNb' => '\d+']
+    )]
     public function homepage(TrickRepository $trickRepository, ImageRepository $imageRepository, int $pageNb = 0 ) : Response
     {
         $tricktotal= $trickRepository->count([]);

@@ -50,7 +50,7 @@
 				<div class="spinner-border me-3 " role="status" id="spinner">
 					<span class="visually-hidden loading">Loading...</span>
 				</div>
-				<a href="{{path('app_home_homepage', {pageNb:pageNb} )}}#{{tricks[((pageNb-1)*limit)].slug}}"><button class="btn btn-secondary fw-bold" id="load">Load more</button></a>
+				<a href="{{path('homepage', {pageNb:pageNb} )}}#{{tricks[((pageNb-1)*limit)].slug}}"><button class="btn btn-secondary fw-bold" id="load">Load more</button></a>
 			</div>
 			{% endif %}
 			<div>

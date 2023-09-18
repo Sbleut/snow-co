@@ -23,7 +23,7 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
-            return $this->redirectToRoute('app_home_homepage');
+            return $this->redirectToRoute('homepage');
         }
 
         // get the login error if there is one
@@ -67,11 +67,11 @@ class SecurityController extends AbstractController
 
                     $this->addFlash('success', $translator->trans('Forgot.Email.Send'));
                     
-                    return $this->redirectToRoute('app_home_homepage');
+                    return $this->redirectToRoute('homepage');
                 } catch (ForgotPasswordEmailExceptionInterface $exception){
                     $this->addFlash('forgot_password_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
 
-                    return $this->redirectToRoute('app_home_homepage');
+                    return $this->redirectToRoute('homepage');
                 }                
             }           
 
@@ -94,7 +94,7 @@ class SecurityController extends AbstractController
         if($user===null)
         {
             $this->addFlash('Reset_error', $translator->trans('Reset.Error'));
-            return $this->redirectToRoute('app_home_homepage');
+            return $this->redirectToRoute('homepage');
         }
 
         $form = $this->createForm(ResetPasswordFormType::class, null, [
@@ -114,7 +114,7 @@ class SecurityController extends AbstractController
             $entityManager->flush();
 
              $this->addFlash('success', $translator->trans('Reset.Success'));
-            return $this->redirectToRoute('app_home_homepage');
+            return $this->redirectToRoute('homepage');
         }
         $error = $authenticationUtils->getLastAuthenticationError();
         return $this->render('security/reset_password.html.twig', [
