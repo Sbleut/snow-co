@@ -70,6 +70,16 @@ class ImageRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findAllByTrickId(int $id): array
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.trick = :val')
+            ->setParameter('val', $id)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    public function findOneBySomeField($value): ?Image
 //    {
 //        return $this->createQueryBuilder('i')

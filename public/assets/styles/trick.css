@@ -1,0 +1,9 @@
+.trick-detail-card{
+    margin-top:11rem;
+}
+
+.small-pics{
+    height: 200px !important;
+    width:300px;
+    object-fit: cover !important;
+}
