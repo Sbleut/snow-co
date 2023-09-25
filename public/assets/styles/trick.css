@@ -1,17 +1,37 @@
-.trick-detail-card{
-    margin-top: 10rem;
+.background_trick {
+    background-image: url('../image/snowboard-g1f3ffa0d2_1280.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    backdrop-filter: blur(5px);
+    background-color: rgba(255, 255, 255, 0.5);
+    z-index: 0;
 }
 
-.main-pic{
+.trick-detail-card {
+    margin-top: 6rem;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;    
+    z-index: 5;
+}
+
+.main-pic {
     height: 600px;
     object-fit: cover;
 }
-.small-pics{
+
+.update-btn{
+    right: 0;
+}
+
+.small-pics {
     height: 150px !important;
-    width:200px;
+    width: 200px;
     object-fit: cover !important;
 }
 
-.comment-list{
+.comment-list {
     border-top: solid;
 }

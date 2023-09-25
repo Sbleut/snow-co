@@ -6,6 +6,7 @@ use App\Entity\Comment;
 use App\Form\CommentFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ImageRepository;
+use App\Repository\VideoRepository;
 use App\Repository\TrickRepository;
 use DateTimeImmutable;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,10 +20,11 @@ use Symfony\Bundle\SecurityBundle\Security;
 class TrickController extends AbstractController
 {
     #[Route('/trick/{slug}', name: 'app_trick_detail')]
-    public function index(Request $request, TrickRepository $trickRepository, ImageRepository $imageRepository, EntityManagerInterface $entityManager, string $slug, Security $security, TranslatorInterface $translator): Response
+    public function index(Request $request, TrickRepository $trickRepository, ImageRepository $imageRepository, VideoRepository $videoRepository, EntityManagerInterface $entityManager, string $slug, Security $security, TranslatorInterface $translator): Response
     {
         $trick = $trickRepository->getTrickBySlug($slug);
         $trickImages = $imageRepository->findAllByTrickId($trick->getId());
+        $trickVideos = $videoRepository->findBy(['trick'=>$trick->getId()]);
         $commentList = $trick->getComments();
 
         $comment = new Comment();
@@ -48,6 +50,7 @@ class TrickController extends AbstractController
             'controller_name' => 'TrickController',
             'trick'=> $trick,
             'images'=> $trickImages,
+            'videos'=> $trickVideos,
             'commentList'=>$commentList,
             'form'=> $form->createView()
         ]);

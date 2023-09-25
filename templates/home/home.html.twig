@@ -19,26 +19,22 @@
 
 		{% for trick in tricks  %}
 			<div id="{{trick.slug}}" class="card m-2" style="width: 18rem;">
-				{% for trickThumb in trickImage  %}
-					{% if trickThumb.trick.name ==  trick.name %}
-						<img class="cool_pics card-img-top" src="uploads/image/{{trick.slug | lower}}/{{trickThumb.fileName}}"/>
-					{% endif %}
-				{% endfor %}
+				{{include('_partials/_main_image.html.twig', {'trick': trick})}}
 
-				<div class="card-body d-flex justify-content-evenly p-1">
+				<div class="card-body d-flex justify-content-between p-1">
 					<h4 class="card-title fs-5 text-muted">
 						<a href="{{path('app_trick_detail', {slug:trick.slug})}}" class="stretched-link">{{trick.name}}</a>
 					</h4>
 					{% if app.user %}
-						<button class="btn btn-secondary btn-sm m-2">
-							<i class="bi bi-pencil-square"></i>
-						</button>
-						{#<div {{ stimulus_controller('modal-form') }}>
-							<button class="btn btn-primary btn-sm">
+						<div>
+							<button class="btn btn-secondary btn-sm ">
+								<i class="bi bi-pencil-square"></i>
+							</button>
+							<button class="btn btn-primary btn-sm ">
 								<i class="bi bi-trash-fill"></i>
 							</button>
-						</div> #}
-					{% endif %} 
+						</div>
+					{% endif %}
 				</div>
 			</div>
 		{% endfor %}
@@ -46,15 +42,18 @@
 		<section class="container-fluid pt-3" id="loading">
 			<div class="row" id="loading-tricks" data-limit="{{ limit }}"></div>
 			{% if limitReached == false %}
-			<div class="d-flex justify-content-center m-5" id="load_more">
-				<div class="spinner-border me-3 " role="status" id="spinner">
-					<span class="visually-hidden loading">Loading...</span>
+				<div
+					class="d-flex justify-content-center m-5" id="load_more">
+					{# <div class="spinner-border me-3 " role="status" id="spinner">
+											<span class="visually-hidden loading">Loading...</span>
+										</div> #}
+					<a href="{{path('homepage', {pageNb:pageNb} )}}#{{tricks[((pageNb-1)*limit)].slug}}">
+						<button class="btn btn-secondary fw-bold" id="load">Load more</button>
+					</a>
 				</div>
-				<a href="{{path('homepage', {pageNb:pageNb} )}}#{{tricks[((pageNb-1)*limit)].slug}}"><button class="btn btn-secondary fw-bold" id="load">Load more</button></a>
-			</div>
 			{% endif %}
 			<div>
-				<a href="#tricks" id="arrow_up" class="d-flex flex-row-reverse">
+				<a href="#tricks" id="arrow_up" class="d-flex flex-row-reverse hidden">
 					<i class="bi bi-arrow-up-circle-fill"></i>
 				</a>
 			</div>

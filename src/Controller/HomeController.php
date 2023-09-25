@@ -15,7 +15,7 @@ class HomeController extends AbstractController
         name: 'homepage',
         requirements: ['pageNb' => '\d+']
     )]
-    public function homepage(TrickRepository $trickRepository, ImageRepository $imageRepository, int $pageNb = 0 ) : Response
+    public function homepage(TrickRepository $trickRepository, int $pageNb = 0 ) : Response
     {
         $tricktotal= $trickRepository->count([]);
         $limit = 15;
@@ -30,13 +30,10 @@ class HomeController extends AbstractController
         
        
         $tricklist = $trickRepository->findBy([], [], $limit*$pageNb, 0);
-        $trickThumbNails = $imageRepository->findAllWithMain();
-        dump($tricklist, $limitReached,  $pageNb, $limit*$pageNb, $limit);
 
         return $this->render('home/home.html.twig', [
             'title' => 'SnowTrick',
             'tricks' => $tricklist,
-            'trickImage'=> $trickThumbNails,
             'pageNb'=>$pageNb,
             'tricktotal'=>$tricktotal,
             'limit'=>$limit,

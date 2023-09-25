@@ -34,6 +34,7 @@ Registration:
   Success: Votre inscription a bien été enregistré. Veuillez valider votre email en cliquant sur le lien envoyer à votre adresse.
 
 Trick:
+  ConfirmDelete:
   Comment:
     Content: Votre Commentaire
     Submit: Laissez votre Commentaire
