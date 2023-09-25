@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="container">
+		<h1>{{ 'Trick.Create' |trans()}}</h1>
+
+		{# Create a new trick with the TrickCreateFormType form #}
+		{{ form_start(form) }}
+
+		{{ form_row(form.name) }}
+		{{ form_row(form.description) }}
+		{{ form_row(form.category) }}
+
+		{{ form_row(form.images) }}
+		{# Render any remaining form fields (e.g., CSRF token) #}
+		<button type="submit" class="btn btn-primary">Submit</button>
+
+		{{ form_end(form) }}
+	</div>
+{% endblock %}

@@ -13,7 +13,8 @@
 
 	<div class="trick-detail-card example-wrapper container position-absolute top-50 start-50 translate-middle">
 		<div class="card mb-3 ">
-			{% for image in images %}
+			{{include('_partials/_main_image.html.twig', {'trick': trick})}}
+			{% for image in trick.images %}
 				<!-- Same Logic AS Homùe Page Trick Image -->
 				{% if image.mainImage %}
 					<img src="../uploads/image/{{trick.slug | lower}}/{{image.fileName}}" class="card-img-top main-pic" alt="...">
@@ -35,8 +36,8 @@
 				<div class="d-flex border-bottom pb-3 justify-content-between">
 					<div id="carouselExampleControls" class="carousel slide " data-bs-ride="carousel">
 						<div class="carousel-inner">
-							{% for image in images %}
-								<img src="../uploads/image/{{trick.slug | lower}}/{{image.fileName}}" class="small-pics card-img-top rounded" alt="...">
+							{% for image in trick.images %}
+								<img src="{{asset('uploads/image/' ~ trick.slug | lower ~ '/' ~ image.fileName)}}" class="small-pics card-img-top rounded" alt="...">
 							{% endfor %}
 						</div>
 						<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
@@ -50,7 +51,7 @@
 					</div>
 					<div id="carouselExampleControls" class="carousel slide " data-bs-ride="carousel">
 						<div class="carousel-inner">
-							{% for video in videos %}
+							{% for video in trick.videos %}
 								<iframe width="200" height="150" src="{{video.iframe}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 							{% endfor %}
 						</div>
@@ -71,13 +72,13 @@
 					{{ form_start(form)}}
 					{{ form_errors(form.content)}}
 					<div class="d-flex justify-content-evenly">
-					{{ form_widget(form.content, {'attr': {'placeholder': 'Trick.Comment.Content' | trans(), 'class': 'd-block w-50'} })}}
-					<button type="submit" class="btn btn-primary btn-sm ml-2">{{'Trick.Comment.Submit'|trans()}}</button>
+						{{ form_widget(form.content, {'attr': {'placeholder': 'Trick.Comment.Content' | trans(), 'class': 'd-block w-50'} })}}
+						<button type="submit" class="btn btn-primary btn-sm ml-2">{{'Trick.Comment.Submit'|trans()}}</button>
 					</div>
 					{{ form_end(form) }}
 				{% endif %}
 				<div class="container d-flex flex-column alignt-items-center mt-3 pt-3 w-50 comment-list">
-					{% for comment in trick.comments %}
+					{% for comment in commentList %}
 						<div class="d-flex m-2">
 							<svg class="bd-placeholder-img d-block" width="100" height="100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A generic square placeholder image with a white border around it, making it resemble a photograph taken with an old instant camera: 200x200" focusable="false">
 								<title>A generic square placeholder image with a white border around it, making it resemble a photograph taken with an old instant camera</title>
@@ -93,6 +94,26 @@
 					{% endfor %}
 					<!-- Ajouter le bouton et la logique loadmore  de 10 en 10 -->
 				</div>
+				<section class="container-fluid pt-3" id="loading">
+					<div class="row" id="loading-tricks" data-limit="{{ limit }}"></div>
+					{% if limitReached == false %}
+						<div
+							class="d-flex justify-content-center m-5" id="load_more">
+							{# <div class="spinner-border me-3 " role="status" id="spinner">
+																		<span class="visually-hidden loading">Loading...</span>
+																	</div> #}
+							<a href="{{path('app_trick_detail', {slug:trick.slug , pageNb:pageNb})}}#loading-tricks">
+								<button class="btn btn-secondary fw-bold" id="load">Load more</button>
+							</a>
+						</div>
+					{% endif %}
+					<div>
+						<a href="#tricks" id="arrow_up" class="d-flex flex-row-reverse hidden">
+							<i class="bi bi-arrow-up-circle-fill"></i>
+						</a>
+					</div>
+
+				</section>
 			</div>
 		</div>
 	</div>

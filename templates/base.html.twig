@@ -36,7 +36,7 @@
 						</li>
 						{% if app.user != null %}
 							<li class="nav-item">
-								<a class="nav-link" href="#">{{'Nav.Trick.create'|trans()}}</a>
+								<a class="nav-link" href="{{ path('app_trick_create')}}">{{'Nav.Trick.create'|trans()}}</a>
 							</li>
 						{% endif %}
 						{% if app.user == null %}
