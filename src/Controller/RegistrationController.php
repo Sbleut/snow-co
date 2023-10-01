@@ -35,8 +35,7 @@ class RegistrationController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
-        // Verify password 
-        // dd($form->getData());
+        // ADD Avatar 
 
         if ($form->isSubmitted() && $form->isValid()) {
             

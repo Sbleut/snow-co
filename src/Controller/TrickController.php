@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Trick;
+use App\FileManagement\UploadImage;
 use App\Form\CommentFormType;
 use App\Form\TrickCreateFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -77,7 +78,7 @@ class TrickController extends AbstractController
     }
 
     #[Route('/trickCreate', name: 'app_trick_create')]
-    public function trickCreate(Request $request, EntityManagerInterface $entityManager, TrickRepository $trickRepository):Response
+    public function trickCreate(Request $request, UploadImage $uploadImage, EntityManagerInterface $entityManager, TrickRepository $trickRepository):Response
     {
         $trick = new Trick();
         $form = $this->createForm(TrickCreateFormType::class, $trick);
@@ -85,7 +86,26 @@ class TrickController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //Gestion 
+            //Gestion
+            $trick->setUser($this->getUser());
+            $images = $form->get('images')->getData();
+
+
+            foreach ($images as $image) {
+                $fichier = $uploadImage->saveImage($image);
+                $img = new Image();
+                $img->setName($fichier);
+                $img->setUser($this->getUser());
+                $trick->addImage($img);
+            }
+
+            $manager->persist($trick);
+            $manager->flush();
+
+
+            $this->addFlash('success', 'Trick has been modified');
+
+            return $this->redirectToRoute('trick_details', ['slug' => $trick->getSlug()]);
 
         }
 
