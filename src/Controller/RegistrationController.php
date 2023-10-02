@@ -85,7 +85,7 @@ class RegistrationController extends AbstractController
         if(isset($user) && !$user->isVerified())
         {
             try {
-                $emailVerifier->handleEmailConfirmation($request, $user, $token);
+                $emailVerifier->handleEmailConfirmation($user, $token);
             } catch (VerifyEmailExceptionInterface $exception) {
                 $this->addFlash('error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
                 return $this->redirectToRoute('homepage');

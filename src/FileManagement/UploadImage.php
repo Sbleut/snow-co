@@ -2,8 +2,9 @@
 
 namespace App\FileManagement;
 
-use App\Entity\Image;
+
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -28,11 +29,7 @@ class UploadImage
 
         if (count($violations) > 0) {
             // Handle validation errors (e.g., throw an exception, log errors)
-            $errorMessages = [];
-            foreach ($violations as $violation) {
-                $errorMessages[] = $violation->getMessage();
-            }
-            throw new \Exception(implode(', ', $errorMessages));
+            throw new FileException('These errors occurs'.$violations);
         }
     }
 

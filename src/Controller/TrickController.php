@@ -96,9 +96,7 @@ class TrickController extends AbstractController
             $trick->setCategory($form->get('category')->getData());
             $trick->setUser($this->getUser());
             $trick->setSlug($slugger->slug($trickName));
-            $images = $form->get('images')->getData();
-
-            
+            $images = $form->get('images')->getData();            
 
             foreach ($images as $image) {
                 try {

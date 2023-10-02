@@ -1,22 +1,22 @@
 {% set hasMainImage = false %}
 
 {% if trick.images is defined and trick.images|length > 0 %}
-    {% for trickImage in trick.images %}
-        {% if trickImage.mainImage == 1 %}
-            {# Rule: If there is a main image, display it #}
-            <img class="cool_pics card-img-top" src="{{asset('uploads/image/' ~ trick.slug | lower ~ '/' ~ trickImage.fileName )}}" alt="{{ trick.name }}">
-            {% set hasMainImage = true %}
-        {% endif %}
-    {% endfor %}
-    
-    {# Rule: If no image with main == 1 is found, display the first image #}
-    {% if not hasMainImage %}
-        {% if trick.images[0] is defined %}
-            <img class="cool_pics card-img-top" src="{{asset('uploads/image/' ~ trick.slug | lower ~ '/' ~ trick.images[0].fileName )}}" alt="{{ trick.name }}">
-        {% endif %}
-    {% endif %}
+	{% for trickImage in trick.images %}
+		{% if trickImage.mainImage == 1 %}
+			{# Rule: If there is a main image, display it #}
+			<img class="main-pic card-img-top" src="{{asset('uploads/image/' ~ trick.slug | lower ~ '/' ~ trickImage.fileName )}}" alt="{{ trick.name }}">
+			{% set hasMainImage = true %}
+		{% endif %}
+	{% endfor %}
+
+	{# Rule: If no image with main == 1 is found, display the first image #}
+	{% if not hasMainImage %}
+		{% if trick.images[0] is defined %}
+			<img class="main-pic card-img-top" src="{{asset('uploads/image/' ~ trick.slug | lower ~ '/' ~ trick.images[0].fileName )}}" alt="{{ trick.name }}">
+		{% endif %}
+	{% endif %}
 {% else %}
-    {# Handle the case where trick.images is empty or not defined #}
-    {# Display the default image or any other desired content #}
-    <img class="cool_pics card-img-top" src="{{asset('assets/image/default_trick.jpg')}}" alt="Default Image">
+	{# Handle the case where trick.images is empty or not defined #}
+	{# Display the default image or any other desired content #}
+    <img class="main-pic card-img-top" src="{{asset('assets/image/default_trick.jpg')}}" alt="Default Image">
 {% endif %}
