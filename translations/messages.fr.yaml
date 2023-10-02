@@ -35,6 +35,7 @@ Registration:
 
 Trick:
   Create: Ajout d'une nouvelle figure
+  Created: Votre Figure a été ajoutée.
   Name: Nom de la figure
   Category: Catégorie de la figure 
   ConfirmDelete:
