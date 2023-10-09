@@ -45,7 +45,7 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $index=0;
         // No Imbrication between objects Each object has its fixturz
         // Tricks Creation 
-        foreach ($trickList as $key => $trickName) {
+        foreach ($trickList as $trickName) {
             $trick = new Trick();
             $trick->setName($trickName);
             $trick->setDescription('lorem ipsum');

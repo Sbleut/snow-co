@@ -16,7 +16,7 @@ class SendMailService
 
     public function sendEmail(
         string $from,
-        string $to,
+        string $towards,
         string $subject,
         string $template,
         array $context
@@ -24,7 +24,7 @@ class SendMailService
     {
         $email = (new TemplatedEmail())
             ->from($from)
-            ->to($to)
+            ->to($towards)
             ->subject($subject)
             ->htmlTemplate("$template.html.twig")
             ->context($context);

@@ -21,6 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class TrickController extends AbstractController
 {
@@ -80,11 +81,13 @@ class TrickController extends AbstractController
     }
 
     #[Route('/trickCreate', name: 'app_trick_create', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_USER')]
     public function trickCreate(Request $request, UploadImage $uploadImage, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $trick = new Trick();
         $form = $this->createForm(TrickCreateFormType::class, $trick);
         $form->handleRequest($request);
+        
 
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -96,6 +99,7 @@ class TrickController extends AbstractController
             $trick->setUser($this->getUser());
             $trick->setSlug($slugger->slug($trickName));
             $images = $form->get('images')->getData();
+                        
 
             foreach ($images as $image) {
                 if ($uploadImage->validateUploadedFile($image)) {
@@ -110,6 +114,13 @@ class TrickController extends AbstractController
             if ($uploadImage->hasError()) {
                 $this->addFlash('errorfile', $uploadImage->getErrorMessages());
             }
+
+            foreach ($trick->getVideos() as $video ) {
+                $video->setUuid(Uuid::v6());
+            }
+
+            // VErification embeded link youtube Regex
+            // Error Message 
             if (!$uploadImage->hasError()) {
                 $entityManager->persist($trick);
                 $entityManager->flush();
@@ -127,15 +138,15 @@ class TrickController extends AbstractController
 
     #[Route(
         '/trick/update/{slug}',
-        name: 'app_trick_detail',
+        name: 'app_trick_update',
     )]
+    #[IsGranted('ROLE_USER')]
     public function update(Request $request, TrickRepository $trickRepository, EntityManagerInterface $entityManager, string $slug, UploadImage $uploadImage,Security $security, TranslatorInterface $translator): Response
     {
         $trick = $trickRepository->getTrickBySlug($slug);
 
         $form = $this->createForm(TrickCreateFormType::class, $trick);
         $form->handleRequest($request);
-
 
         if ($form->isSubmitted() && $form->isValid()) {
             $trickName = $form->get('name')->getData();
@@ -145,6 +156,8 @@ class TrickController extends AbstractController
             $trick->setCategory($form->get('category')->getData());
             $trick->setUser($this->getUser());
             $images = $form->get('images')->getData();
+            $videos = $form->getData();
+            dd($videos);
 
             foreach ($images as $image) {
                 if ($uploadImage->validateUploadedFile($image)) {
@@ -159,6 +172,7 @@ class TrickController extends AbstractController
             if ($uploadImage->hasError()) {
                 $this->addFlash('errorfile', $uploadImage->getErrorMessages());
             }
+            
             if (!$uploadImage->hasError()) {
                 $entityManager->persist($trick);
                 $entityManager->flush();

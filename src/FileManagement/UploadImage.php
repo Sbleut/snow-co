@@ -29,7 +29,9 @@ class UploadImage
         ]);
 
         if (count($violations) > 0) {
-            $this->errorList = $violations;
+            foreach ($violations as $violation) {
+                $this->errorList[] = $violation;
+            }
             return false;
         }
         return true;
@@ -58,13 +60,13 @@ class UploadImage
 
         $filesystem = new Filesystem();
 
-        $directory = 'uploads/image' . strtolower($trickSlug);
+        $directory = 'uploads/image/' . strtolower($trickSlug);
 
         if (!$filesystem->exists($directory)) {
             $filesystem->mkdir($directory);
         }
 
-        $image->move('uploads/image' . $trickSlug . '/' , $file);
+        $image->move('uploads/image/' . $trickSlug . '/' , $file);
 
         return $file;
     }

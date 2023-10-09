@@ -27,9 +27,9 @@
 }
 
 .small-pics {
-    height: 150px !important;
+    height: 150px;
     width: 200px;
-    object-fit: cover !important;
+    object-fit: cover;
 }
 
 .comment-list {
