@@ -4,8 +4,7 @@
 	<link rel="stylesheet" href="{{asset("assets/styles/trick.css")}}">
 {% endblock %}
 
-{% block title %}
-	{{trick.name}}
+{% block title %}{{trick.name}}
 {% endblock %}
 
 {% block body %}
@@ -53,7 +52,7 @@
 						</div>
 					</div>
 				</div>
-				<h5 class="card-title">{{trick.name}}</h5>
+				<h5 class="card-title">{{ form_widget(form.name, {'attr': {'placeholder': trick.name}}) }}</h5>
 				<p class="card-text">{{trick.description}}</p>
 				<div class="d-flex justify-content-evenly">
 					<p class="card-text">

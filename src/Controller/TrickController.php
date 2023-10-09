@@ -124,4 +124,57 @@ class TrickController extends AbstractController
             'form'            => $form->createView(),
         ]);
     }
+
+    #[Route(
+        '/trick/update/{slug}',
+        name: 'app_trick_detail',
+    )]
+    public function update(Request $request, TrickRepository $trickRepository, EntityManagerInterface $entityManager, string $slug, UploadImage $uploadImage,Security $security, TranslatorInterface $translator): Response
+    {
+        $trick = $trickRepository->getTrickBySlug($slug);
+
+        $form = $this->createForm(TrickCreateFormType::class, $trick);
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $trickName = $form->get('name')->getData();
+            $trick->setName($trickName);
+            $trick->setDescription($form->get('description')->getData());
+            $trick->setUpdatedAt(new DateTimeImmutable());
+            $trick->setCategory($form->get('category')->getData());
+            $trick->setUser($this->getUser());
+            $images = $form->get('images')->getData();
+
+            foreach ($images as $image) {
+                if ($uploadImage->validateUploadedFile($image)) {
+                    $fichier = $uploadImage->saveImage($image, $trick->getSlug());
+                    $img = new Image();
+                    $img->setFileName($fichier);
+                    $img->setMainImage(false);
+                    $img->setUuid(Uuid::v6());
+                    $trick->addImage($img);
+                };
+            }
+            if ($uploadImage->hasError()) {
+                $this->addFlash('errorfile', $uploadImage->getErrorMessages());
+            }
+            if (!$uploadImage->hasError()) {
+                $entityManager->persist($trick);
+                $entityManager->flush();
+                $this->addFlash('success', 'Trick.Created');
+                return $this->redirectToRoute('app_trick_detail', ['slug' => $trick->getSlug()]);
+            }
+        }
+
+        return $this->render('trick/index.html.twig', [
+            'controller_name' => 'TrickController',
+            'trick' => $trick,
+            'form' => $form->createView(),
+        ]);
+
+    }
+
+
+    
 }
