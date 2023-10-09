@@ -9,8 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\PasswordStrength;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -68,6 +68,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $tokenReset = null;
+
+    #[ORM\ManyToOne]
+    private ?ProfilPic $profilPicId = null;
 
     public function __construct()
     {
@@ -230,6 +233,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTokenReset(?string $tokenReset): static
     {
         $this->tokenReset = $tokenReset;
+
+        return $this;
+    }
+
+    public function getProfilPicId(): ?ProfilPic
+    {
+        return $this->profilPicId;
+    }
+
+    public function setProfilPicId(?ProfilPic $profilPicId): static
+    {
+        $this->profilPicId = $profilPicId;
 
         return $this;
     }

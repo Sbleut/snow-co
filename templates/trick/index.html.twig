@@ -1,75 +1,126 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-	<link rel="stylesheet" href="{{asset("assets/styles/home.css")}}">
 	<link rel="stylesheet" href="{{asset("assets/styles/trick.css")}}">
 {% endblock %}
 
 {% block title %}Hello TrickController!
 {% endblock %}
 
-
 {% block body %}
-	<div class="background_home vh-100  "></div>
+	<div class="background_trick vh-100 position-relative"></div>
 
 	<div class="trick-detail-card example-wrapper container position-absolute top-50 start-50 translate-middle">
-
-		<div class="card mb-3 ">
-			{% for image in images %}
-				{% if image.mainImage %}
-					<img src="../uploads/image/{{trick.slug | lower}}/{{image.fileName}}" class="card-img-top main-pic" alt="...">
+		<div class="card mb-3 main-pic">
+			{{include('_partials/_main_image.html.twig', {'trick': trick})}}
+			{% for image in trick.images %}
+				{% if app.user %}
+					<div class="d-flex position-absolute update-btn m-2">
+						<a href="">
+							<button class="btn btn-secondary btn-sm me-2">
+								<i class="bi bi-pencil-square"></i>
+							</button>
+						</a>
+						<button class="btn btn-danger btn-sm" onclick="showConfirmation()">
+							<i class="bi bi-trash-fill"></i>
+						</button>
+					</div>
 				{% endif %}
 			{% endfor %}
 			<div class="card-body">
-				<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-					<div class="carousel-inner">
-						{% for image in images %}
-							{% if image.mainImage == 0 %}
-								<div class="carousel-item active">
-									<img src="../uploads/image/{{trick.slug | lower}}/{{image.fileName}}" class="small-pics card-img-top " alt="...">
-								</div>
-							{% endif %}
-						{% endfor %}
+				<div class="d-flex border-bottom pb-3 justify-content-between">
+					<div id="carouselExampleControls" class="carousel slide " data-bs-ride="carousel">
+						<div class="carousel-inner">
+							{% for image in trick.images %}
+								<img src="{{asset('uploads/image/' ~ trick.slug | lower ~ '/' ~ image.fileName)}}" class="small-pics card-img-top rounded" alt="...">
+							{% endfor %}
+						</div>
+						<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+							<span class="visually-hidden">Previous</span>
+						</button>
+						<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+							<span class="carousel-control-next-icon" aria-hidden="true"></span>
+							<span class="visually-hidden">Next</span>
+						</button>
 					</div>
-					<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-						<span class="visually-hidden">Previous</span>
-					</button>
-					<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-						<span class="carousel-control-next-icon" aria-hidden="true"></span>
-						<span class="visually-hidden">Next</span>
-					</button>
+					<div id="carouselExampleControls" class="carousel slide " data-bs-ride="carousel">
+						<div class="carousel-inner">
+							{% for video in trick.videos %}
+								<iframe width="200" height="150" src="{{video.iframe}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+							{% endfor %}
+						</div>
+					</div>
 				</div>
 				<h5 class="card-title">{{trick.name}}</h5>
 				<p class="card-text">{{trick.description}}</p>
-				<p class="card-text">
-					<small class="text-body-secondary">{{trick.createdAt|date("m/d/Y", "Europe/Paris")}}</small>
-				</p>
+				<div class="d-flex justify-content-evenly">
+					<p class="card-text">
+						<small class="text-body-secondary">{{trick.createdAt|date("m/d/Y", "Europe/Paris")}}</small>
+					</p>
+					<p>{{'Category :'|trans() }}{{trick.category.name}}</p>
+					{% if trick.updatedAt %}
+						<p>{{trick.updatedAt|date("m/d/Y", "Europe/Paris")}}</p>
+					{% endif %}
+				</div>
 				{% if app.user != null %}
-					{{ form_start(form, {'attr': {'class': 'd-flex justify-content-evenly'}})}}
+					{{ form_start(form)}}
 					{{ form_errors(form.content)}}
-					{{ form_widget(form.content, {'attr': {'placeholder': 'Trick.Comment.Content' | trans(), 'class': 'd-block w-50'} })}}
-					<button type="submit" class="btn btn-primary btn-sm ml-2">{{'Trick.Comment.Submit'|trans()}}</button>
+					<div class="d-flex justify-content-evenly">
+						{{ form_widget(form.content, {'attr': {'placeholder': 'Trick.Comment.Content' | trans(), 'class': 'd-block w-50'} })}}
+						<button type="submit" class="btn btn-primary btn-sm ml-2">{{'Trick.Comment.Submit'|trans()}}</button>
+					</div>
 					{{ form_end(form) }}
 				{% endif %}
 				<div class="container d-flex flex-column alignt-items-center mt-3 pt-3 w-50 comment-list">
 					{% for comment in commentList %}
-						<div class="d-flex m-2">
-							<svg class="bd-placeholder-img d-block" width="100" height="100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A generic square placeholder image with a white border around it, making it resemble a photograph taken with an old instant camera: 200x200" focusable="false"><title>A generic square placeholder image with a white border around it, making it resemble a photograph taken with an old instant camera</title><circle cx="50" cy="50" r="50" fill="#dee2e6"></circle><text x="50%" y="50%" fill="#dee2e6" dy=".3em">100</text></svg>
-							{# <img src="../uploads/image/" class="small-pics card-img-top " alt="..."/> #}
+						<div class="d-flex m-2">							
+							{{include('_partials/_profil_pic.html.twig', {'comment': comment})}}
 							<div class="border m-2 w-75">
 								<p class="card-text text-center">{{comment.content}}</p>
+								<p>{{comment.author.username}}</p>
+								<p>{{comment.createdAt|date("d/m/Y H:i:s", "Europe/Paris")}}</p>
+								<p>{{comment.createdAt|date()}}</p>
 							</div>
 						</div>
 					{% endfor %}
-					<!-- Ajouter le bouton et la logique loadmore -->
+					<!-- Ajouter le bouton et la logique loadmore  de 10 en 10 -->
 				</div>
+				<section class="container-fluid pt-3" id="loading">
+					<div class="row" id="loading-tricks" data-limit="{{ limit }}"></div>
+					{% if limitReached == false %}
+						<div
+							class="d-flex justify-content-center m-5" id="load_more">
+							{# <div class="spinner-border me-3 " role="status" id="spinner">
+																		<span class="visually-hidden loading">Loading...</span>
+																	</div> #}
+							<a href="{{path('app_trick_detail', {slug:trick.slug , pageNb:pageNb})}}#loading-tricks">
+								<button class="btn btn-secondary fw-bold" id="load">Load more</button>
+							</a>
+						</div>
+					{% endif %}
+					<div>
+						<a href="#tricks" id="arrow_up" class="d-flex flex-row-reverse hidden">
+							<i class="bi bi-arrow-up-circle-fill"></i>
+						</a>
+					</div>
 
-
+				</section>
 			</div>
-
 		</div>
-
-
 	</div>
+{% endblock %}
+
+{% block javascripts %}
+	<script>
+		function showConfirmation() { // Display a confirmation dialog with translated message
+var result = window.confirm("{{ 'Trick.ConfirmDelete'|trans }}");
+
+// Check the user's choice and perform the action or navigate to the link
+if (result) {
+window.location.href = "your_link_url"; // Replace with the actual URL
+} else { // Optional code if needed
+}
+}
+	</script>
 {% endblock %}

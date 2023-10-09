@@ -18,7 +18,7 @@ class VideoFixtures extends Fixture implements DependentFixtureInterface
             2 => ['https://www.youtube.com/watch?v=aAzP3wNT220', 2],
             3 => ['https://www.youtube.com/watch?v=Scpvby37V_E', 3],
             4 => ['https://www.youtube.com/watch?v=hUddT6FGCws', 4],
-            5 => ['https://www.youtube.com/watch?v=6yA3XqjTh_w', 5],
+            5 => ['https://www.youtube.com/embed/6yA3XqjTh_w?si=CtPDDjhiZ_9mAs-R', 5],
             6 => ['https://www.youtube.com/watch?v=YAElDqyD-3I', 6],
             7 => ['https://www.youtube.com/watch?v=y2MHu0mbzQw', 7],
             8 => ['https://www.youtube.com/watch?v=SlhGVnFPTDE', 8],

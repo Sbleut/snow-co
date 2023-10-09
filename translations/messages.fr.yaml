@@ -34,6 +34,11 @@ Registration:
   Success: Votre inscription a bien été enregistré. Veuillez valider votre email en cliquant sur le lien envoyer à votre adresse.
 
 Trick:
+  Create: Ajout d'une nouvelle figure
+  Created: Votre Figure a été ajoutée.
+  Name: Nom de la figure
+  Category: Catégorie de la figure 
+  ConfirmDelete:
   Comment:
     Content: Votre Commentaire
     Submit: Laissez votre Commentaire
