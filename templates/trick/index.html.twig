@@ -74,13 +74,13 @@
 				{% endif %}
 				<div class="container d-flex flex-column alignt-items-center mt-3 pt-3 w-50 comment-list">
 					{% for comment in commentList %}
-						<div class="d-flex m-2">
-							
+						<div class="d-flex m-2">							
 							{{include('_partials/_profil_pic.html.twig', {'comment': comment})}}
 							<div class="border m-2 w-75">
 								<p class="card-text text-center">{{comment.content}}</p>
 								<p>{{comment.author.username}}</p>
-								<p>{{comment.createdAt|date("m/d/Y H:m:s", "Europe/Paris")}}</p>
+								<p>{{comment.createdAt|date("d/m/Y H:i:s", "Europe/Paris")}}</p>
+								<p>{{comment.createdAt|date()}}</p>
 							</div>
 						</div>
 					{% endfor %}

@@ -32,10 +32,9 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, SendMailService $email, TranslatorInterface $translator): Response
     {
         $user = new User();
+        // ADD Profil Pic SELECTION
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
-
-        // ADD Avatar 
 
         if ($form->isSubmitted() && $form->isValid()) {
             

@@ -79,8 +79,8 @@ class TrickController extends AbstractController
         ]);
     }
 
-    #[Route('/trickCreate', name: 'app_trick_create')]
-    public function trickCreate(Request $request, UploadImage $uploadImage, EntityManagerInterface $entityManager, TrickRepository $trickRepository, SluggerInterface $slugger): Response
+    #[Route('/trickCreate', name: 'app_trick_create', methods: ['GET', 'POST'])]
+    public function trickCreate(Request $request, UploadImage $uploadImage, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $trick = new Trick();
         $form = $this->createForm(TrickCreateFormType::class, $trick);
@@ -88,7 +88,6 @@ class TrickController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //Gestion
             $trickName = $form->get('name')->getData();
             $trick->setName($trickName);
             $trick->setDescription($form->get('description')->getData());
@@ -96,34 +95,33 @@ class TrickController extends AbstractController
             $trick->setCategory($form->get('category')->getData());
             $trick->setUser($this->getUser());
             $trick->setSlug($slugger->slug($trickName));
-            $images = $form->get('images')->getData();            
+            $images = $form->get('images')->getData();
 
             foreach ($images as $image) {
-                try {
-                    $uploadImage->validateUploadedFile($image);
+                if ($uploadImage->validateUploadedFile($image)) {
                     $fichier = $uploadImage->saveImage($image, $trick->getSlug());
-                } catch (\Exception $e) {
-                    $this->addFlash('error', $e->getMessage());
-                }
-                $img = new Image();
-                $img->setFileName($fichier);
-                $img->setMainImage(false);
-                $img->setUuid(Uuid::v6());
-                $trick->addImage($img);
-                $entityManager->persist($img);
+                    $img = new Image();
+                    $img->setFileName($fichier);
+                    $img->setMainImage(false);
+                    $img->setUuid(Uuid::v6());
+                    $trick->addImage($img);
+                };
             }
-
-            $entityManager->persist($trick);
-            $entityManager->flush();
-
-            $this->addFlash('success', 'Trick.Created');
-
-            return $this->redirectToRoute('app_trick_detail', ['slug' => $trick->getSlug()]);
+            if ($uploadImage->hasError()) {
+                $this->addFlash('errorfile', $uploadImage->getErrorMessages());
+            }
+            if (!$uploadImage->hasError()) {
+                $entityManager->persist($trick);
+                $entityManager->flush();
+                $this->addFlash('success', 'Trick.Created');
+                return $this->redirectToRoute('app_trick_detail', ['slug' => $trick->getSlug()]);
+            }
         }
 
         return $this->render('trick/create.html.twig', [
             'controller_name' => 'TrickController',
-            'form' => $form->createView(),
+            'trick'           => $trick,
+            'form'            => $form->createView(),
         ]);
     }
 }

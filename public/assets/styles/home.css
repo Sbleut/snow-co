@@ -6,6 +6,6 @@
 }
 
 .main-pic{
-    height: 200px !important;
+    height: 200px;
     object-fit: cover;
 }
