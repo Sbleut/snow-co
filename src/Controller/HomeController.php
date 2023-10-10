@@ -47,7 +47,6 @@ class HomeController extends AbstractController
             'limit'         => $limit,
             'limitReached'  => $limitReached,
         ]);
-
     }
 
 
@@ -62,5 +61,4 @@ class HomeController extends AbstractController
     {
         return new Response('Browse : ' . $slug);
     }
-    
 }

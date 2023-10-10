@@ -16,10 +16,13 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TrickRepository extends ServiceEntityRepository
 {
+
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Trick::class);
     }
+
 
     public function save(Trick $entity, bool $flush = false): void
     {
@@ -30,6 +33,7 @@ class TrickRepository extends ServiceEntityRepository
         }
     }
 
+    
     public function remove(Trick $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
@@ -65,6 +69,12 @@ class TrickRepository extends ServiceEntityRepository
 //    }
 
 
+    /**
+     * Undocumented function
+     *
+     * @param string $slug
+     * @return Trick
+     */
     public function getTrickBySlug(string $slug)
     {
         return $this->createQueryBuilder('t')
@@ -74,7 +84,5 @@ class TrickRepository extends ServiceEntityRepository
                     ->getOneOrNullResult();
     }
 
-    /**
-     * 
-     */
+
 }

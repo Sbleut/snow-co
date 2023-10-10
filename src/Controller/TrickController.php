@@ -87,8 +87,6 @@ class TrickController extends AbstractController
         $trick = new Trick();
         $form = $this->createForm(TrickCreateFormType::class, $trick);
         $form->handleRequest($request);
-        
-
 
         if ($form->isSubmitted() && $form->isValid()) {
             $trickName = $form->get('name')->getData();
@@ -139,25 +137,30 @@ class TrickController extends AbstractController
     #[Route(
         '/trick/update/{slug}',
         name: 'app_trick_update',
+        methods: ['GET', 'POST'],
     )]
     #[IsGranted('ROLE_USER')]
     public function update(Request $request, TrickRepository $trickRepository, EntityManagerInterface $entityManager, string $slug, UploadImage $uploadImage,Security $security, TranslatorInterface $translator): Response
     {
+        
         $trick = $trickRepository->getTrickBySlug($slug);
+        if(!$trick){
+            throw $this->createNotFoundException("This trick doesn't exist");
+        }
+        $disable = false;
 
         $form = $this->createForm(TrickCreateFormType::class, $trick);
         $form->handleRequest($request);
+        
 
         if ($form->isSubmitted() && $form->isValid()) {
+            dd($trick);
             $trickName = $form->get('name')->getData();
             $trick->setName($trickName);
             $trick->setDescription($form->get('description')->getData());
             $trick->setUpdatedAt(new DateTimeImmutable());
             $trick->setCategory($form->get('category')->getData());
-            $trick->setUser($this->getUser());
             $images = $form->get('images')->getData();
-            $videos = $form->getData();
-            dd($videos);
 
             foreach ($images as $image) {
                 if ($uploadImage->validateUploadedFile($image)) {
@@ -181,7 +184,7 @@ class TrickController extends AbstractController
             }
         }
 
-        return $this->render('trick/index.html.twig', [
+        return $this->render('trick/update.html.twig', [
             'controller_name' => 'TrickController',
             'trick' => $trick,
             'form' => $form->createView(),
