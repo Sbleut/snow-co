@@ -10,9 +10,10 @@ use App\Form\CommentFormType;
 use App\Form\TrickCreateFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CommentRepository;
-use App\Repository\VideoRepository;
+use App\Repository\ImageRepository;
 use App\Repository\TrickRepository;
 use DateTimeImmutable;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -97,7 +98,7 @@ class TrickController extends AbstractController
             $trick->setUser($this->getUser());
             $trick->setSlug($slugger->slug($trickName));
             $images = $form->get('images')->getData();
-                        
+
 
             foreach ($images as $image) {
                 if ($uploadImage->validateUploadedFile($image)) {
@@ -113,7 +114,7 @@ class TrickController extends AbstractController
                 $this->addFlash('errorfile', $uploadImage->getErrorMessages());
             }
 
-            foreach ($trick->getVideos() as $video ) {
+            foreach ($trick->getVideos() as $video) {
                 $video->setUuid(Uuid::v6());
             }
 
@@ -140,21 +141,19 @@ class TrickController extends AbstractController
         methods: ['GET', 'POST'],
     )]
     #[IsGranted('ROLE_USER')]
-    public function update(Request $request, TrickRepository $trickRepository, EntityManagerInterface $entityManager, string $slug, UploadImage $uploadImage,Security $security, TranslatorInterface $translator): Response
+    public function update(Request $request, TrickRepository $trickRepository, EntityManagerInterface $entityManager, string $slug, UploadImage $uploadImage, Security $security, TranslatorInterface $translator): Response
     {
-        
+
         $trick = $trickRepository->getTrickBySlug($slug);
-        if(!$trick){
+        if (!$trick) {
             throw $this->createNotFoundException("This trick doesn't exist");
         }
         $disable = false;
 
         $form = $this->createForm(TrickCreateFormType::class, $trick);
         $form->handleRequest($request);
-        
 
         if ($form->isSubmitted() && $form->isValid()) {
-            dd($trick);
             $trickName = $form->get('name')->getData();
             $trick->setName($trickName);
             $trick->setDescription($form->get('description')->getData());
@@ -175,11 +174,11 @@ class TrickController extends AbstractController
             if ($uploadImage->hasError()) {
                 $this->addFlash('errorfile', $uploadImage->getErrorMessages());
             }
-            
+
             if (!$uploadImage->hasError()) {
                 $entityManager->persist($trick);
                 $entityManager->flush();
-                $this->addFlash('success', 'Trick.Created');
+                $this->addFlash('success', 'Trick.Updated');
                 return $this->redirectToRoute('app_trick_detail', ['slug' => $trick->getSlug()]);
             }
         }
@@ -189,9 +188,35 @@ class TrickController extends AbstractController
             'trick' => $trick,
             'form' => $form->createView(),
         ]);
-
     }
 
+    #[Route(
+        '/main/image/{uuid}',
+        name: 'app_main_image',
+        methods: ['GET', 'POST'],
+    )]
+    #[IsGranted('ROLE_USER')]
+    public function setMainImage($uuid, ImageRepository $imageRepository, EntityManagerInterface $manager)
+    {
 
-    
+        $image = $imageRepository->findOneBy(['uuid' => $uuid], []);
+        dd($uuid, $image);
+        
+        $image->setMainImage(true);
+
+        $manager->remove($image);
+        $manager->flush();
+
+        return new JsonResponse(['success' => 1]);
+    }
+
+    #[Route(
+        '/delete/image/{uuid}',
+        name: 'app_delete_image',
+        methods: ['DELETE'],
+    )]
+    #[IsGranted('ROLE_USER')]
+    public function deleteImage($uuid,  EntityManagerInterface $manager)
+    {
+    }
 }
