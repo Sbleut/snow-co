@@ -9,7 +9,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Validator\Constraints\EmailExists;
 
-
 class ForgotPasswordType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

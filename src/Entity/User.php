@@ -18,7 +18,6 @@ use Symfony\Component\Uid\Uuid;
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -66,12 +65,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Trick::class)]
     private Collection $tricks;
 
-    
+
     /**
      * Comment Relation can be added here if needed
      * #[ORM\OneToMany(mappedBy: 'author', targetEntity: Comment::class)]
      * private Collection $comments;
-     * 
+     *
      */
 
     /**

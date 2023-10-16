@@ -57,7 +57,7 @@ class TrickController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $comment->setContent($form->get('content')->getData());
             $comment->setUuid(Uuid::v6());
-            $comment->setCreatedAt(new DateTimeImmutable);
+            $comment->setCreatedAt(new DateTimeImmutable());
             $comment->setTrick($trick);
             $comment->setAuthor($security->getUser());
 
@@ -119,7 +119,7 @@ class TrickController extends AbstractController
             }
 
             // VErification embeded link youtube Regex
-            // Error Message 
+            // Error Message
             if (!$uploadImage->hasError()) {
                 $entityManager->persist($trick);
                 $entityManager->flush();
@@ -141,7 +141,7 @@ class TrickController extends AbstractController
         methods: ['GET', 'POST'],
     )]
     #[IsGranted('ROLE_USER')]
-    public function update(Request $request, TrickRepository $trickRepository, EntityManagerInterface $entityManager, string $slug, UploadImage $uploadImage, Security $security, TranslatorInterface $translator): Response
+    public function update(Request $request, TrickRepository $trickRepository, EntityManagerInterface $entityManager, string $slug, UploadImage $uploadImage, SluggerInterface $slugger): Response
     {
 
         $trick = $trickRepository->getTrickBySlug($slug);
@@ -158,6 +158,7 @@ class TrickController extends AbstractController
             $trick->setName($trickName);
             $trick->setDescription($form->get('description')->getData());
             $trick->setUpdatedAt(new DateTimeImmutable());
+            $trick->setSlug($slugger->slug($trickName));
             $trick->setCategory($form->get('category')->getData());
             $images = $form->get('images')->getData();
 
@@ -173,6 +174,10 @@ class TrickController extends AbstractController
             }
             if ($uploadImage->hasError()) {
                 $this->addFlash('errorfile', $uploadImage->getErrorMessages());
+            }
+
+            foreach ($trick->getVideos() as $video) {
+                $video->setUuid(Uuid::v6());
             }
 
             if (!$uploadImage->hasError()) {
@@ -200,14 +205,15 @@ class TrickController extends AbstractController
     {
 
         $image = $imageRepository->findOneBy(['uuid' => $uuid], []);
-        dd($uuid, $image);
-        
+        $actualMain = $imageRepository->findOneBy(['mainImage' => true], []);
+
+        $actualMain->setMainImage(false);
         $image->setMainImage(true);
 
-        $manager->remove($image);
+        $manager->persist($image);
         $manager->flush();
+        return $this->redirectToRoute('app_trick_update', ['slug' => $image->getTrick()->getSlug()]);
 
-        return new JsonResponse(['success' => 1]);
     }
 
     #[Route(
@@ -216,7 +222,28 @@ class TrickController extends AbstractController
         methods: ['DELETE'],
     )]
     #[IsGranted('ROLE_USER')]
-    public function deleteImage($uuid,  EntityManagerInterface $manager)
+    public function deleteImage($uuid, ImageRepository $imageRepository, EntityManagerInterface $manager)
     {
+        $image = $imageRepository->findOneBy(['uuid' => $uuid], []);
+
+        // WARNING on slugdirectory name deprecated
+        // composer php_cs_fixer
+        unlink('uploads/image/' . $image->getTrick()->getSlug() . '/' . $image->getFileName());
+
+        $manager->remove($image);
+        $manager->flush();
+        return $this->redirectToRoute('app_trick_update', ['slug' => $image->getTrick()->getSlug()]);
     }
+
+    #[Route(
+        '/trick/delete/{slug}',
+        name: 'app_trick_delete',
+        methods: ['GET', 'POST'],
+    )]
+    #[IsGranted('ROLE_USER')]
+    public function deleteTrick($slug, EntityManagerInterface $manager, TrickRepository $trickRepository)
+    {
+
+    }
+
 }

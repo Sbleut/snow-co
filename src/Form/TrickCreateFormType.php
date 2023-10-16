@@ -24,7 +24,7 @@ class TrickCreateFormType extends AbstractType
                 'choice_label' => 'name',
             ])
             ->add('images', FileType::class, [
-                'multiple'=> true,
+                'multiple' => true,
                 'label' => 'Image File',
                 'required' => false,
                 'mapped' => false,

@@ -2,7 +2,6 @@
 
 namespace App\FileManagement;
 
-
 use Symfony\Component\Filesystem\Filesystem;
 use App\FileManagement\FileExceptionInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -60,13 +59,9 @@ class UploadImage
 
         $filesystem = new Filesystem();
 
-        $directory = 'uploads/image/' . strtolower($trickSlug);
+        // DELETE FOLDER management by slug
 
-        if (!$filesystem->exists($directory)) {
-            $filesystem->mkdir($directory);
-        }
-
-        $image->move('uploads/image/' . $trickSlug . '/' , $file);
+        $image->move('uploads/image/', $file);
 
         return $file;
     }

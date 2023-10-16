@@ -44,7 +44,7 @@ class SecurityController extends AbstractController
 
 
     /**
-     * Logout function 
+     * Logout function
      * @return void
      */
     #[Route(path: '/logout', name: 'app_logout')]
@@ -99,10 +99,12 @@ class SecurityController extends AbstractController
         }
         $error = $authenticationUtils->getLastAuthenticationError();
         return $this->render(
-            'security/forgot_password.html.twig', [
+            'security/forgot_password.html.twig',
+            [
             'error'                 => $error,
             'forgotPasswordForm'    => $form->createView(),
-        ]);
+        ]
+        );
     }
 
     #[Route(path: '/reset/password', name: 'app_reset_password')]
@@ -110,7 +112,7 @@ class SecurityController extends AbstractController
     {
         $uuid = Uuid::fromString($request->get('uuid'));
         $token = $request->get('token');
-        // Verify token from form and in bdd.  
+        // Verify token from form and in bdd.
         $user = $userRepository->findOneByUuidToken($uuid->toBinary(), $token);
 
         if ($user === null) {

@@ -20,8 +20,7 @@ class SendMailService
         string $subject,
         string $template,
         array $context
-    ): void
-    {
+    ): void {
         $email = (new TemplatedEmail())
             ->from($from)
             ->to($towards)

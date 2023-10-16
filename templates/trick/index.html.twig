@@ -33,7 +33,7 @@
 					<div id="carouselExampleControls" class="carousel slide " data-bs-ride="carousel">
 						<div class="carousel-inner">
 							{% for image in trick.images %}
-								<img src="{{asset('uploads/image/' ~ trick.slug | lower ~ '/' ~ image.fileName)}}" class="small-pics card-img-top rounded" alt="...">
+								<img src="{{asset('uploads/image/' ~ image.fileName)}}" class="small-pics card-img-top rounded" alt="...">
 							{% endfor %}
 						</div>
 						<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">

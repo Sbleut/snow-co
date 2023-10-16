@@ -12,16 +12,11 @@
 	<div class="background-trick vh-100 position-relative"></div>
 	<div class="trick-detail-card example-wrapper container position-absolute top-50 start-50 translate-middle">
 		<div class="card mb-3 main-pic">
-			{{ form_start(form) }}
+
 			{{include('_partials/_main_image.html.twig', {'trick': trick})}}
 			{% for image in trick.images %}
 				{% if app.user %}
 					<div class="d-flex position-absolute update-btn m-2">
-						<a href="">
-							<button class="btn btn-secondary btn-sm me-2">
-								<i class="bi bi-pencil-square"></i>
-							</button>
-						</a>
 						<button class="btn btn-danger btn-sm" onclick="showConfirmation()">
 							<i class="bi bi-trash-fill"></i>
 						</button>
@@ -32,14 +27,14 @@
 				<div class="d-flex border-bottom pb-3 justify-content-between">
 					<div id="carouselExampleControls" class="carousel slide " data-bs-ride="carousel">
 						<div class="d-flex flex-wrap carousel-inner">
-							{{ form_widget(form.images, {'attr': {'hidden':'hidden'}}) }}
+
 							{% for image in trick.images %}
 								<div class="position-relative">
 									<img src="{{asset('uploads/image/' ~ trick.slug | lower ~ '/' ~ image.fileName)}}" class="small-pics card-img-top rounded" alt="...">
 									<div class="d-flex position-absolute update-btn m-2">
 										{% if image.mainImage %}
 											<a href="{{ path('app_main_image', {uuid:image.uuid} ) }}">
-												<button class="btn btn-secondary btn-sm me-2">
+												<button class="btn btn-primary btn-sm me-2">
 													<i class="bi bi-pencil-fill"></i>
 												</button>
 											</a>
@@ -50,6 +45,7 @@
 												</button>
 											</a>
 										{% endif %}
+										{# MANAGE HTTP METHOD #}
 										<a href="{{ path('app_delete_image', {uuid:image.uuid}) }}">
 											<button class="btn btn-danger btn-sm" onclick="showConfirmation()">
 												<i class="bi bi-trash-fill"></i>
@@ -62,13 +58,24 @@
 					</div>
 					<div id="carouselExampleControls" class="carousel slide " data-bs-ride="carousel">
 						<div class="carousel-inner">
-							{{ form_widget(form.videos, {'attr': {'hidden':'hidden'}}) }}
+
 							{% for video in trick.videos %}
 								<iframe width="200" height="150" src="{{video.iframe}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 							{% endfor %}
 						</div>
 					</div>
 				</div>
+
+				{{ form_start(form) }}
+				{{ form_widget(form.images, {'attr': {}}) }}
+				<button type="button" class="add_item_link" data-collection-holder-class="videos">Add a video</button>
+
+				<ul class="videos" data-index="{{ form.videos|length > 0 ? form.videos|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}">
+
+					{% for video in form.videos %}
+						<li>{{ form_row(video.iframe) }}</li>
+					{% endfor %}
+				</ul>
 
 				<h5 class="card-title">{{ form_widget(form.name, {'attr': {'placeholder': trick.name}}) }}</h5>
 				<p class="card-text">{{ form_widget(form.description, {'attr': {'placeholder': trick.description}}) }}</p>
@@ -81,9 +88,7 @@
 						<p>{{trick.updatedAt|date("m/d/Y", "Europe/Paris")}}</p>
 					{% endif %}
 				</div>
-				<div
-					class="container d-flex flex-column alignt-items-center mt-3 pt-3 w-50 comment-list"><!-- Ajouter le bouton et la logique loadmore  de 10 en 10 -->
-				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
 
 			</div>
 			{{ form_end(form) }}
@@ -92,13 +97,14 @@
 {% endblock %}
 
 {% block javascripts %}
+	<script src="{{asset('assets/js/videoembededcollection.js')}}"></script>
 	<script>
 		function showConfirmation() { // Display a confirmation dialog with translated message
 var result = window.confirm("{{ 'Trick.ConfirmDelete'|trans }}");
 
 // Check the user's choice and perform the action or navigate to the link
 if (result) {
-window.location.href = "your_link_url"; // Replace with the actual URL
+window.location.href = "{{ path('homepage') }}"; // Replace with the actual URL
 } else { // Optional code if needed
 }
 }

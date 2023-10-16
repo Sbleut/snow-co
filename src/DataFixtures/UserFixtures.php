@@ -12,7 +12,7 @@ class UserFixtures extends Fixture
 {
     public const USER_REFERENCE = 'user';
 
-    public function __construct(private UserPasswordHasherInterface $hasher,)
+    public function __construct(private UserPasswordHasherInterface $hasher)
     {
     }
 
@@ -25,7 +25,7 @@ class UserFixtures extends Fixture
             1 => ['Joey', 'joey@hotmail.fr', 'tititi'],
             2 => ['Sam', 'dam@gmail.com', 'samsam'],
         ];
-        
+
 
         foreach ($userList as $key => $userArray) {
             $user = new User();
@@ -47,8 +47,8 @@ class UserFixtures extends Fixture
 
         $manager->flush();
 
-        
 
-       
+
+
     }
 }

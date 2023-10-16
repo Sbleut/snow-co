@@ -30,7 +30,7 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
     {
         $email = $request->request->get('email', '');
 
-        // UserCheckerInterface 
+        // UserCheckerInterface
         $request->getSession()->set(Security::LAST_USERNAME, $email);
 
         return new Passport(
@@ -47,7 +47,7 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
     {
         //$targetPath = $this->urlGenerator->generate('homepage')
         //$this->getTargetPath($request->getSession(), $firewallName)
-        if ($targetPath= $this->getTargetPath($request->getSession(), $firewallName)) {
+        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
 

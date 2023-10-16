@@ -13,16 +13,16 @@ class ImageFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
 
-        //Image 
+        //Image
         /**
-         * dossier /public/uploads/image pour les vrais images à DL 
+         * dossier /public/uploads/image pour les vrais images à DL
          * dossier /public/asset/image pour les images du site.
-         * 
+         *
          * Set Main de manière aléatoire
          * Tous les cas de figure pour les images
-         * 
+         *
          * Certains tricks sans image
-         * 
+         *
          */
         // $product = new Product();
         // $manager->persist($product);

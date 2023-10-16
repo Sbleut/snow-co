@@ -9,7 +9,6 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-
 class TrickFixtures extends Fixture implements DependentFixtureInterface
 {
     public function __construct(private SluggerInterface $slugger)
@@ -42,9 +41,9 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
             'Frontside 360',
         ];
 
-        $index=0;
+        $index = 0;
         // No Imbrication between objects Each object has its fixturz
-        // Tricks Creation 
+        // Tricks Creation
         foreach ($trickList as $trickName) {
             $trick = new Trick();
             $trick->setName($trickName);
@@ -52,7 +51,7 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
 
             $trick->setUser($this->getReference('user_' . mt_rand(0, 2)));
 
-            $trick->setCategory($this->getReference('category_' . mt_rand(0,6)));
+            $trick->setCategory($this->getReference('category_' . mt_rand(0, 6)));
             //Random date
             // Set the start and end dates for the range
             $start = strtotime('2023-01-01 00:00:00');
@@ -65,17 +64,17 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
             $randomDate = new DateTimeImmutable();
             $trick->setCreatedAt($randomDate->setTimestamp($randomTimestamp));
 
-            // Fix Slug generation 
+            // Fix Slug generation
             $trick->setSlug($this->slugger->slug($trickName));
 
             $manager->persist($trick);
 
             $this->addReference('trick_'.$index, $trick);
             $index++;
-            
+
         }
         $manager->flush();
-        
+
     }
 
     public function getDependencies()

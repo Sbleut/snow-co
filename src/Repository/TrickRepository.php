@@ -16,8 +16,6 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TrickRepository extends ServiceEntityRepository
 {
-
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Trick::class);
@@ -33,7 +31,7 @@ class TrickRepository extends ServiceEntityRepository
         }
     }
 
-    
+
     public function remove(Trick $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
@@ -43,30 +41,30 @@ class TrickRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Trick[] Returns an array of Trick objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('t.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Trick[] Returns an array of Trick objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('t')
+    //            ->andWhere('t.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('t.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?Trick
-//    {
-//        return $this->createQueryBuilder('t')
-//            ->andWhere('t.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?Trick
+    //    {
+    //        return $this->createQueryBuilder('t')
+    //            ->andWhere('t.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 
 
     /**
@@ -79,7 +77,7 @@ class TrickRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('t')
                     ->andWhere('t.slug = :val')
-                    ->setParameter('val', $slug) 
+                    ->setParameter('val', $slug)
                     ->getQuery()
                     ->getOneOrNullResult();
     }
