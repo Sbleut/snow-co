@@ -226,9 +226,7 @@ class TrickController extends AbstractController
     {
         $image = $imageRepository->findOneBy(['uuid' => $uuid], []);
 
-        // WARNING on slugdirectory name deprecated
-        // composer php_cs_fixer
-        unlink('uploads/image/' . $image->getTrick()->getSlug() . '/' . $image->getFileName());
+        unlink('uploads/image/' . $image->getFileName());
 
         $manager->remove($image);
         $manager->flush();

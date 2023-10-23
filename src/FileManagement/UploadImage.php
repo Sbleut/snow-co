@@ -57,10 +57,6 @@ class UploadImage
     {
         $file = md5(uniqid()) . '.' . $image->guessExtension();
 
-        $filesystem = new Filesystem();
-
-        // DELETE FOLDER management by slug
-
         $image->move('uploads/image/', $file);
 
         return $file;
