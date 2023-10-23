@@ -2,7 +2,6 @@
 
 namespace App\FileManagement;
 
-
 interface FileExceptionInterface extends \Throwable
 {
     /**

@@ -73,6 +73,11 @@
 			<div class="alert alert-danger">{{ message |trans() }}</div>
 			{% endfor %}
 		{% endfor %}
+		{% for flash in app.flashes('errorfile') %}
+			{% for message in flash %}
+			<div class="alert alert-danger">{{ message |trans() }}</div>
+			{% endfor %}
+		{% endfor %}
 		{% block body %}{% endblock %}
 
 		<footer>

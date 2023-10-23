@@ -1,13 +1,11 @@
 <?php
 
-
 namespace App\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\User;
-
 
 class EmailExistsValidator extends ConstraintValidator
 {

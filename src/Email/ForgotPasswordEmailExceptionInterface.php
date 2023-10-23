@@ -2,7 +2,6 @@
 
 namespace App\Email\VeryEmail\Exception;
 
-
 /**
  * An exception that is thrown by VerifyEmailHelperInterface::validateEmailConfirmation().
  *
@@ -13,6 +12,10 @@ interface ForgotPasswordEmailExceptionInterface extends \Throwable
 {
     /**
      * Returns a safe string that describes why verification failed.
+     *
+     * @return string
      */
+
+
     public function getReason(): string;
 }

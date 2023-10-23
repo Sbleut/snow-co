@@ -9,6 +9,6 @@ use Symfony\Component\Validator\Constraint;
  */
 class MatchingUserEmail extends Constraint
 {
-    // TRADUCTION 
+    // TRADUCTION
     public $message = 'Email.Notmatching';
 }

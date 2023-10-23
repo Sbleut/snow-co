@@ -1,4 +1,4 @@
-.background_trick {
+.background-trick {
     background-image: url('../image/snowboard-g1f3ffa0d2_1280.jpg');
     background-size: cover;
     background-position: center;
@@ -23,13 +23,14 @@
 }
 
 .update-btn{
+    top: 0;
     right: 0;
 }
 
 .small-pics {
-    height: 150px !important;
+    height: 150px;
     width: 200px;
-    object-fit: cover !important;
+    object-fit: cover;
 }
 
 .comment-list {

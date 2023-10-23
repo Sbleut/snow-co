@@ -27,11 +27,10 @@ class EmailVerifier
      */
     public function handleEmailConfirmation(User $user, $token): void
     {
-        if($token == $user->getTokenValidator())
-        {
+        if($token == $user->getTokenValidator()) {
             $user->setIsVerified(true);
             $user->setTokenValidator(null);
-        }        
+        }
         $this->entityManager->persist($user);
         $this->entityManager->flush();
     }

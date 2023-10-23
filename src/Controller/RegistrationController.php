@@ -17,11 +17,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Uid\Uuid;
 
-
-
 class RegistrationController extends AbstractController
 {
-
     public function __construct()
     {
     }
@@ -37,7 +34,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
@@ -53,10 +50,10 @@ class RegistrationController extends AbstractController
 
             // generate a signed url and email it to the user
             $email->sendEmail(
-                'snowtricks@gmail.com', 
-                $user->getEmail(), 
-                'Please Confirm your Email', 
-                'registration/confirmation_email', 
+                'snowtricks@gmail.com',
+                $user->getEmail(),
+                'Please Confirm your Email',
+                'registration/confirmation_email',
                 [
                     'uuid' => $user->getUuid(),
                     'username' => $user->getUsername(),
@@ -81,19 +78,18 @@ class RegistrationController extends AbstractController
         $token = $request->get('token');
         $user = $userRepository->findOneByUuid($uuid->toBinary());
 
-        if(isset($user) && !$user->isVerified())
-        {
+        if(isset($user) && !$user->isVerified()) {
             try {
                 $emailVerifier->handleEmailConfirmation($user, $token);
             } catch (VerifyEmailExceptionInterface $exception) {
                 $this->addFlash('error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
                 return $this->redirectToRoute('homepage');
             }
-        }        
+        }
 
         // IF from Uuid g
-        // validate email confirmation link, sets User::isVerified=true and persists        
-        
+        // validate email confirmation link, sets User::isVerified=true and persists
+
         $this->addFlash('success', $translator->trans('Email.verify'));
 
         return $this->redirectToRoute('app_login');

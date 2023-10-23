@@ -1,0 +1,110 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{asset("assets/styles/trick.css")}}">
+{% endblock %}
+
+{% block title %}
+	{{trick.name}}
+{% endblock %}
+
+{% block body %}
+	<div class="background-trick vh-100 position-relative"></div>
+	<div class="trick-detail-card example-wrapper container position-absolute top-50 start-50 translate-middle">
+		<div class="card mb-3 main-pic">
+
+			{{include('_partials/_main_image.html.twig', {'trick': trick})}}
+			{% for image in trick.images %}
+				{% if app.user %}
+					<div class="d-flex position-absolute update-btn m-2">
+						<button class="btn btn-danger btn-sm" onclick="showConfirmation()">
+							<i class="bi bi-trash-fill"></i>
+						</button>
+					</div>
+				{% endif %}
+			{% endfor %}
+			<div class="card-body">
+				<div class="d-flex border-bottom pb-3 justify-content-between">
+					<div class="">
+						<div class="d-flex flex-wrap">
+							{% for image in trick.images %}
+								<div class="position-relative">
+									<img src="{{asset('uploads/image/' ~ image.fileName)}}" class="small-pics card-img-top rounded" alt="...">
+									<div class="d-flex position-absolute update-btn m-2">
+										{% if image.mainImage %}
+											<a href="{{ path('app_main_image', {uuid:image.uuid} ) }}">
+												<button class="btn btn-primary btn-sm me-2">
+													<i class="bi bi-pencil-fill"></i>
+												</button>
+											</a>
+										{% else %}
+											<a href="{{ path('app_main_image', {uuid:image.uuid} ) }}">
+												<button class="btn btn-secondary btn-sm me-2">
+													<i class="bi bi-pencil"></i>
+												</button>
+											</a>
+										{% endif %}
+										{# MANAGE HTTP METHOD #}
+										<a href="{{ path('app_delete_image', {uuid:image.uuid}) }}">
+											<button class="btn btn-danger btn-sm" onclick="showConfirmation()">
+												<i class="bi bi-trash-fill"></i>
+											</button>
+										</a>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="">
+						<div class="">
+							{% for video in trick.videos %}
+								<iframe width="200" height="150" src="{{video.iframe}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+
+				{{ form_start(form) }}
+				{{ form_widget(form.images, {'attr': {}}) }}
+				<button type="button" class="add_item_link" data-collection-holder-class="videos">Add a video</button>
+
+				<ul class="videos" data-index="{{ form.videos|length > 0 ? form.videos|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}">
+
+					{% for video in form.videos %}
+						<li>{{ form_row(video.iframe) }}</li>
+					{% endfor %}
+				</ul>
+
+				<h5 class="card-title">{{ form_widget(form.name, {'attr': {'placeholder': trick.name}}) }}</h5>
+				<p class="card-text">{{ form_widget(form.description, {'attr': {'placeholder': trick.description}}) }}</p>
+				<div class="d-flex justify-content-evenly">
+					<p class="card-text">
+						<small class="text-body-secondary">{{trick.createdAt|date("m/d/Y", "Europe/Paris")}}</small>
+					</p>
+					<p>{{ form_widget(form.category, {'attr': {'placeholder': trick.category.name}}) }}</p>
+					{% if trick.updatedAt %}
+						<p>{{trick.updatedAt|date("m/d/Y", "Europe/Paris")}}</p>
+					{% endif %}
+				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+
+			</div>
+			{{ form_end(form) }}
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{{asset('assets/js/videoembededcollection.js')}}"></script>
+	<script>
+		function showConfirmation() { // Display a confirmation dialog with translated message
+var result = window.confirm("{{ 'Trick.ConfirmDelete'|trans }}");
+
+// Check the user's choice and perform the action or navigate to the link
+if (result) {
+window.location.href = "{{ path('homepage') }}"; // Replace with the actual URL
+} else { // Optional code if needed
+}
+}
+	</script>
+{% endblock %}

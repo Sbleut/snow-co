@@ -23,12 +23,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-
+    /**
+     * The email address of the entity, or null if not set
+     *
+     * @var string|null
+     */
     #[ORM\Column(name: 'email', type: 'string', length: 180, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Email]
     private ?string $email = null;
 
+    /**
+     * The role of the User empty but will be set on ROLE USER at registration
+     *
+     * @var array
+     */
     #[ORM\Column]
     private array $roles = [];
 
@@ -38,37 +47,79 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(name: 'password', type: 'string', length: 255)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 8)]
-    #[Assert\PasswordStrength([
-        'minScore' => PasswordStrength::STRENGTH_MEDIUM,
-        'message' => 'Password.Tooweak',
-    ])]
+    #[
+        Assert\PasswordStrength([
+            'minScore'  => PasswordStrength::STRENGTH_MEDIUM,
+            'message'   => 'Password.Tooweak',
+        ])
+    ]
     // BEWARE ALWAYS PUT COMPLEXITY FROM BEGINNING : ex: 5s0inNQ0bLrF4Ijq
     //#[Assert\] Complexité avec REgex pour Carectère spéciaux et + chiffre + Majuscule
     private ?string $password = null;
 
+    /**
+     * Relation with Trick the user creates.
+     *
+     * @var Collection
+     */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Trick::class)]
     private Collection $tricks;
 
-    // #[ORM\OneToMany(mappedBy: 'author', targetEntity: Comment::class)]
-    // private Collection $comments;
 
-    #[ORM\Column(name: 'username', type: 'string', length: 255, unique:true )]
+    /**
+     * Comment Relation can be added here if needed
+     * #[ORM\OneToMany(mappedBy: 'author', targetEntity: Comment::class)]
+     * private Collection $comments;
+     *
+     */
+
+    /**
+     * Username can't be blank and must be unique. At list 3 caracters to make one.
+     *
+     * @var string|null
+     */
+    #[ORM\Column(name: 'username', type: 'string', length: 255, unique: true)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 3)]
     private ?string $username = null;
 
+    /**
+     * IsVerified indicates that the users has checked his mail box to confirm registration
+     *
+     * @var boolean
+     */
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
+    /**
+     * Uuid is unique and can be called to identify the object. Using uuid V6.
+     *
+     * @var Uuid|null
+     */
     #[ORM\Column(type: 'uuid')]
     private ?Uuid $uuid = null;
 
+    /**
+     * Token validator to veirfy identity of the person registrating
+     *
+     * @var string|null
+     */
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $tokenValidator = null;
 
+    /**
+     * Token Reset is to verify identity of person reseting password
+     *
+     * @var string|null
+     */
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $tokenReset = null;
 
+    /**
+     * Profil pic link to the user
+     *
+     * @var ProfilPic|null
+     */
     #[ORM\ManyToOne]
     private ?ProfilPic $profilPicId = null;
 
@@ -110,7 +161,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
+        // Guarantee every user at least has ROLE_USER.
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);

@@ -30,7 +30,7 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
         for ($i = 1; $i <= 10; $i++) {
             $comment = new Comment();
             $trick = $this->getReference('trick_'.mt_rand(0, 19));
-            $comment->setContent($commentList[mt_rand(0,9)]);
+            $comment->setContent($commentList[mt_rand(0, 9)]);
             $comment->setTrick($trick);
             $days = (new \DateTime())->diff($trick->getCreatedAt())->days;
             $interval = new \DateInterval('P' . $days . 'D');

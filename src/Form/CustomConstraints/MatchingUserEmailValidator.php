@@ -29,7 +29,7 @@ class MatchingUserEmailValidator extends ConstraintValidator
 
         // Retrieve the user based on the UUID
         $user = $this->entityManager->getRepository(User::class)->findOneByUuidToken($uuid->toBinary(), $token);
-    
+
         if (!$user || $value !== $user->getEmail()) {
             $this->context->buildViolation($constraint->message)
                 ->addViolation();

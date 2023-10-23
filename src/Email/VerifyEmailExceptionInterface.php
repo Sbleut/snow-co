@@ -2,7 +2,6 @@
 
 namespace App\Email\VeryEmail\Exception;
 
-
 /**
  * An exception that is thrown by VerifyEmailHelperInterface::validateEmailConfirmation().
  *

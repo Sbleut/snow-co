@@ -29,12 +29,12 @@ class CategoryFixtures extends Fixture
             $category->setUuid(Uuid::v6());
 
             $manager->persist($category);
-            
+
             $this->addReference('category_' . $key, $category);
         }
 
         $manager->flush();
 
-        
+
     }
 }

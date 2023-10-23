@@ -2,7 +2,6 @@
 
 namespace App\FileManagement;
 
-
 use Symfony\Component\Filesystem\Filesystem;
 use App\FileManagement\FileExceptionInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -29,7 +28,9 @@ class UploadImage
         ]);
 
         if (count($violations) > 0) {
-            $this->errorList = $violations;
+            foreach ($violations as $violation) {
+                $this->errorList[] = $violation;
+            }
             return false;
         }
         return true;
@@ -56,15 +57,7 @@ class UploadImage
     {
         $file = md5(uniqid()) . '.' . $image->guessExtension();
 
-        $filesystem = new Filesystem();
-
-        $directory = 'uploads/image' . strtolower($trickSlug);
-
-        if (!$filesystem->exists($directory)) {
-            $filesystem->mkdir($directory);
-        }
-
-        $image->move('uploads/image' . $trickSlug . '/' , $file);
+        $image->move('uploads/image/', $file);
 
         return $file;
     }

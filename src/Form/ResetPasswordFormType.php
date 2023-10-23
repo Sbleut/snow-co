@@ -40,7 +40,7 @@ class ResetPasswordFormType extends AbstractType
                         'minScore' => PasswordStrength::STRENGTH_MEDIUM,
                         'message' => 'Password.Tooweak',
                     ]),
-                ]             
+                ]
             ])
         ;
     }

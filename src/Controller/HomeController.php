@@ -15,35 +15,48 @@ class HomeController extends AbstractController
         name: 'homepage',
         requirements: ['pageNb' => '\d+']
     )]
-    public function homepage(TrickRepository $trickRepository, int $pageNb = 0 ) : Response
+    /**
+     * HomePage manage to give all variables needed to display homepage
+     *
+     * @param TrickRepository $trickRepository
+     * @param integer $pageNb
+     * @return Response
+     */
+    public function homepage(TrickRepository $trickRepository, int $pageNb = 0): Response
     {
-        $tricktotal= $trickRepository->count([]);
+        $tricktotal = $trickRepository->count([]);
         $limit = 15;
-        $limitReached =false;
-        
-        if($tricktotal > $limit * $pageNb){
+        $limitReached = false;
+
+        if ($tricktotal > $limit * $pageNb) {
             $pageNb++;
         }
-        if($tricktotal <= $limit * $pageNb){
+        if ($tricktotal <= $limit * $pageNb) {
             $limitReached = true;
-        }  
-        
-       
-        $tricklist = $trickRepository->findBy([], [], $limit*$pageNb, 0);
+        }
+
+        $tricklist = $trickRepository->findBy([], [], $limit * $pageNb, 0);
 
         return $this->render('home/home.html.twig', [
-            'title' => 'SnowTrick',
-            'tricks' => $tricklist,
-            'pageNb'=>$pageNb,
-            'tricktotal'=>$tricktotal,
-            'limit'=>$limit,
-            'limitReached'=>$limitReached
+            'title'         => 'SnowTrick',
+            'tricks'        => $tricklist,
+            'pageNb'        => $pageNb,
+            'tricktotal'    => $tricktotal,
+            'limit'         => $limit,
+            'limitReached'  => $limitReached,
         ]);
-    } 
+    }
+
 
     #[Route('/browse/{slug}')]
+    /**
+     * Undocumented function
+     *
+     * @param string $slug
+     * @return Response
+     */
     public function browse(string $slug): Response
     {
-        return new Response('Browse : '.$slug);
+        return new Response('Browse : ' . $slug);
     }
 }

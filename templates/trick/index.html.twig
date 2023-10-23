@@ -4,11 +4,12 @@
 	<link rel="stylesheet" href="{{asset("assets/styles/trick.css")}}">
 {% endblock %}
 
-{% block title %}Hello TrickController!
+{% block title %}
+	{{trick.name}}
 {% endblock %}
 
 {% block body %}
-	<div class="background_trick vh-100 position-relative"></div>
+	<div class="background-trick vh-100 position-relative"></div>
 
 	<div class="trick-detail-card example-wrapper container position-absolute top-50 start-50 translate-middle">
 		<div class="card mb-3 main-pic">
@@ -16,7 +17,7 @@
 			{% for image in trick.images %}
 				{% if app.user %}
 					<div class="d-flex position-absolute update-btn m-2">
-						<a href="">
+						<a href="{{path('app_trick_update', {slug:trick.slug})}}">
 							<button class="btn btn-secondary btn-sm me-2">
 								<i class="bi bi-pencil-square"></i>
 							</button>
@@ -29,23 +30,15 @@
 			{% endfor %}
 			<div class="card-body">
 				<div class="d-flex border-bottom pb-3 justify-content-between">
-					<div id="carouselExampleControls" class="carousel slide " data-bs-ride="carousel">
-						<div class="carousel-inner">
+					<div class="" >
+						<div class="">
 							{% for image in trick.images %}
-								<img src="{{asset('uploads/image/' ~ trick.slug | lower ~ '/' ~ image.fileName)}}" class="small-pics card-img-top rounded" alt="...">
+								<img src="{{asset('uploads/image/' ~ image.fileName)}}" class="small-pics card-img-top rounded" alt="...">
 							{% endfor %}
 						</div>
-						<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-							<span class="visually-hidden">Previous</span>
-						</button>
-						<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-							<span class="carousel-control-next-icon" aria-hidden="true"></span>
-							<span class="visually-hidden">Next</span>
-						</button>
 					</div>
-					<div id="carouselExampleControls" class="carousel slide " data-bs-ride="carousel">
-						<div class="carousel-inner">
+					<div class="" >
+						<div class="">
 							{% for video in trick.videos %}
 								<iframe width="200" height="150" src="{{video.iframe}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 							{% endfor %}

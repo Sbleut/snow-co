@@ -29,6 +29,6 @@ class UserChecker implements UserCheckerInterface
         }
 
         // user account is expired, the user may be notified
-        
+
     }
 }

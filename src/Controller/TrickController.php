@@ -10,9 +10,10 @@ use App\Form\CommentFormType;
 use App\Form\TrickCreateFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CommentRepository;
-use App\Repository\VideoRepository;
+use App\Repository\ImageRepository;
 use App\Repository\TrickRepository;
 use DateTimeImmutable;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,6 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class TrickController extends AbstractController
 {
@@ -55,7 +57,7 @@ class TrickController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $comment->setContent($form->get('content')->getData());
             $comment->setUuid(Uuid::v6());
-            $comment->setCreatedAt(new DateTimeImmutable);
+            $comment->setCreatedAt(new DateTimeImmutable());
             $comment->setTrick($trick);
             $comment->setAuthor($security->getUser());
 
@@ -80,12 +82,12 @@ class TrickController extends AbstractController
     }
 
     #[Route('/trickCreate', name: 'app_trick_create', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_USER')]
     public function trickCreate(Request $request, UploadImage $uploadImage, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $trick = new Trick();
         $form = $this->createForm(TrickCreateFormType::class, $trick);
         $form->handleRequest($request);
-
 
         if ($form->isSubmitted() && $form->isValid()) {
             $trickName = $form->get('name')->getData();
@@ -95,6 +97,69 @@ class TrickController extends AbstractController
             $trick->setCategory($form->get('category')->getData());
             $trick->setUser($this->getUser());
             $trick->setSlug($slugger->slug($trickName));
+            $images = $form->get('images')->getData();
+
+
+            foreach ($images as $image) {
+                if ($uploadImage->validateUploadedFile($image)) {
+                    $fichier = $uploadImage->saveImage($image, $trick->getSlug());
+                    $img = new Image();
+                    $img->setFileName($fichier);
+                    $img->setMainImage(false);
+                    $img->setUuid(Uuid::v6());
+                    $trick->addImage($img);
+                };
+            }
+            if ($uploadImage->hasError()) {
+                $this->addFlash('errorfile', $uploadImage->getErrorMessages());
+            }
+
+            foreach ($trick->getVideos() as $video) {
+                $video->setUuid(Uuid::v6());
+            }
+
+            // VErification embeded link youtube Regex
+            // Error Message
+            if (!$uploadImage->hasError()) {
+                $entityManager->persist($trick);
+                $entityManager->flush();
+                $this->addFlash('success', 'Trick.Created');
+                return $this->redirectToRoute('app_trick_detail', ['slug' => $trick->getSlug()]);
+            }
+        }
+
+        return $this->render('trick/create.html.twig', [
+            'controller_name' => 'TrickController',
+            'trick'           => $trick,
+            'form'            => $form->createView(),
+        ]);
+    }
+
+    #[Route(
+        '/trick/update/{slug}',
+        name: 'app_trick_update',
+        methods: ['GET', 'POST'],
+    )]
+    #[IsGranted('ROLE_USER')]
+    public function update(Request $request, TrickRepository $trickRepository, EntityManagerInterface $entityManager, string $slug, UploadImage $uploadImage, SluggerInterface $slugger): Response
+    {
+
+        $trick = $trickRepository->getTrickBySlug($slug);
+        if (!$trick) {
+            throw $this->createNotFoundException("This trick doesn't exist");
+        }
+        $disable = false;
+
+        $form = $this->createForm(TrickCreateFormType::class, $trick);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $trickName = $form->get('name')->getData();
+            $trick->setName($trickName);
+            $trick->setDescription($form->get('description')->getData());
+            $trick->setUpdatedAt(new DateTimeImmutable());
+            $trick->setSlug($slugger->slug($trickName));
+            $trick->setCategory($form->get('category')->getData());
             $images = $form->get('images')->getData();
 
             foreach ($images as $image) {
@@ -110,18 +175,73 @@ class TrickController extends AbstractController
             if ($uploadImage->hasError()) {
                 $this->addFlash('errorfile', $uploadImage->getErrorMessages());
             }
+
+            foreach ($trick->getVideos() as $video) {
+                $video->setUuid(Uuid::v6());
+            }
+
             if (!$uploadImage->hasError()) {
                 $entityManager->persist($trick);
                 $entityManager->flush();
-                $this->addFlash('success', 'Trick.Created');
+                $this->addFlash('success', 'Trick.Updated');
                 return $this->redirectToRoute('app_trick_detail', ['slug' => $trick->getSlug()]);
             }
         }
 
-        return $this->render('trick/create.html.twig', [
+        return $this->render('trick/update.html.twig', [
             'controller_name' => 'TrickController',
-            'trick'           => $trick,
-            'form'            => $form->createView(),
+            'trick' => $trick,
+            'form' => $form->createView(),
         ]);
     }
+
+    #[Route(
+        '/main/image/{uuid}',
+        name: 'app_main_image',
+        methods: ['GET', 'POST'],
+    )]
+    #[IsGranted('ROLE_USER')]
+    public function setMainImage($uuid, ImageRepository $imageRepository, EntityManagerInterface $manager)
+    {
+
+        $image = $imageRepository->findOneBy(['uuid' => $uuid], []);
+        $actualMain = $imageRepository->findOneBy(['mainImage' => true], []);
+
+        $actualMain->setMainImage(false);
+        $image->setMainImage(true);
+
+        $manager->persist($image);
+        $manager->flush();
+        return $this->redirectToRoute('app_trick_update', ['slug' => $image->getTrick()->getSlug()]);
+
+    }
+
+    #[Route(
+        '/delete/image/{uuid}',
+        name: 'app_delete_image',
+        methods: ['DELETE'],
+    )]
+    #[IsGranted('ROLE_USER')]
+    public function deleteImage($uuid, ImageRepository $imageRepository, EntityManagerInterface $manager)
+    {
+        $image = $imageRepository->findOneBy(['uuid' => $uuid], []);
+
+        unlink('uploads/image/' . $image->getFileName());
+
+        $manager->remove($image);
+        $manager->flush();
+        return $this->redirectToRoute('app_trick_update', ['slug' => $image->getTrick()->getSlug()]);
+    }
+
+    #[Route(
+        '/trick/delete/{slug}',
+        name: 'app_trick_delete',
+        methods: ['GET', 'POST'],
+    )]
+    #[IsGranted('ROLE_USER')]
+    public function deleteTrick($slug, EntityManagerInterface $manager, TrickRepository $trickRepository)
+    {
+
+    }
+
 }
