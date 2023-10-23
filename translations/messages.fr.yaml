@@ -41,10 +41,14 @@ Registration:
 Trick:
   Create: Ajout d'une nouvelle figure
   Created: Votre Figure a été ajoutée.
+  Deleted: La figure a été supprimée.
   Name: Nom de la figure
   Category: Catégorie de la figure 
   ConfirmDelete:
   Comment:
     Content: Votre Commentaire
     Submit: Laissez votre Commentaire
-  Unique: Cette figure existe déjà veuillez trouvé un autre nom ou modifier la figure existante
+  Unique: Cette figure existe déjà veuillez trouvé un autre nom ou modifier la figure existante.
+
+Token:
+  Error: Désolé vous ne pouvez pas effectué cette action.

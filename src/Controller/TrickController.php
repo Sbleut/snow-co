@@ -218,33 +218,61 @@ class TrickController extends AbstractController
     #[Route(
         '/delete/image/{uuid}',
         name: 'app_delete_image',
-        methods: ['DELETE'],
+        methods: ['POST','DELETE'],
     )]
     #[IsGranted('ROLE_USER')]
-    public function deleteImage($uuid, ImageRepository $imageRepository, EntityManagerInterface $manager)
+    public function deleteImage(Request $request, $uuid, ImageRepository $imageRepository, EntityManagerInterface $manager)
     {
+
         $image = $imageRepository->findOneBy(['uuid' => $uuid], []);
 
-        unlink('uploads/image/' . $image->getFileName());
+        $data = $request->get('_token');
+        
+        if ($this->isCsrfTokenValid('delete' . $image->getUuid(), $data)) {
+            unlink('uploads/image/' . $image->getFileName());
 
-        $manager->remove($image);
-        $manager->flush();
-        return $this->redirectToRoute('app_trick_update', ['slug' => $image->getTrick()->getSlug()]);
+            $manager->remove($image);
+            $manager->flush();
+            return $this->redirectToRoute('app_trick_update', ['slug' => $image->getTrick()->getSlug()]);
+        }
+        
+        $this->addFlash('error', 'Token.Error');
+
+        return $this->redirectToRoute('app_homepage');
     }
 
     #[Route(
         '/trick/delete/{slug}',
-        name: 'app_trick_delete',
-        methods: ['GET', 'POST'],
+        name: 'app_delete_trick',
+        methods: ['POST', 'DELETE'],
     )]
     #[IsGranted('ROLE_USER')]
-    public function deleteTrick($slug, EntityManagerInterface $manager, TrickRepository $trickRepository)
+    public function deleteTrick(Request $request, $slug, EntityManagerInterface $manager, TrickRepository $trickRepository)
     {
+        $data = $request->get('_token');
         $trick = $trickRepository->getTrickBySlug($slug);
         if (!$trick) {
             throw $this->createNotFoundException("This trick doesn't exist");
         }
 
+        
+        if ($this->isCsrfTokenValid('delete' . $trick->getSlug(), $data)) {
+            foreach ($trick->getImages() as $image) {
+                unlink('uploads/image/' . $image->getFileName());
+            }
+    
+            $manager->remove($trick);
+            $manager->flush();
+    
+            $this->addFlash('success', 'Trick.Deleted');
+    
+            return $this->redirectToRoute('homepage');
+
+        }
+        
+        $this->addFlash('error', 'Token.error');
+    
+        return $this->redirectToRoute('homepage');
         
     }
 

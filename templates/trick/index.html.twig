@@ -14,30 +14,33 @@
 	<div class="trick-detail-card example-wrapper container position-absolute top-50 start-50 translate-middle">
 		<div class="card mb-3 main-pic">
 			{{include('_partials/_main_image.html.twig', {'trick': trick})}}
-			{% for image in trick.images %}
-				{% if app.user %}
-					<div class="d-flex position-absolute update-btn m-2">
-						<a href="{{path('app_trick_update', {slug:trick.slug})}}">
-							<button class="btn btn-secondary btn-sm me-2">
-								<i class="bi bi-pencil-square"></i>
-							</button>
-						</a>
-						<button class="btn btn-danger btn-sm" onclick="showConfirmation()">
+
+			{% if app.user %}
+				<div class="d-flex position-absolute update-btn m-2">
+					<a href="{{path('app_trick_update', {slug:trick.slug})}}">
+						<button class="btn btn-secondary btn-sm me-2">
+							<i class="bi bi-pencil-square"></i>
+						</button>
+					</a>
+					<form method="post" action="{{ path('app_delete_trick', {slug:trick.slug}) }}">
+						<input type="hidden" name="_method" value="DELETE">
+						<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trick.slug) }}">
+						<button class="btn btn-danger btn-sm me-2" onclick="showConfirmation()">
 							<i class="bi bi-trash-fill"></i>
 						</button>
-					</div>
-				{% endif %}
-			{% endfor %}
+					</form>
+				</div>
+			{% endif %}
 			<div class="card-body">
 				<div class="d-flex border-bottom pb-3 justify-content-between">
-					<div class="" >
+					<div class="">
 						<div class="">
 							{% for image in trick.images %}
 								<img src="{{asset('uploads/image/' ~ image.fileName)}}" class="small-pics card-img-top rounded" alt="...">
 							{% endfor %}
 						</div>
 					</div>
-					<div class="" >
+					<div class="">
 						<div class="">
 							{% for video in trick.videos %}
 								<iframe width="200" height="150" src="{{video.iframe}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
@@ -67,7 +70,7 @@
 				{% endif %}
 				<div class="container d-flex flex-column alignt-items-center mt-3 pt-3 w-50 comment-list">
 					{% for comment in commentList %}
-						<div class="d-flex m-2">							
+						<div class="d-flex m-2">
 							{{include('_partials/_profil_pic.html.twig', {'comment': comment})}}
 							<div class="border m-2 w-75">
 								<p class="card-text text-center">{{comment.content}}</p>
@@ -85,8 +88,8 @@
 						<div
 							class="d-flex justify-content-center m-5" id="load_more">
 							{# <div class="spinner-border me-3 " role="status" id="spinner">
-																		<span class="visually-hidden loading">Loading...</span>
-																	</div> #}
+																									<span class="visually-hidden loading">Loading...</span>
+																								</div> #}
 							<a href="{{path('app_trick_detail', {slug:trick.slug , pageNb:pageNb})}}#loading-tricks">
 								<button class="btn btn-secondary fw-bold" id="load">Load more</button>
 							</a>
