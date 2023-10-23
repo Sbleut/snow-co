@@ -148,7 +148,6 @@ class TrickController extends AbstractController
         if (!$trick) {
             throw $this->createNotFoundException("This trick doesn't exist");
         }
-        $disable = false;
 
         $form = $this->createForm(TrickCreateFormType::class, $trick);
         $form->handleRequest($request);
@@ -241,7 +240,12 @@ class TrickController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function deleteTrick($slug, EntityManagerInterface $manager, TrickRepository $trickRepository)
     {
+        $trick = $trickRepository->getTrickBySlug($slug);
+        if (!$trick) {
+            throw $this->createNotFoundException("This trick doesn't exist");
+        }
 
+        
     }
 
 }

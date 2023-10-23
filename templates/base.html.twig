@@ -47,7 +47,7 @@
 						
 						<li class="nav-item">
 							<a class="nav-link" href="{{ path('app_login') }}">
-								{{'Nav.Login'|trans()}}</a>
+								{{'Login.btn'|trans()}}</a>
 						</li>
 						{% endif %}
 						{% if app.user != null %}
@@ -55,7 +55,7 @@
 								<p class="nav-link">{{app.user.username}}</p>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="{{ path('app_logout') }}">{{'Nav.Logout'|trans()}}</a>
+								<a class="nav-link" href="{{ path('app_logout') }}">{{'Logout'|trans()}}</a>
 							</li>
 						{% endif %}
 						

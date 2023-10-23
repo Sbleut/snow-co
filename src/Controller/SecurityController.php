@@ -116,7 +116,7 @@ class SecurityController extends AbstractController
         $user = $userRepository->findOneByUuidToken($uuid->toBinary(), $token);
 
         if ($user === null) {
-            $this->addFlash('Reset_error', $translator->trans('Reset.Error'));
+            $this->addFlash('error', $translator->trans('Reset.Error'));
             return $this->redirectToRoute('homepage');
         }
 
@@ -136,7 +136,7 @@ class SecurityController extends AbstractController
             );
             $entityManager->flush();
 
-            $this->addFlash('success', $translator->trans('Reset.Success'));
+            $this->addFlash('success', 'Reset.Success');
             return $this->redirectToRoute('homepage');
         }
         $error = $authenticationUtils->getLastAuthenticationError();

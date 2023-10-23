@@ -9,16 +9,25 @@
 	{% endfor %}
 
 	<div class="container">
-	<h1>Register</h1>
+	<h1>{{'Register' |trans()}}</h1>
 
 	
 
 	{{ form_start(registrationForm) }}
 	{{ form_errors(registrationForm) }}
-	{{ form_row(registrationForm.username,)}}
-	{{ form_row(registrationForm.email) }}
-	{{ form_row(registrationForm.password, {label:'Password'}) }}
-
+	{{ form_row(registrationForm.username, {'label': 'Nom d\'utilisateur', 'attr':{'placeholder': 'Nom d\'utilisateur ...'}})}}
+	{{ form_row(registrationForm.email, {'label': 'Adresse email', 'attr':{'placeholder': 'Adresse email ...'}}) }}
+	{{ form_row(registrationForm.password, {'label': 'Mot de passe', 'attr':{'placeholder': 'Mot de passe ...'}})}}
+	<h3>Choose a Profile Picture:</h3>
+	
+    <div class="d-flex container form-check">
+        {% for profilPic in registrationForm.profilPicId %}
+			<div class="">
+			<img class="img-thumbnail" src="{{ asset('assets/image/profil-pic/' ~ profilPic.vars.label) }}" alt="{{ profilPic.vars.label }}">
+			{{ form_row(profilPic)}}
+            </div>
+        {% endfor %}
+    </div>
 	<button type="submit" class="btn btn-primary">{{'Register'|trans()}}</button>
 	{{ form_end(registrationForm) }}
 	</div>
