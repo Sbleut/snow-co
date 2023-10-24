@@ -22,7 +22,7 @@ class UploadImage
         // Apply Symfony validation constraints to the file
         $violations = $this->validator->validate($image, [
             new Assert\File([
-                'maxSize' => '1M',
+                'maxSize' => '4M',
                 'mimeTypes' => ['image/jpeg', 'image/png', 'image/gif'],
             ])
         ]);

@@ -14,7 +14,11 @@ Login:
   Password: Mot de passe 
   Email: Email
 
-Logout: Se déconnecter
+Logout:
+  Link: Se déconnecter
+  Success: Vous êtes bien déconnecté
+
+
 Home:
   catch: L'enccyclopédie des tricks
 Email:
@@ -31,7 +35,7 @@ Forgot:
 
 Reset:
   Error: Pas de correspondance 
-  Password:  Réinitialisation du mot de passe
+  Password: Réinitialisation du mot de passe
   Submit: Nouveau mot de passe
   Success : Votre mot de passe a été modifié avec succès
 
@@ -41,6 +45,7 @@ Registration:
 Trick:
   Create: Ajout d'une nouvelle figure
   Created: Votre Figure a été ajoutée.
+  Updated: Votre Figure a été mis à jour.
   Deleted: La figure a été supprimée.
   Name: Nom de la figure
   Category: Catégorie de la figure 
@@ -50,5 +55,7 @@ Trick:
     Submit: Laissez votre Commentaire
   Unique: Cette figure existe déjà veuillez trouvé un autre nom ou modifier la figure existante.
 
+Image:
+  Deleted: Votre image a été supprimé
 Token:
   Error: Désolé vous ne pouvez pas effectué cette action.

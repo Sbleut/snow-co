@@ -14,38 +14,36 @@
 	<div class="trick-detail-card example-wrapper container position-absolute top-50 start-50 translate-middle">
 		<div class="card mb-3 main-pic">
 			{{include('_partials/_main_image.html.twig', {'trick': trick})}}
-
-			{% if app.user %}
-				<div class="d-flex position-absolute update-btn m-2">
-					<a href="{{path('app_trick_update', {slug:trick.slug})}}">
-						<button class="btn btn-secondary btn-sm me-2">
-							<i class="bi bi-pencil-square"></i>
-						</button>
-					</a>
-					<form method="post" action="{{ path('app_delete_trick', {slug:trick.slug}) }}">
-						<input type="hidden" name="_method" value="DELETE">
-						<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trick.slug) }}">
-						<button class="btn btn-danger btn-sm me-2" onclick="showConfirmation()">
-							<i class="bi bi-trash-fill"></i>
-						</button>
-					</form>
-				</div>
-			{% endif %}
+			
+				{% if app.user %}
+					<div class="d-flex position-absolute update-btn m-2">
+						<a href="{{path('app_trick_update', {slug:trick.slug})}}">
+							<button class="btn btn-secondary btn-sm me-2">
+								<i class="bi bi-pencil-square"></i>
+							</button>
+						</a>
+						<form method="post" action="{{ path('app_delete_trick', {slug:trick.slug}) }}">
+							<input type="hidden" name="_method" value="DELETE">
+							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ trick.slug) }}">
+							<button class="btn btn-danger btn-sm me-2" onclick="showConfirmation()">
+								<i class="bi bi-trash-fill"></i>
+							</button>
+						</form>
+					</div>
+				{% endif %}
+			
 			<div class="card-body">
 				<div class="d-flex border-bottom pb-3 justify-content-between">
 					<div class="">
-						<div class="">
 							{% for image in trick.images %}
 								<img src="{{asset('uploads/image/' ~ image.fileName)}}" class="small-pics card-img-top rounded" alt="...">
+
 							{% endfor %}
-						</div>
 					</div>
 					<div class="">
-						<div class="">
 							{% for video in trick.videos %}
 								<iframe width="200" height="150" src="{{video.iframe}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 							{% endfor %}
-						</div>
 					</div>
 				</div>
 				<h5 class="card-title">{{trick.name}}</h5>
@@ -54,8 +52,8 @@
 					<p class="card-text">
 						<small class="text-body-secondary">{{trick.createdAt|date("m/d/Y", "Europe/Paris")}}</small>
 					</p>
-					<p>{{'Category :'|trans() }}{{trick.category.name}}</p>
-					{% if trick.updatedAt %}
+					<p>{{'Category'|trans() }}{{trick.category.name}}</p>
+					{% if trick.updatedAt  is not null %}
 						<p>{{trick.updatedAt|date("m/d/Y", "Europe/Paris")}}</p>
 					{% endif %}
 				</div>
@@ -80,16 +78,13 @@
 							</div>
 						</div>
 					{% endfor %}
-					<!-- Ajouter le bouton et la logique loadmore  de 10 en 10 -->
+					
 				</div>
 				<section class="container-fluid pt-3" id="loading">
 					<div class="row" id="loading-tricks" data-limit="{{ limit }}"></div>
 					{% if limitReached == false %}
 						<div
 							class="d-flex justify-content-center m-5" id="load_more">
-							{# <div class="spinner-border me-3 " role="status" id="spinner">
-																									<span class="visually-hidden loading">Loading...</span>
-																								</div> #}
 							<a href="{{path('app_trick_detail', {slug:trick.slug , pageNb:pageNb})}}#loading-tricks">
 								<button class="btn btn-secondary fw-bold" id="load">Load more</button>
 							</a>
@@ -112,11 +107,6 @@
 		function showConfirmation() { // Display a confirmation dialog with translated message
 var result = window.confirm("{{ 'Trick.ConfirmDelete'|trans }}");
 
-// Check the user's choice and perform the action or navigate to the link
-if (result) {
-window.location.href = "your_link_url"; // Replace with the actual URL
-} else { // Optional code if needed
-}
 }
 	</script>
 {% endblock %}

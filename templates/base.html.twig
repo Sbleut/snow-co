@@ -55,7 +55,7 @@
 								<p class="nav-link">{{app.user.username}}</p>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="{{ path('app_logout') }}">{{'Logout'|trans()}}</a>
+								<a class="nav-link" href="{{ path('app_logout') }}">{{'Logout.Link'|trans()}}</a>
 							</li>
 						{% endif %}
 						
@@ -65,7 +65,7 @@
 		</nav>
 		{% for flash in app.flashes('success') %}
 			{% for message in flash %}
-			<div class="alert alert-success">{{ message |trans() }}</div>
+			<div class="alert alert-success">{{ message | trans()}}</div>
 			{% endfor %}
 		{% endfor %}
 		{% for flash in app.flashes('error') %}
@@ -78,7 +78,9 @@
 			<div class="alert alert-danger">{{ message |trans() }}</div>
 			{% endfor %}
 		{% endfor %}
-		{% block body %}{% endblock %}
+
+		{% block body %}
+		{% endblock %}
 
 		<footer>
 			<div>

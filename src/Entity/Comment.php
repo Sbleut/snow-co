@@ -18,6 +18,12 @@ class Comment
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: 'Votre commentaire doit faire au minimum {{ limit }} caractères',
+        maxMessage: 'Votre commentaire doit faire au maximum{{ limit }} caractères',
+    )]
     private ?string $content = null;
 
     #[ORM\Column]

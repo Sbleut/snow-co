@@ -22,7 +22,9 @@ class HomeController extends AbstractController
      * @param integer $pageNb Current page to display a given number of tricks
      * @return Response
      */
-    public function homepage(TrickRepository $trickRepository, int $pageNb = 0): Response
+
+
+    public function homepage(TrickRepository $trickRepository, int $pageNb= 0): Response
     {
         $tricktotal = $trickRepository->count([]);
         $limit = 15;

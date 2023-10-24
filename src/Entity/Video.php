@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\VideoRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: VideoRepository::class)]
 class Video
@@ -22,6 +23,7 @@ class Video
 
     #[ORM\ManyToOne(inversedBy: 'videos')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\Regex('/^https?://(www\.)?youtube\.com/embed//')]
     private ?Trick $trick = null;
 
     public function getId(): ?int
