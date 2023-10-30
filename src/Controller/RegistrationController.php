@@ -36,7 +36,7 @@ class RegistrationController extends AbstractController
      * @param TranslatorInterface $translator use dictionnary to translate email message.
      * @return Response
      */
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, SendMailService $email, TranslatorInterface $translator, ProfilPicRepository $profilPicRepository): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, SendMailService $email, ProfilPicRepository $profilPicRepository): Response
     {
         $user = new User();
         $profilPics = $profilPicRepository->findAll();

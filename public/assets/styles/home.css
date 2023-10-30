@@ -9,3 +9,19 @@
     height: 200px;
     object-fit: cover;
 }
+
+@media (min-width: 768px) {
+    .background-home{
+        background-image: url('../image/snowboard-g1f3ffa0d2_1280.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;   
+        max-height: 20vh; 
+    }
+    
+    .main-pic{
+        height: 200px;
+        object-fit: cover;
+    }
+    
+}
