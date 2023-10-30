@@ -34,9 +34,9 @@ class TrickController extends AbstractController
         ]
     )]
     /**
-     * index function display a detailled trick with comments. I ensure 
+     * index function display a detailled trick with comments. I ensure
      *
-     * @param Request $request Permits to retrieve form data for comment creation. 
+     * @param Request $request Permits to retrieve form data for comment creation.
      * @param TrickRepository $trickRepository Necessary to fetch given trick by slug.
      * @param CommentRepository $commentRepository necessary to fetch comment in bdd depending on how many comments there are and how many times loading more has click on.
      * @param EntityManagerInterface $entityManager Tools to push to bdd.
@@ -100,7 +100,7 @@ class TrickController extends AbstractController
     /**
      * Creates a new trick.
      *
-     * This method handles the creation of a new trick by a user. It processes the submitted form data, validates and saves the trick, and associates images and videos with it if provided. 
+     * This method handles the creation of a new trick by a user. It processes the submitted form data, validates and saves the trick, and associates images and videos with it if provided.
      *
      * @param Request $request The HTTP request object containing form data.
      * @param UploadImage $uploadImage An instance of the UploadImage service for handling image uploads.
@@ -347,7 +347,7 @@ class TrickController extends AbstractController
      * @throws AccessDeniedException if the CSRF token is invalid.
      */
 
-     
+
     public function deleteTrick(Request $request, $slug, EntityManagerInterface $manager, TrickRepository $trickRepository)
     {
         $data = $request->get('_token');

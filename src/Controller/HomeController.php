@@ -24,7 +24,7 @@ class HomeController extends AbstractController
      */
 
 
-    public function homepage(TrickRepository $trickRepository, int $pageNb= 0): Response
+    public function homepage(TrickRepository $trickRepository, int $pageNb = 0): Response
     {
         $tricktotal = $trickRepository->count([]);
         $limit = 15;

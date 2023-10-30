@@ -10,7 +10,20 @@
     object-fit: cover;
 }
 
+.trick{
+    width: 20rem;
+}
+
+#mediaDropdown{
+    display:none;
+}
+
 @media (min-width: 768px) {
+    
+    body{
+        --bs-body-font-size: 36px;
+    }
+
     .background-home{
         background-image: url('../image/snowboard-g1f3ffa0d2_1280.jpg');
         background-size: cover;
@@ -20,8 +33,16 @@
     }
     
     .main-pic{
-        height: 200px;
+        height: 30rem;
         object-fit: cover;
+    }
+
+    .trick{
+        width: 60rem;
+    }
+
+    #mediaDropdown{
+        display:block;
     }
     
 }

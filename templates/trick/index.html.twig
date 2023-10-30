@@ -33,17 +33,21 @@
 			{% endif %}
 
 			<div class="card-body">
-				<div class="d-flex border-bottom pb-3 justify-content-between">
-					<div class="">
-						{% for image in trick.images %}
-							<img src="{{asset('uploads/image/' ~ image.fileName)}}" class="small-pics card-img-top rounded" alt="...">
-
-						{% endfor %}
-					</div>
-					<div class="">
-						{% for video in trick.videos %}
-							<iframe width="200" height="150" src="{{video.iframe}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-						{% endfor %}
+				<div class="dropdown">
+					<button class="btn btn-primary dropdown-toggle" type="button" id="mediaDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						View Images & Videos
+					</button>
+					<div class="d-flex border-bottom pb-3 justify-content-between collapse dropdown-menu" aria-labelledby="mediaDropdown">
+						<div class="">
+							{% for image in trick.images %}
+								<img src="{{asset('uploads/image/' ~ image.fileName)}}" class="small-pics card-img-top rounded" alt="...">
+							{% endfor %}
+						</div>
+						<div class="">
+							{% for video in trick.videos %}
+								<iframe width="200" height="150" src="{{video.iframe}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+							{% endfor %}
+						</div>
 					</div>
 				</div>
 				<h3 class="card-title mt-2">{{trick.name}}</h3>
@@ -107,31 +111,28 @@
 {% block javascripts %}
 	<script>
 		function showConfirmation() { // Display a confirmation dialog with translated message.
-			var result = window.confirm("{{ 'Trick.ConfirmDelete'|trans }}");
-		}
-		function moveCardTrick(toHeight) {
-		    var trickDetailCard = document.querySelector("#trick-detail-card");
+var result = window.confirm("{{ 'Trick.ConfirmDelete'|trans }}");
+}
+function moveCardTrick(toHeight) {
+var trickDetailCard = document.querySelector("#trick-detail-card");
 
-		    // Add the CSS class for the transition
-		    trickDetailCard.classList.add("smooth-transition");
+// Add the CSS class for the transition
+trickDetailCard.classList.add("smooth-transition");
 
-		    // Set the top margin of the trick-detail-card to the specified height.
-		    trickDetailCard.style.marginTop = toHeight + "px";
-		}
+// Set the top margin of the trick-detail-card to the specified height.
+trickDetailCard.style.marginTop = toHeight + "px";
+}
 
-		// Listen for click events on the navbar-toggler button.
-		document.addEventListener('click', function (event) {
-		        // Toggle between the two predefined heights.
-		        var trickDetailCard = document.querySelector(".navbar");
-        		var currentHeight = trickDetailCard.offsetHeight;
-		        var newHeight = currentHeight === 57 ? 177 : 57;
-		        moveCardTrick(newHeight);
-		});
+// Listen for click events on the navbar-toggler button.
+document.addEventListener('click', function (event) { // Toggle between the two predefined heights.
+var trickDetailCard = document.querySelector(".navbar");
+var currentHeight = trickDetailCard.offsetHeight;
+var newHeight = currentHeight === 57 ? 177 : 57;
+moveCardTrick(newHeight);
+});
 
-		document.addEventListener("DOMContentLoaded", function () {
-		    // Initialize the margin to the default height (60px).
-		    moveCardTrick(60);
-		});
-
+document.addEventListener("DOMContentLoaded", function () { // Initialize the margin to the default height (60px).
+moveCardTrick(60);
+});
 	</script>
 {% endblock %}
