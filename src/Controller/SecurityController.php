@@ -26,17 +26,15 @@ class SecurityController extends AbstractController
      * @return Response
      */
     #[Route(path: '/login', name: 'app_login')]
-
-
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser() !== null) {
             return $this->redirectToRoute('homepage');
         }
 
-        // Get the login error if there is one
+        // Get the login error if there is one.
         $error = $authenticationUtils->getLastAuthenticationError();
-        // Last username entered by the user
+        // Last username entered by the user.
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
@@ -50,6 +48,7 @@ class SecurityController extends AbstractController
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
     {
+        $this->addFlash('success', 'Logout.Success');
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
@@ -88,7 +87,7 @@ class SecurityController extends AbstractController
                         ]
                     );
 
-                    $this->addFlash('success', $translator->trans('Forgot.Email.Send'));
+                    $this->addFlash('success', ['Forgot.Email.Send']);
 
                     return $this->redirectToRoute('homepage');
                 } catch (ForgotPasswordEmailExceptionInterface $exception) {
@@ -116,7 +115,7 @@ class SecurityController extends AbstractController
         $user = $userRepository->findOneByUuidToken($uuid->toBinary(), $token);
 
         if ($user === null) {
-            $this->addFlash('Reset_error', $translator->trans('Reset.Error'));
+            $this->addFlash('error', $translator->trans('Reset.Error'));
             return $this->redirectToRoute('homepage');
         }
 
@@ -136,7 +135,7 @@ class SecurityController extends AbstractController
             );
             $entityManager->flush();
 
-            $this->addFlash('success', $translator->trans('Reset.Success'));
+            $this->addFlash('success', 'Reset.Success');
             return $this->redirectToRoute('homepage');
         }
         $error = $authenticationUtils->getLastAuthenticationError();

@@ -6,8 +6,6 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\User;
-use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * MatchingUserEmailValidator

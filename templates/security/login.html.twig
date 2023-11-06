@@ -12,24 +12,24 @@
 		{% if app.user %}
 			<div class="mb-3">
 				{{'You are logged in as' |trans() . app.user.userIdentifier}}
-				<a href="{{ path('app_logout') }}">Logout</a>
+				<a href="{{ path('app_logout') }}">{{'Logout'|trans()}}</a>
 			</div>
 		{% endif %}
 
-		<h1 class="h3 mb-3 font-weight-normal">{{'Please sign in'|trans()}}</h1>
-		<label for="inputEmail">{{'Email'|trans()}}</label>
+		<h1 class="h3 mb-3 font-weight-normal">{{'Login.h1'|trans()}}</h1>
+		<label for="inputEmail">{{'Login.Email'|trans()}}</label>
 		<input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-		<label for="inputPassword">{{'Password'|trans()}}</label>
+		<label for="inputPassword">{{'Login.Password'|trans()}}</label>
 		<input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
 
 		<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
 		<button class="btn btn-lg btn-primary" type="submit">
-			{{'SignIn'|trans()}}
+			{{'Login.btn'|trans()}}
 		</button>
 
 		<div class="mb-3">
-			<a href="{{ path('app_forgot_password') }}">{{'Forgot.password'|trans()}}</a>
+			<a href="{{ path('app_forgot_password') }}">{{'Forgot.Password'|trans()}}</a>
 		</div>
 	</form>
 {% endblock %}

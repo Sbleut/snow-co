@@ -30,6 +30,13 @@ services:
         tags:
             - { name: 'validator.constraint_validator', alias: 'matching_user_email_validator' }
 
+    App\Validator\Constraints\SlugExistValidator:
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@slugger'
+        tags:
+            - { name: 'validator.constraint_validator', alias: 'slug_exist_validator' }
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 

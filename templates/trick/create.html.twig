@@ -3,7 +3,7 @@
 
 
 {% block body %}
-	<div class="container">
+	<div class="container ">
 		<h1>{{ 'Trick.Create' |trans()}}</h1>
 
 		{# Create a new trick with the TrickCreateFormType form #}
@@ -12,7 +12,6 @@
 		{{ form_row(form.name) }}
 		{{ form_row(form.description) }}
 		{{ form_row(form.category) }}
-
 		{{ form_row(form.images) }}
 
 		<button type="button" class="add_item_link" data-collection-holder-class="videos">Add a video</button>

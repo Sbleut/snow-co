@@ -44,12 +44,16 @@
 												</button>
 											</a>
 										{% endif %}
-										{# MANAGE HTTP METHOD #}
-										<a href="{{ path('app_delete_image', {uuid:image.uuid}) }}">
+										<form method="post" action="{{ path('app_delete_image', {uuid:image.uuid}) }}">
+											<input type="hidden" name="_method" value="DELETE">
+											<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ image.uuid) }}">
+											<button class="btn btn-danger btn-sm me-2" onclick="showConfirmation()"><i class="bi bi-trash-fill"></i></button>
+										</form>
+										{# <a href="{{ path('app_delete_image', {uuid:image.uuid}) }}">
 											<button class="btn btn-danger btn-sm" onclick="showConfirmation()">
 												<i class="bi bi-trash-fill"></i>
 											</button>
-										</a>
+										</a> #}
 									</div>
 								</div>
 							{% endfor %}

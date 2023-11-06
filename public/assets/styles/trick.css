@@ -33,6 +33,32 @@
     object-fit: cover;
 }
 
-.comment-list {
-    border-top: solid;
+#mediaDropdown{
+    display:none;
+}
+
+
+
+@media (max-width: 768px) {
+    .smooth-transition {
+        transition: margin-top 0.3s ease-out; /* You can adjust the duration and timing function as needed */
+    }
+
+    .background-home{   
+        height: 30vh; 
+    }
+    
+    .main-pic{
+        height: 8rem;
+        object-fit: cover;
+    }
+
+    .trick{
+        width: 60rem;
+    }
+
+    #mediaDropdown{
+        display:block;
+    }
+    
 }

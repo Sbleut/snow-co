@@ -2,10 +2,36 @@
     background-image: url('../image/snowboard-g1f3ffa0d2_1280.jpg');
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;    
+    background-repeat: no-repeat;
+    height:100vh;  
 }
 
 .main-pic{
     height: 200px;
     object-fit: cover;
+}
+
+.trick{
+    width: 20rem;
+}
+
+
+
+@media (max-width: 768px) {
+
+
+    .background-home{   
+        height: 30vh; 
+    }
+    
+    .main-pic{
+        height: 8rem;
+        object-fit: cover;
+    }
+
+    .trick{
+        width: 60rem;
+    }
+
+    
 }

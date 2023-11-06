@@ -18,10 +18,12 @@ class HomeController extends AbstractController
     /**
      * HomePage manage to give all variables needed to display homepage
      *
-     * @param TrickRepository $trickRepository
-     * @param integer $pageNb
+     * @param TrickRepository $trickRepository Instance of tickrrepository to fetch Trick object
+     * @param integer $pageNb Current page to display a given number of tricks
      * @return Response
      */
+
+
     public function homepage(TrickRepository $trickRepository, int $pageNb = 0): Response
     {
         $tricktotal = $trickRepository->count([]);
@@ -47,16 +49,4 @@ class HomeController extends AbstractController
         ]);
     }
 
-
-    #[Route('/browse/{slug}')]
-    /**
-     * Undocumented function
-     *
-     * @param string $slug
-     * @return Response
-     */
-    public function browse(string $slug): Response
-    {
-        return new Response('Browse : ' . $slug);
-    }
 }

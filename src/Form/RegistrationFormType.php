@@ -2,6 +2,8 @@
 
 namespace App\Form;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\ProfilPic;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,6 +25,12 @@ class RegistrationFormType extends AbstractType
                 'first_options'  => ['label' => 'Password'],
                 'second_options' => ['label' => 'Repeat Password'],
                 //'mapped' => false,
+            ])
+            ->add('profilPicId', EntityType::class, [
+                'class' => ProfilPic::class,
+                'choice_label' => 'fileName', // The property of ProfilPic to use as the option label
+                'expanded' => true,       // Renders as radio buttons
+                'multiple' => false,      // Allows selecting only one optio
             ])
             ->add('username');
     }
