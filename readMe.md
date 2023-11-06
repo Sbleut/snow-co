@@ -2,6 +2,7 @@
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/df2f1b91278644dfac6c482cc9f96571)](https://app.codacy.com/gh/Sbleut/snow-co/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
+
 ## Requirements 
 
 ```
