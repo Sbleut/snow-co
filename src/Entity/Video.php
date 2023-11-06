@@ -15,15 +15,20 @@ class Video
     #[ORM\Column]
     private ?int $id = null;
 
+    
     #[ORM\Column(length: 255)]
+    #[Assert\Url]
+    #[Assert\Regex(
+        pattern: '^https?://(www\.)?youtube\.com/embed$',
+        message: 'NotYoutube'
+        )]
     private ?string $iframe = null;
 
     #[ORM\Column(type: Types::GUID)]
     private ?string $uuid = null;
 
     #[ORM\ManyToOne(inversedBy: 'videos')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Assert\Regex('/^https?://(www\.)?youtube\.com/embed//')]
+    #[ORM\JoinColumn(nullable: false)]    
     private ?Trick $trick = null;
 
     public function getId(): ?int

@@ -2,7 +2,8 @@
     background-image: url('../image/snowboard-g1f3ffa0d2_1280.jpg');
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;    
+    background-repeat: no-repeat;
+    height:100vh;  
 }
 
 .main-pic{
@@ -18,18 +19,10 @@
     display:none;
 }
 
-@media (min-width: 768px) {
-    
-    body{
-        --bs-body-font-size: 36px;
-    }
+@media (max-width: 768px) {
 
-    .background-home{
-        background-image: url('../image/snowboard-g1f3ffa0d2_1280.jpg');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;   
-        max-height: 20vh; 
+    .background-home{   
+        height: 20vh !important; 
     }
     
     .main-pic{

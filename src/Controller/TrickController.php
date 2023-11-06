@@ -13,14 +13,12 @@ use App\Repository\CommentRepository;
 use App\Repository\ImageRepository;
 use App\Repository\TrickRepository;
 use DateTimeImmutable;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Uid\Uuid;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 

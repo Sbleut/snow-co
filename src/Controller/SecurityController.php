@@ -87,7 +87,7 @@ class SecurityController extends AbstractController
                         ]
                     );
 
-                    $this->addFlash('success', $translator->trans('Forgot.Email.Send'));
+                    $this->addFlash('success', ['Forgot.Email.Send']);
 
                     return $this->redirectToRoute('homepage');
                 } catch (ForgotPasswordEmailExceptionInterface $exception) {

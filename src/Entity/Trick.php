@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\TrickRepository;
+use App\Validator\Constraints\SlugExistValidator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -12,6 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: TrickRepository::class)]
 #[UniqueEntity(fields: ['name'], message: 'Trick.Unique')]
+#[SlugExistValidator()]
 class Trick
 {
     #[ORM\Id]
@@ -44,8 +46,9 @@ class Trick
 
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Image::class, orphanRemoval: true, cascade:["persist"])]
     private Collection $images;
-
+    
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Video::class, orphanRemoval: true, cascade:["persist"])]
+    #[Assert\Valid()]
     private Collection $videos;
 
     #[ORM\ManyToOne(inversedBy: 'tricks')]

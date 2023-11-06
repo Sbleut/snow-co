@@ -2,6 +2,35 @@
 
 # 1 Installation 
 
+## Requirements 
+
+```
+PHP 8.1
+Composer 2.2.12
+npm 9.5.1
+Symfony 6.3
+symfony cli
+```
+
+## Git Clone
+
+git clone https://github.com/Sbleut/snow-co.git
+
+## Database configuration
+
+```
+DATABASE_URL=mysql://db_user:db_password@127.0.0.1:3306/db_name?serverVersion=5.7
+```
+
+## Database Creation
+
+
+```symfony console doctrine:database:create```
+
+```symfony console doctrine:migrations:migrate```
+
+```symfony console doctrine:fixtures:load```
+
 Requirements :
    php
    composer
@@ -9,7 +38,8 @@ Requirements :
    cli
 
 Getting started:
-Setting BDD
-Installation
-Environnement Variables 
+Installation du projet
+Environnement Variables
+Creation of Bdd
+Server Launching
 
