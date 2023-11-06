@@ -19,7 +19,7 @@ class Video
     #[ORM\Column(length: 255)]
     #[Assert\Url]
     #[Assert\Regex(
-        pattern: '^https?://(www\.)?youtube\.com/embed$',
+        pattern: '^https?://(www\.)?youtube\.com/embed^',
         message: 'NotYoutube'
         )]
     private ?string $iframe = null;

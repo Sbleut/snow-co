@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\TrickRepository;
-use App\Validator\Constraints\SlugExistValidator;
+use App\Validator\Constraints as CustoAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: TrickRepository::class)]
 #[UniqueEntity(fields: ['name'], message: 'Trick.Unique')]
-#[SlugExistValidator()]
+#[CustoAssert\SlugExist()]
 class Trick
 {
     #[ORM\Id]

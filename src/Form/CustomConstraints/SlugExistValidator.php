@@ -19,6 +19,13 @@ class SlugExistValidator extends ConstraintValidator
         $this->slugger = $slugger;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param [type] $value
+     * @param Constraint $constraint
+     * @return void
+     */
     public function validate($value, Constraint $constraint)
     {
         if (!$value) {
@@ -26,11 +33,12 @@ class SlugExistValidator extends ConstraintValidator
         }
 
         // Check if email exists in the database
-        $trick = $this->entityManager->getRepository(Trick::class)->findOneBy(['slug' => $this->slugger->slug($value)]);
+        $trick = $this->entityManager->getRepository(Trick::class)->findOneBy(['slug' => $this->slugger->slug($value->getName())]);
 
-        if (!$trick) {
+        if ($trick) {
             $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ value }}', $value)
+                ->setParameter('{{ value }}', $value->getName())
+                ->atPath('form.name')
                 ->addViolation();
         }
     }

@@ -3,12 +3,12 @@
 
 
 {% block body %}
-	<div class="container">
+	<div class="container ">
 		<h1>{{ 'Trick.Create' |trans()}}</h1>
 
 		{# Create a new trick with the TrickCreateFormType form #}
 		{{ form_start(form) }}
-
+		{{ form_errors(form) }}
 		{{ form_row(form.name) }}
 		{{ form_row(form.description) }}
 		{{ form_row(form.category) }}

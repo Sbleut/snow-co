@@ -33,21 +33,32 @@
     object-fit: cover;
 }
 
-@media (min-width: 768px) {
-    .background-trick {
-        background-image: url('../image/snowboard-g1f3ffa0d2_1280.jpg');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        backdrop-filter: blur(5px);
-        background-color: rgba(255, 255, 255, 0.5);
-        z-index: 0;
-    }
-    .position-absolute.top-50 {
-        top: 0; /* Set to 0 when the screen size is smaller, allowing the content to start from the top. */
-    }
+#mediaDropdown{
+    display:none;
+}
+
+
+
+@media (max-width: 768px) {
     .smooth-transition {
         transition: margin-top 0.3s ease-out; /* You can adjust the duration and timing function as needed */
+    }
+
+    .background-home{   
+        height: 30vh; 
+    }
+    
+    .main-pic{
+        height: 8rem;
+        object-fit: cover;
+    }
+
+    .trick{
+        width: 60rem;
+    }
+
+    #mediaDropdown{
+        display:block;
     }
     
 }

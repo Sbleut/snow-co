@@ -34,10 +34,10 @@
 
 			<div class="card-body">
 				<div class="dropdown">
-					<button class="btn btn-primary dropdown-toggle" type="button" id="mediaDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<a class="btn btn-primary " id="mediaDropdown"  role="button">
 						View Images & Videos
-					</button>
-					<div class="d-flex border-bottom pb-3 justify-content-between collapse dropdown-menu" aria-labelledby="mediaDropdown">
+					</a>
+					<div class="d-flex flex-wrap border-bottom pb-3 justify-content-between " >
 						<div class="">
 							{% for image in trick.images %}
 								<img src="{{asset('uploads/image/' ~ image.fileName)}}" class="small-pics card-img-top rounded" alt="...">
@@ -52,22 +52,22 @@
 				</div>
 				<h3 class="card-title mt-2">{{trick.name}}</h3>
 				<p class="card-text">{{trick.description}}</p>
-				<div class="d-flex justify-content-evenly align-items-center">
+				<div class="d-flex flex-wrap justify-content-evenly align-items-center">
 					<p class="">
-						<small class="text-body-secondary">{{trick.createdAt|date("m/d/Y", "Europe/Paris")}}</small>
+						<small class="text-body-secondary">{{'Trick.Created'|trans()}} {{trick.createdAt|date("m/d/Y", "Europe/Paris")}}</small>
 					</p>
 					<p>{{'Trick.Category'|trans() }}
 						:
 						{{trick.category.name}}</p>
 					{% if trick.updatedAt  is not null %}
-						<p>{{trick.updatedAt|date("m/d/Y", "Europe/Paris")}}</p>
+						<p>{{'Trick.Updated'|trans()}} {{trick.updatedAt|date("m/d/Y", "Europe/Paris")}}</p>
 					{% endif %}
 				</div>
 				{% if app.user != null %}
 					{{ form_start(form)}}
 					{{ form_errors(form.content)}}
-					<div class="d-flex justify-content-evenly">
-						{{ form_widget(form.content, {'attr': {'placeholder': 'Trick.Comment.Content' | trans(), 'class': 'd-block w-50'} })}}
+					<div class="d-flexflex-wrap justify-content-evenly">
+						{{ form_widget(form.content, {'attr': {'placeholder': 'Trick.Comment.Content' | trans(), 'class': 'd-block '} })}}
 						<button type="submit" class="btn btn-primary btn-sm ml-2">{{'Trick.Comment.Submit'|trans()}}</button>
 					</div>
 					{{ form_end(form) }}
@@ -124,15 +124,15 @@ trickDetailCard.style.marginTop = toHeight + "px";
 }
 
 // Listen for click events on the navbar-toggler button.
-document.addEventListener('click', function (event) { // Toggle between the two predefined heights.
+document.getElementById("navbar-toggler").addEventListener('click', function (event) { // Toggle between the two predefined heights.
 var trickDetailCard = document.querySelector(".navbar");
 var currentHeight = trickDetailCard.offsetHeight;
-var newHeight = currentHeight === 57 ? 177 : 57;
+var newHeight = currentHeight === 57 ? 235: 57;
 moveCardTrick(newHeight);
 });
 
 document.addEventListener("DOMContentLoaded", function () { // Initialize the margin to the default height (60px).
-moveCardTrick(60);
+moveCardTrick(73);
 });
 	</script>
 {% endblock %}
