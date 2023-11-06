@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraint;
 #[\Attribute]
 class SlugExist extends Constraint
 {
-    public $message = 'Le nom "{{ value }}" existe déjà.';
+    public $message = 'TrickSlug';
 
     public function getTargets(): string
     {

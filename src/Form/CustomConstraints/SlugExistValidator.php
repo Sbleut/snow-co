@@ -33,12 +33,12 @@ class SlugExistValidator extends ConstraintValidator
         }
 
         // Check if email exists in the database
-        $trick = $this->entityManager->getRepository(Trick::class)->findOneBy(['slug' => $this->slugger->slug($value->getName())]);
+        $trick = $this->entityManager->getRepository(Trick::class)->getTrickBySlug($this->slugger->slug($value->getName()), $value);
 
         if ($trick) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', $value->getName())
-                ->atPath('form.name')
+                ->atPath('name')
                 ->addViolation();
         }
     }

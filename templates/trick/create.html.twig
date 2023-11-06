@@ -8,11 +8,10 @@
 
 		{# Create a new trick with the TrickCreateFormType form #}
 		{{ form_start(form) }}
-		{{ form_errors(form) }}
+
 		{{ form_row(form.name) }}
 		{{ form_row(form.description) }}
 		{{ form_row(form.category) }}
-
 		{{ form_row(form.images) }}
 
 		<button type="button" class="add_item_link" data-collection-holder-class="videos">Add a video</button>

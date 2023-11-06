@@ -19,14 +19,19 @@ git clone https://github.com/Sbleut/snow-co.git
 
 ## Database configuration
 
+In the .env file, change the line corresponding to the corresponding Database, in this case the mysql line.
+
 ```
 DATABASE_URL=mysql://db_user:db_password@127.0.0.1:3306/db_name?serverVersion=5.7
 ```
 
 ## Database Creation
 
+In Terminal launch following commands
 
 ```symfony console doctrine:database:create```
+
+It will specify if DB has bean created
 
 ```symfony console doctrine:migrations:migrate```
 
@@ -36,6 +41,7 @@ DATABASE_URL=mysql://db_user:db_password@127.0.0.1:3306/db_name?serverVersion=5.
 
 For dev purpose we are using Mailhog. 
 Switch to your real mail server when going to prod.
+
 ###> symfony/mailer ###
 ##MailHog
 MAILER_DSN=smtp://localhost:1025

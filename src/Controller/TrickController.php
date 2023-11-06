@@ -47,7 +47,7 @@ class TrickController extends AbstractController
 
     public function index(Request $request, TrickRepository $trickRepository, CommentRepository $commentRepository, EntityManagerInterface $entityManager, string $slug, Security $security, int $pageNb = 0): Response
     {
-        $trick = $trickRepository->getTrickBySlug($slug);
+        $trick = $trickRepository->findOneBy(['slug' =>$slug]);
         $commentList = $trick->getComments();
         $commentTotal = $trick->getComments()->count([]);
         $limit = 2;
@@ -186,7 +186,7 @@ class TrickController extends AbstractController
     public function update(Request $request, TrickRepository $trickRepository, EntityManagerInterface $entityManager, string $slug, UploadImage $uploadImage, SluggerInterface $slugger): Response
     {
 
-        $trick = $trickRepository->getTrickBySlug($slug);
+        $trick = $trickRepository->findOneBy(['slug' =>$slug]);
         if (!$trick) {
             throw $this->createNotFoundException("This trick doesn't exist");
         }
@@ -349,7 +349,7 @@ class TrickController extends AbstractController
     public function deleteTrick(Request $request, $slug, EntityManagerInterface $manager, TrickRepository $trickRepository)
     {
         $data = $request->get('_token');
-        $trick = $trickRepository->getTrickBySlug($slug);
+        $trick = $trickRepository->findOneBy(['slug' =>$slug]);
         if (!$trick) {
             throw $this->createNotFoundException("This trick doesn't exist");
         }

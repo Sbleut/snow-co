@@ -71,15 +71,21 @@ class TrickRepository extends ServiceEntityRepository
      * Undocumented function
      *
      * @param string $slug
+     * @param Trick $trick
      * @return Trick
      */
-    public function getTrickBySlug(string $slug)
+    public function getTrickBySlug(string $slug, Trick $trick)
     {
-        return $this->createQueryBuilder('t')
-                    ->andWhere('t.slug = :val')
-                    ->setParameter('val', $slug)
-                    ->getQuery()
-                    ->getOneOrNullResult();
+        $queryBuilder = $this->createQueryBuilder('t')
+            ->andWhere('t.slug = :slug')
+            ->setParameter('slug', $slug);
+        if ($trick->getId() !== null){
+            $queryBuilder->andWhere('t != :trick')
+            ->setParameter('trick', $trick);
+        }            
+        return $queryBuilder->getQuery()
+            ->getOneOrNullResult();
+        
     }
 
 
