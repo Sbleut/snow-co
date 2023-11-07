@@ -66,6 +66,7 @@
 				</div>
 			</div>
 		</nav>
+		<div class="flash position-absolute">
 		{% for flash in app.flashes('success') %}
 			{% for message in flash %}
 				<div class="alert alert-success">{{ message | trans()}}</div>
@@ -81,6 +82,7 @@
 				<div class="alert alert-danger">{{ message |trans() }}</div>
 			{% endfor %}
 		{% endfor %}
+		</div>
 
 		{% block body %}{% endblock %}
 
