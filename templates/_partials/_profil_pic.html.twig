@@ -1,9 +1,13 @@
 {% if comment.author.profilPicId.fileName is defined and comment.author.profilPicId.fileName|length > 0 %}
-    <img src="{{asset('assets/image/profil-pic/' ~ comment.author.profilPicId.fileName)}}" class="rounded-circle shadow-1-strong me-3 small-pics" alt="profil-pic"/>
+	<div class="placeholder-pic">
+		<img src="{{asset('assets/image/profil-pic/' ~ comment.author.profilPicId.fileName)}}" class="bd-placeholder-img profil-pic" alt="profil-pic"/>
+	</div>
 {% else %}
-	<svg class="bd-placeholder-img d-block" width="100" height="100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A generic square placeholder image with a white border around it, making it resemble a photograph taken with an old instant camera: 200x200" focusable="false">
-		<title>A generic square placeholder image with a white border around it, making it resemble a photograph taken with an old instant camera</title>
-		<circle cx="50" cy="50" r="50" fill="#dee2e6"></circle>
-		<text x="50%" y="50%" fill="#dee2e6" dy=".3em">100</text>
-	</svg>
+	<div class="placeholder-pic">
+		<svg class="bd-placeholder-img" width="100" height="100" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false">
+			<title>A generic square placeholder image with a white border around it, making it resemble a photograph taken with an old instant camera</title>
+			<circle cx="50" cy="50" r="50" fill="#dee2e6"></circle>
+			<text x="50%" y="50%" fill="#dee2e6" dy=".3em">100</text>
+		</svg>
+	</div>
 {% endif %}

@@ -9,7 +9,7 @@
 }
 
 .trick-detail-card {
-    margin-top: 6rem;
+    margin-top: 60px;
     top: 0;
     left: 0;
     width: 100%;
@@ -33,7 +33,7 @@
     object-fit: cover;
 }
 
-#mediaDropdown{
+#responsive-pics-button{
     display:none;
 }
 
@@ -57,8 +57,16 @@
         width: 60rem;
     }
 
-    #mediaDropdown{
-        display:block;
+    #pics-n-video{
+        display:none;
+    }
+
+    .small-pics{
+        width: 250px;
+    }
+
+    #responsive-pics-button{
+        display:inline-block;
     }
     
 }

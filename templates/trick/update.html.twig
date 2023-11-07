@@ -10,8 +10,8 @@
 
 {% block body %}
 	<div class="background-trick vh-100 position-relative"></div>
-	<div class="trick-detail-card example-wrapper container position-absolute top-50 start-50 translate-middle">
-		<div class="card mb-3 main-pic">
+	<div class="trick-detail-card example-wrapper container position-absolute top-50 start-50 translate-middle" id="trick-detail-card">
+		<div class="card mb-3" id="tricks">
 
 			{{include('_partials/_main_image.html.twig', {'trick': trick})}}
 			{% for image in trick.images %}
@@ -24,9 +24,12 @@
 				{% endif %}
 			{% endfor %}
 			<div class="card-body">
-				<div class="d-flex border-bottom pb-3 justify-content-between">
-					<div class="">
-						<div class="d-flex flex-wrap">
+				<div class="d-flex flex-column justify-content-evenly">
+					<button class="btn btn-primary " id="responsive-pics-button" type="button">
+						View Images & Videos
+					</button>
+					<div class="container border-bottom pb-3 justify-content-between" id="pics-n-video">
+						<div class="d-flex flex-wrap align-items-center justify-content-evenly">
 							{% for image in trick.images %}
 								<div class="position-relative">
 									<img src="{{asset('uploads/image/' ~ image.fileName)}}" class="small-pics card-img-top rounded" alt="...">
@@ -47,20 +50,20 @@
 										<form method="post" action="{{ path('app_delete_image', {uuid:image.uuid}) }}">
 											<input type="hidden" name="_method" value="DELETE">
 											<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ image.uuid) }}">
-											<button class="btn btn-danger btn-sm me-2" onclick="showConfirmation()"><i class="bi bi-trash-fill"></i></button>
-										</form>
-										{# <a href="{{ path('app_delete_image', {uuid:image.uuid}) }}">
-											<button class="btn btn-danger btn-sm" onclick="showConfirmation()">
+											<button class="btn btn-danger btn-sm me-2" onclick="showConfirmation()">
 												<i class="bi bi-trash-fill"></i>
 											</button>
-										</a> #}
+										</form>
+										{# <a href="{{ path('app_delete_image', {uuid:image.uuid}) }}">
+																					<button class="btn btn-danger btn-sm" onclick="showConfirmation()">
+																						<i class="bi bi-trash-fill"></i>
+																					</button>
+																				</a> #}
 									</div>
 								</div>
 							{% endfor %}
 						</div>
-					</div>
-					<div class="">
-						<div class="">
+						<div class="d-flex flex-wrap align-items-center justify-content-evenly">
 							{% for video in trick.videos %}
 								<iframe width="200" height="150" src="{{video.iframe}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 							{% endfor %}
@@ -69,13 +72,13 @@
 				</div>
 
 				{{ form_start(form) }}
-				{{ form_widget(form.images, {'attr': {}}) }}
-				<button type="button" class="add_item_link" data-collection-holder-class="videos">Add a video</button>
+				{{ form_widget(form.images, {'attr': {'class': 'form-control'}}) }}
+				<button type="button" class="add_item_link btn btn-primary mb-1" data-collection-holder-class="videos">Add a video</button>
 
-				<ul class="videos" data-index="{{ form.videos|length > 0 ? form.videos|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}">
+				<ul class="videos list-group mb-1" data-index="{{ form.videos|length > 0 ? form.videos|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}">
 
 					{% for video in form.videos %}
-						<li>{{ form_row(video.iframe) }}</li>
+						<li class="list-group-item">{{ form_row(video.iframe, {'attr': {'class': 'form-control'}}) }}</liclass=>
 					{% endfor %}
 				</ul>
 
@@ -100,15 +103,7 @@
 
 {% block javascripts %}
 	<script src="{{asset('assets/js/videoembededcollection.js')}}"></script>
-	<script>
-		function showConfirmation() { // Display a confirmation dialog with translated message
-var result = window.confirm("{{ 'Trick.ConfirmDelete'|trans }}");
-
-// Check the user's choice and perform the action or navigate to the link
-if (result) {
-window.location.href = "{{ path('homepage') }}"; // Replace with the actual URL
-} else { // Optional code if needed
-}
-}
-	</script>
+	<script src="{{asset('assets/js/confirmDelete.js')}}"></script>
+	<script src="{{asset('assets/js/moveCardTrick.js')}}"></script>
+	<script src="{{asset('assets/js/toggleTricksImage.js')}}"></script>
 {% endblock %}
