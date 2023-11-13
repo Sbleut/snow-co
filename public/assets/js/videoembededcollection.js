@@ -1,5 +1,6 @@
 const addvideoFormDeleteLink = (item) => {
     const removeFormButton = document.createElement('button');
+    removeFormButton.classList.add('btn', 'btn-danger', 'm-1');
     removeFormButton.innerText = 'Delete this video';
 
     item.append(removeFormButton);
@@ -15,6 +16,7 @@ const addFormToCollection = (e) => {
     const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
 
     const item = document.createElement('li');
+    item.classList.add('list-group-item', 'm-1');
 
     item.innerHTML = collectionHolder
         .dataset
@@ -46,6 +48,5 @@ const collectionHelper = () => {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("salut");
     collectionHelper();
 });

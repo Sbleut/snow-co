@@ -33,17 +33,17 @@
 			{% endif %}
 
 			<div class="card-body">
-				<div class="dropdown">
-					<a class="btn btn-primary " id="mediaDropdown"  role="button">
+				<div class="d-flex flex-column justify-content-evenly">
+					<button class="btn btn-primary " id="responsive-pics-button" type="button">
 						View Images & Videos
-					</a>
-					<div class="d-flex flex-wrap border-bottom pb-3 justify-content-between " >
-						<div class="">
+					</button>
+					<div class="container border-bottom pb-3 justify-content-between" id="pics-n-video">
+						<div class="d-flex flex-wrap align-items-center justify-content-evenly">
 							{% for image in trick.images %}
-								<img src="{{asset('uploads/image/' ~ image.fileName)}}" class="small-pics card-img-top rounded" alt="...">
+								<img src="{{asset('uploads/image/' ~ image.fileName)}}" class="small-pics card-img-top rounded m-2" alt="...">
 							{% endfor %}
 						</div>
-						<div class="">
+						<div class="d-flex flex-wrap align-items-center justify-content-evenly">
 							{% for video in trick.videos %}
 								<iframe width="200" height="150" src="{{video.iframe}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 							{% endfor %}
@@ -54,32 +54,36 @@
 				<p class="card-text">{{trick.description}}</p>
 				<div class="d-flex flex-wrap justify-content-evenly align-items-center">
 					<p class="">
-						<small class="text-body-secondary">{{'Trick.Created'|trans()}} {{trick.createdAt|date("m/d/Y", "Europe/Paris")}}</small>
+						<small class="text-body-secondary">{{'Trick.Created'|trans()}}
+							{{trick.createdAt|date("m/d/Y", "Europe/Paris")}}</small>
 					</p>
 					<p>{{'Trick.Category'|trans() }}
 						:
 						{{trick.category.name}}</p>
 					{% if trick.updatedAt  is not null %}
-						<p>{{'Trick.Updated'|trans()}} {{trick.updatedAt|date("m/d/Y", "Europe/Paris")}}</p>
+						<p>{{'Trick.Updated'|trans()}}
+							{{trick.updatedAt|date("m/d/Y", "Europe/Paris")}}</p>
 					{% endif %}
 				</div>
 				{% if app.user != null %}
 					{{ form_start(form)}}
 					{{ form_errors(form.content)}}
-					<div class="d-flexflex-wrap justify-content-evenly">
+					<div class="d-flex flex-wrap justify-content-evenly">
 						{{ form_widget(form.content, {'attr': {'placeholder': 'Trick.Comment.Content' | trans(), 'class': 'd-block '} })}}
-						<button type="submit" class="btn btn-primary btn-sm ml-2">{{'Trick.Comment.Submit'|trans()}}</button>
+						<button type="submit" class="btn btn-primary btn-sm m-2">{{'Trick.Comment.Submit'|trans()}}</button>
 					</div>
 					{{ form_end(form) }}
 				{% endif %}
 				<div class="container d-flex flex-column align-items-center mt-3 pt-3 border-top">
 					{% for comment in commentList %}
 						<div class="d-flex flex-start align-items-center">
-							{{include('_partials/_profil_pic.html.twig', {'comment': comment})}}
-							<div class="m-2">
+							<div class="profil-pic">
+								{{include('_partials/_profil_pic.html.twig', {'comment': comment})}}
+							</div>
+							<div class="comment-details ms-2">
 								<h6 lass="fw-bold mb-1">{{comment.author.username}}</h6>
 								<div class="d-flex align-items-center ">
-									<p>{{comment.createdAt|date("d/m/Y H:i:s", "Europe/Paris")}}</p>
+									<p class="text-secondary mb-0">{{comment.createdAt|date("d/m/Y H:i:s", "Europe/Paris")}}</p>
 								</div>
 								<p class="mb-0">{{comment.content}}</p>
 							</div>
@@ -109,30 +113,7 @@
 {% endblock %}
 
 {% block javascripts %}
-	<script>
-		function showConfirmation() { // Display a confirmation dialog with translated message.
-var result = window.confirm("{{ 'Trick.ConfirmDelete'|trans }}");
-}
-function moveCardTrick(toHeight) {
-var trickDetailCard = document.querySelector("#trick-detail-card");
-
-// Add the CSS class for the transition
-trickDetailCard.classList.add("smooth-transition");
-
-// Set the top margin of the trick-detail-card to the specified height.
-trickDetailCard.style.marginTop = toHeight + "px";
-}
-
-// Listen for click events on the navbar-toggler button.
-document.getElementById("navbar-toggler").addEventListener('click', function (event) { // Toggle between the two predefined heights.
-var trickDetailCard = document.querySelector(".navbar");
-var currentHeight = trickDetailCard.offsetHeight;
-var newHeight = currentHeight === 57 ? 235: 57;
-moveCardTrick(newHeight);
-});
-
-document.addEventListener("DOMContentLoaded", function () { // Initialize the margin to the default height (60px).
-moveCardTrick(73);
-});
-	</script>
+	<script src="{{asset('assets/js/confirmDelete.js')}}"></script>
+	<script src="{{asset('assets/js/moveCardTrick.js')}}"></script>
+	<script src="{{asset('assets/js/toggleTricksImage.js')}}"></script>
 {% endblock %}
