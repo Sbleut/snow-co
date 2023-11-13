@@ -13,7 +13,7 @@
 		{{ form_row(form.category) }}
 		{{ form_row(form.images, {'attr': {'class': 'form-control'}}) }}
 
-		<button type="button" class="add_item_link btn btn-primary mb-1" data-collection-holder-class="videos">Add a video</button>
+		<button type="button" class="add_item_link btn btn-primary mb-1" data-collection-holder-class="videos">{{'AddVideo' |trans()}}</button>
 
 		<ul class="videos list-group mb-1" data-index="{{ form.videos|length > 0 ? form.videos|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.videos.vars.prototype)|e('html_attr') }}">
 			{% for video in form.videos %}
@@ -27,7 +27,7 @@
 			{% endfor %}
 		</ul>
 		{# Render any remaining form fields (e.g., CSRF token) #}
-		<button type="submit" class="btn btn-primary">Submit</button>
+		<button type="submit" class="btn btn-primary">{{'Submit' | trans()}}</button>
 
 		{{ form_end(form) }}
 	</div>

@@ -16,7 +16,7 @@
 			{{include('_partials/_main_image.html.twig', {'trick': trick})}}
 
 			{% if app.user %}
-				<div class="d-flex position-absolute update-btn m-2">
+				<div class="d-flex position-absolute update-btn m-2" id="modif-btn">
 					<a href="{{path('app_trick_update', {slug:trick.slug})}}">
 						<button class="btn btn-secondary btn-sm me-2">
 							<i class="bi bi-pencil-square"></i>

@@ -113,6 +113,6 @@ class RegistrationController extends AbstractController
 
         $this->addFlash('success', $translator->trans('Email.verify'));
 
-        return $this->redirectToRoute('app_login');
+        return $this->redirectToRoute('homepage');
     }
 }

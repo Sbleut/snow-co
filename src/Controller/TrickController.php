@@ -13,6 +13,7 @@ use App\Repository\CommentRepository;
 use App\Repository\ImageRepository;
 use App\Repository\TrickRepository;
 use DateTimeImmutable;
+use PHPUnit\Framework\ActualValueIsNotAnObjectException;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -257,8 +258,6 @@ class TrickController extends AbstractController
      *
      * @throws NotFoundHttpException if the specified image does not exist.
      */
-
-
     public function setMainImage($uuid, ImageRepository $imageRepository, EntityManagerInterface $manager)
     {
 
@@ -268,6 +267,7 @@ class TrickController extends AbstractController
         $actualMain->setMainImage(false);
         $image->setMainImage(true);
 
+        $manager->persist($actualMain);
         $manager->persist($image);
         $manager->flush();
         return $this->redirectToRoute('app_trick_update', ['slug' => $image->getTrick()->getSlug()]);

@@ -8,6 +8,12 @@ Nav:
   
   Register: S'inscrire
 
+Register: Inscritpion
+Password: Mot de passe
+
+Repeat: Confirmation du mot de passe
+ProfilPic: Choix de votre avatar
+
 Login:
   h1: Renseigner vos identifients de connexion et mot de passe
   btn: Se connecter
@@ -20,7 +26,7 @@ Logout:
 
 
 Home:
-  catch: L'enccyclopédie des tricks
+  catch: L'encyclopédie des tricks
 Email:
   verfiy: Your email address has been verified.
 
@@ -51,9 +57,16 @@ Trick:
   Category: Catégorie de la figure 
   ConfirmDelete:
   Comment:
+    Done: Votre commentaire a été ajouté.
     Content: Votre Commentaire
     Submit: Laissez votre Commentaire
   Unique: Cette figure existe déjà veuillez trouvé un autre nom ou modifier la figure existante.
+
+Name: Nom de la figure
+Category: Catégorie
+Image File: Images
+AddVideo: Ajouter une vidéo
+Submit: Sauvegarder
 
 Image:
   Deleted: Votre image a été supprimé

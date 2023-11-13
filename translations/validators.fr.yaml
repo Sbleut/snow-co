@@ -4,3 +4,6 @@ Email.Notmatching: L'email ne correspond pas à l'utilisateur.
 Email.Dontexist: L'email n'est pas conforme.
 NotYoutube: Cette video n'est pas de youtube.
 TrickSlug: Le nom "{{ value }}" existe déjà.
+Trick:
+  Unique: Cette figure existe déjà veuillez trouvé un autre nom ou modifier la figure existante.
+PasswordMissmatch: Le mot de passe doit correspondre.
