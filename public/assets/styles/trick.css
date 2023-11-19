@@ -33,6 +33,10 @@
     object-fit: cover;
 }
 
+#modif-btn{
+    z-index:4;
+}
+
 #responsive-pics-button{
     display:none;
 }

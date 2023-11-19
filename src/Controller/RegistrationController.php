@@ -66,8 +66,8 @@ class RegistrationController extends AbstractController
                 'Please Confirm your Email',
                 'registration/confirmation_email',
                 [
-                    'uuid' => $user->getUuid(),
-                    'username' => $user->getUsername(),
+                    'uuid'      => $user->getUuid(),
+                    'username'  => $user->getUsername(),
                     'token' => $user->getTokenValidator(),
                 ]
             );
@@ -113,6 +113,6 @@ class RegistrationController extends AbstractController
 
         $this->addFlash('success', $translator->trans('Email.verify'));
 
-        return $this->redirectToRoute('app_login');
+        return $this->redirectToRoute('homepage');
     }
 }

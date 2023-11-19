@@ -11,8 +11,8 @@
 		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
 		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
 		{# Bootstrap Link #}
-		<link href="{{asset('assets/styles/bootstrap.min.css')}}" rel="stylesheet">
-		<link href="{{asset('assets/styles/main.css')}}" rel="stylesheet">
+		<link href="{{asset('assets/styles/bootstrap.min.css')}}" rel="stylesheet"> <link
+		href="{{asset('assets/styles/main.css')}}" rel="stylesheet">
 		{# <link rel="stylesheet" href="https://bootswatch.com/5/spacelab/bootstrap.min.css">  #}
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 		{% block stylesheets %}
@@ -20,10 +20,11 @@
 		{% endblock %}
 
 		{# {# {% block javascripts %}
-			{{ encore_entry_script_tags('app') }}
-		{% endblock %} #}
+					{{ encore_entry_script_tags('app') }}
+				{% endblock %} #}
 	</head>
 	<body>
+		
 		<nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
 			<div class="container-fluid">
 				<a class="navbar-brand" href="#tricks"></a>
@@ -67,22 +68,23 @@
 			</div>
 		</nav>
 		<div class="d-flex flash position-absolute justify-content-center w-100">
-		{% for flash in app.flashes('success') %}
-			{% for message in flash %}
-				<div class="alert alert-success">{{ message | trans()}}</div>
+			{% for flash in app.flashes('success') %}
+				{% for message in flash %}
+					<div class="alert alert-success">{{ message | trans()}}</div>
+				{% endfor %}
 			{% endfor %}
-		{% endfor %}
-		{% for flash in app.flashes('error') %}
-			{% for message in flash %}
-				<div class="alert alert-danger">{{ message |trans() }}</div>
+			{% for flash in app.flashes('error') %}
+				{% for message in flash %}
+					<div class="alert alert-danger">{{ message |trans() }}</div>
+				{% endfor %}
 			{% endfor %}
-		{% endfor %}
-		{% for flash in app.flashes('errorfile') %}
-			{% for message in flash %}
-				<div class="alert alert-danger">{{ message |trans() }}</div>
+			{% for flash in app.flashes('errorfile') %}
+				{% for message in flash %}
+					<div class="alert alert-danger">{{ message |trans() }}</div>
+				{% endfor %}
 			{% endfor %}
-		{% endfor %}
 		</div>
+
 
 		{% block body %}{% endblock %}
 
@@ -93,7 +95,6 @@
 		</footer>
 		<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-		{% block javascripts %}
-		{% endblock %}
+		{% block javascripts %}{% endblock %}
 	</body>
 </html>
