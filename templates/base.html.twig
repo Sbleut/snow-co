@@ -24,23 +24,7 @@
 				{% endblock %} #}
 	</head>
 	<body>
-		<div class="d-flex flash position-absolute justify-content-center w-100">
-			{% for flash in app.flashes('success') %}
-				{% for message in flash %}
-					<div class="alert alert-success">{{ message | trans()}}</div>
-				{% endfor %}
-			{% endfor %}
-			{% for flash in app.flashes('error') %}
-				{% for message in flash %}
-					<div class="alert alert-danger">{{ message |trans() }}</div>
-				{% endfor %}
-			{% endfor %}
-			{% for flash in app.flashes('errorfile') %}
-				{% for message in flash %}
-					<div class="alert alert-danger">{{ message |trans() }}</div>
-				{% endfor %}
-			{% endfor %}
-		</div>
+		
 		<nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
 			<div class="container-fluid">
 				<a class="navbar-brand" href="#tricks"></a>
@@ -83,6 +67,23 @@
 				</div>
 			</div>
 		</nav>
+		<div class="d-flex flash position-absolute justify-content-center w-100">
+			{% for flash in app.flashes('success') %}
+				{% for message in flash %}
+					<div class="alert alert-success">{{ message | trans()}}</div>
+				{% endfor %}
+			{% endfor %}
+			{% for flash in app.flashes('error') %}
+				{% for message in flash %}
+					<div class="alert alert-danger">{{ message |trans() }}</div>
+				{% endfor %}
+			{% endfor %}
+			{% for flash in app.flashes('errorfile') %}
+				{% for message in flash %}
+					<div class="alert alert-danger">{{ message |trans() }}</div>
+				{% endfor %}
+			{% endfor %}
+		</div>
 
 
 		{% block body %}{% endblock %}

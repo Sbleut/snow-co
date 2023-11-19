@@ -10,12 +10,18 @@ PHP 8.1
 Composer 2.2.12
 npm 9.5.1
 Symfony 6.3
-symfony cli
+symfony cli (optional)
+mysql 5.7.36
+mailhog 1.0.1 (optional)
 ```
 
 ## Git Clone
 
+In the repository you want to start your projec/app clone the git repository.
+
+```
 git clone https://github.com/Sbleut/snow-co.git
+```
 
 ## Database configuration
 

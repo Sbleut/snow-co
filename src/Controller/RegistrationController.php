@@ -66,8 +66,8 @@ class RegistrationController extends AbstractController
                 'Please Confirm your Email',
                 'registration/confirmation_email',
                 [
-                    'uuid' => $user->getUuid(),
-                    'username' => $user->getUsername(),
+                    'uuid'      => $user->getUuid(),
+                    'username'  => $user->getUsername(),
                     'token' => $user->getTokenValidator(),
                 ]
             );
