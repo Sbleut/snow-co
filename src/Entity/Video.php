@@ -16,10 +16,10 @@ class Video
     private ?int $id = null;
 
     
-    #[ORM\Column(length: 255)]
-    #[Assert\Url]
+    #[ORM\Column(type: Types::TEXT)]
     #[Assert\Regex(
-        pattern: '^https?://(www\.)?youtube\.com/embed^',
+        pattern: '^<iframe.*src="https:\/\/www\.youtube\.com\/embed\/.*<\/iframe>^
+        ',
         message: 'NotYoutube'
         )]
     private ?string $iframe = null;

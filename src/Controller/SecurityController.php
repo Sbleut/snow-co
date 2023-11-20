@@ -48,7 +48,7 @@ class SecurityController extends AbstractController
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
     {
-        $this->addFlash('success', 'Logout.Success');
+        $this->addFlash('success', ['Logout.Success']);
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
@@ -115,7 +115,7 @@ class SecurityController extends AbstractController
         $user = $userRepository->findOneByUuidToken($uuid->toBinary(), $token);
 
         if ($user === null) {
-            $this->addFlash('error', $translator->trans('Reset.Error'));
+            $this->addFlash('error', ['Reset.Error']);
             return $this->redirectToRoute('homepage');
         }
 
@@ -135,7 +135,7 @@ class SecurityController extends AbstractController
             );
             $entityManager->flush();
 
-            $this->addFlash('success', 'Reset.Success');
+            $this->addFlash('success', ['Reset.Success']);
             return $this->redirectToRoute('homepage');
         }
         $error = $authenticationUtils->getLastAuthenticationError();

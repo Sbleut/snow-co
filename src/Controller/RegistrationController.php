@@ -72,7 +72,7 @@ class RegistrationController extends AbstractController
                 ]
             );
 
-            $this->addFlash('success', 'Registration.Done');
+            $this->addFlash('success', ['Registration.Done']);
 
             return $this->redirectToRoute('homepage');
         }
@@ -111,7 +111,7 @@ class RegistrationController extends AbstractController
         // IF from Uuid g.
         // validate email confirmation link, sets User::isVerified=true and persists.
 
-        $this->addFlash('success', $translator->trans('Email.verify'));
+        $this->addFlash('success', ['Email.verify']);
 
         return $this->redirectToRoute('homepage');
     }
